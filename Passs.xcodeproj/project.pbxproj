@@ -8,22 +8,43 @@
 
 /* Begin PBXBuildFile section */
 		A32C6549260C557300DC6653 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A32C6548260C557300DC6653 /* AppDelegate.swift */; };
-		A32C654B260C557300DC6653 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A32C654A260C557300DC6653 /* SceneDelegate.swift */; };
 		A32C654D260C557300DC6653 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A32C654C260C557300DC6653 /* ViewController.swift */; };
-		A32C6550260C557300DC6653 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A32C654E260C557300DC6653 /* Main.storyboard */; };
 		A32C6552260C557700DC6653 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A32C6551260C557700DC6653 /* Assets.xcassets */; };
 		A32C6555260C557700DC6653 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A32C6553260C557700DC6653 /* LaunchScreen.storyboard */; };
+		A32C658A260C845400DC6653 /* KissXML.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A32C6588260C844E00DC6653 /* KissXML.framework */; };
+		A32C658B260C845400DC6653 /* KissXML.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = A32C6588260C844E00DC6653 /* KissXML.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		A3F3DA28260CA5FC0057AF24 /* PassItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3F3DA27260CA5FC0057AF24 /* PassItem.swift */; };
+		A3F3DA2A260CA8440057AF24 /* PassItem+KeePassKit.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3F3DA29260CA8440057AF24 /* PassItem+KeePassKit.swift */; };
+		A3F3DA2D260CB7F90057AF24 /* KeePassKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A3F3DA2B260CB73F0057AF24 /* KeePassKit.framework */; };
+		A3F3DA2E260CB7F90057AF24 /* KeePassKit.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = A3F3DA2B260CB73F0057AF24 /* KeePassKit.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 /* End PBXBuildFile section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		A32C6577260C650700DC6653 /* Embed Frameworks */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				A3F3DA2E260CB7F90057AF24 /* KeePassKit.framework in Embed Frameworks */,
+				A32C658B260C845400DC6653 /* KissXML.framework in Embed Frameworks */,
+			);
+			name = "Embed Frameworks";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
 		A32C6545260C557200DC6653 /* Passs.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Passs.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		A32C6548260C557300DC6653 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		A32C654A260C557300DC6653 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
 		A32C654C260C557300DC6653 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
-		A32C654F260C557300DC6653 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		A32C6551260C557700DC6653 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		A32C6554260C557700DC6653 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		A32C6556260C557700DC6653 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		A32C6588260C844E00DC6653 /* KissXML.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = KissXML.framework; sourceTree = "<group>"; };
+		A3F3DA27260CA5FC0057AF24 /* PassItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PassItem.swift; sourceTree = "<group>"; };
+		A3F3DA29260CA8440057AF24 /* PassItem+KeePassKit.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "PassItem+KeePassKit.swift"; sourceTree = "<group>"; };
+		A3F3DA2B260CB73F0057AF24 /* KeePassKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = KeePassKit.framework; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -31,6 +52,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A3F3DA2D260CB7F90057AF24 /* KeePassKit.framework in Frameworks */,
+				A32C658A260C845400DC6653 /* KissXML.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -56,15 +79,33 @@
 		A32C6547260C557200DC6653 /* Passs */ = {
 			isa = PBXGroup;
 			children = (
+				A3F3DA26260CA5E00057AF24 /* Model */,
+				A32C6566260C5D1400DC6653 /* Third party */,
 				A32C6548260C557300DC6653 /* AppDelegate.swift */,
-				A32C654A260C557300DC6653 /* SceneDelegate.swift */,
 				A32C654C260C557300DC6653 /* ViewController.swift */,
-				A32C654E260C557300DC6653 /* Main.storyboard */,
 				A32C6551260C557700DC6653 /* Assets.xcassets */,
 				A32C6553260C557700DC6653 /* LaunchScreen.storyboard */,
 				A32C6556260C557700DC6653 /* Info.plist */,
 			);
 			path = Passs;
+			sourceTree = "<group>";
+		};
+		A32C6566260C5D1400DC6653 /* Third party */ = {
+			isa = PBXGroup;
+			children = (
+				A3F3DA2B260CB73F0057AF24 /* KeePassKit.framework */,
+				A32C6588260C844E00DC6653 /* KissXML.framework */,
+			);
+			path = "Third party";
+			sourceTree = "<group>";
+		};
+		A3F3DA26260CA5E00057AF24 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				A3F3DA27260CA5FC0057AF24 /* PassItem.swift */,
+				A3F3DA29260CA8440057AF24 /* PassItem+KeePassKit.swift */,
+			);
+			path = Model;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -77,6 +118,7 @@
 				A32C6541260C557200DC6653 /* Sources */,
 				A32C6542260C557200DC6653 /* Frameworks */,
 				A32C6543260C557200DC6653 /* Resources */,
+				A32C6577260C650700DC6653 /* Embed Frameworks */,
 			);
 			buildRules = (
 			);
@@ -126,7 +168,6 @@
 			files = (
 				A32C6555260C557700DC6653 /* LaunchScreen.storyboard in Resources */,
 				A32C6552260C557700DC6653 /* Assets.xcassets in Resources */,
-				A32C6550260C557300DC6653 /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -137,23 +178,16 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A3F3DA28260CA5FC0057AF24 /* PassItem.swift in Sources */,
+				A3F3DA2A260CA8440057AF24 /* PassItem+KeePassKit.swift in Sources */,
 				A32C654D260C557300DC6653 /* ViewController.swift in Sources */,
 				A32C6549260C557300DC6653 /* AppDelegate.swift in Sources */,
-				A32C654B260C557300DC6653 /* SceneDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXVariantGroup section */
-		A32C654E260C557300DC6653 /* Main.storyboard */ = {
-			isa = PBXVariantGroup;
-			children = (
-				A32C654F260C557300DC6653 /* Base */,
-			);
-			name = Main.storyboard;
-			sourceTree = "<group>";
-		};
 		A32C6553260C557700DC6653 /* LaunchScreen.storyboard */ = {
 			isa = PBXVariantGroup;
 			children = (
@@ -288,7 +322,22 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = M9YPX79TYZ;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/Passs/Third\\ party",
+					"$(PROJECT_DIR)/Passs/Third\\ party",
+					"$(PROJECT_DIR)/Passs/Third\\ party",
+					"$(PROJECT_DIR)/Passs/Third\\ party",
+					"$(PROJECT_DIR)/Passs/Third\\ party",
+					"$(PROJECT_DIR)/Passs/Third\\ party",
+					"$(PROJECT_DIR)/Passs/Third\\ party",
+					"$(PROJECT_DIR)/Passs/Third\\ party",
+					"$(PROJECT_DIR)/Passs/Third\\ party",
+					"$(PROJECT_DIR)/Passs/Third\\ party",
+					"$(PROJECT_DIR)/Passs/Third\\ party",
+				);
 				INFOPLIST_FILE = Passs/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -307,7 +356,22 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = M9YPX79TYZ;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/Passs/Third\\ party",
+					"$(PROJECT_DIR)/Passs/Third\\ party",
+					"$(PROJECT_DIR)/Passs/Third\\ party",
+					"$(PROJECT_DIR)/Passs/Third\\ party",
+					"$(PROJECT_DIR)/Passs/Third\\ party",
+					"$(PROJECT_DIR)/Passs/Third\\ party",
+					"$(PROJECT_DIR)/Passs/Third\\ party",
+					"$(PROJECT_DIR)/Passs/Third\\ party",
+					"$(PROJECT_DIR)/Passs/Third\\ party",
+					"$(PROJECT_DIR)/Passs/Third\\ party",
+					"$(PROJECT_DIR)/Passs/Third\\ party",
+				);
 				INFOPLIST_FILE = Passs/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
