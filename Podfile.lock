@@ -29,7 +29,7 @@ PODS:
   - SnapKit (5.0.1)
 
 DEPENDENCIES:
-  - KeePassKit (from `https://github.com/MacPass/KeePassKit.git`)
+  - KeePassKit (from `https://github.com/fedorov-d/KeePassKit.git`)
   - RealmSwift
   - RxCocoa
   - RxRealm
@@ -49,13 +49,13 @@ SPEC REPOS:
 
 EXTERNAL SOURCES:
   KeePassKit:
-    :git: https://github.com/MacPass/KeePassKit.git
+    :git: https://github.com/fedorov-d/KeePassKit.git
     :submodules: true
 
 CHECKOUT OPTIONS:
   KeePassKit:
-    :commit: 7126fc3e5ae004913eaad11481c322a934ba6d74
-    :git: https://github.com/MacPass/KeePassKit.git
+    :commit: 66dc5db40a90764a2c17625e49be1bb4e46432bc
+    :git: https://github.com/fedorov-d/KeePassKit.git
     :submodules: true
 
 SPEC CHECKSUMS:
@@ -69,6 +69,6 @@ SPEC CHECKSUMS:
   RxSwift: c14e798c59b9f6e9a2df8fd235602e85cc044295
   SnapKit: 97b92857e3df3a0c71833cce143274bf6ef8e5eb
 
-PODFILE CHECKSUM: aab10bd596b27948c69dc265a28d19f33c0d7f04
+PODFILE CHECKSUM: e529f6982db469d5d4d09488b7abbc01b7398222
 
 COCOAPODS: 1.10.1
