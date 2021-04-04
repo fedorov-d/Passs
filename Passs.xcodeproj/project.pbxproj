@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 50;
+	objectVersion = 51;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -11,14 +11,11 @@
 		A32C654D260C557300DC6653 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A32C654C260C557300DC6653 /* ViewController.swift */; };
 		A32C6552260C557700DC6653 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A32C6551260C557700DC6653 /* Assets.xcassets */; };
 		A32C6555260C557700DC6653 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A32C6553260C557700DC6653 /* LaunchScreen.storyboard */; };
-		A32C658A260C845400DC6653 /* KissXML.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A32C6588260C844E00DC6653 /* KissXML.framework */; };
-		A32C658B260C845400DC6653 /* KissXML.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = A32C6588260C844E00DC6653 /* KissXML.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		A3F3DA28260CA5FC0057AF24 /* PassItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3F3DA27260CA5FC0057AF24 /* PassItem.swift */; };
 		A3F3DA2A260CA8440057AF24 /* PassItem+KeePassKit.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3F3DA29260CA8440057AF24 /* PassItem+KeePassKit.swift */; };
-		A3F3DA2D260CB7F90057AF24 /* KeePassKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A3F3DA2B260CB73F0057AF24 /* KeePassKit.framework */; };
-		A3F3DA2E260CB7F90057AF24 /* KeePassKit.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = A3F3DA2B260CB73F0057AF24 /* KeePassKit.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		A3F3DA34260DBEB60057AF24 /* PasteboardManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3F3DA33260DBEB50057AF24 /* PasteboardManager.swift */; };
 		A3F3DA36260DC1D10057AF24 /* PassDatabaseManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3F3DA35260DC1D10057AF24 /* PassDatabaseManager.swift */; };
+		C36AB2D5AB40F2100342ABC8 /* Pods_Passs.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 096CD049FCD875D09982CB67 /* Pods_Passs.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -28,8 +25,6 @@
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
-				A3F3DA2E260CB7F90057AF24 /* KeePassKit.framework in Embed Frameworks */,
-				A32C658B260C845400DC6653 /* KissXML.framework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -37,18 +32,19 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		096CD049FCD875D09982CB67 /* Pods_Passs.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Passs.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		A1BE885742778874F9F7BB11 /* Pods-Passs.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Passs.release.xcconfig"; path = "Target Support Files/Pods-Passs/Pods-Passs.release.xcconfig"; sourceTree = "<group>"; };
 		A32C6545260C557200DC6653 /* Passs.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Passs.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		A32C6548260C557300DC6653 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		A32C654C260C557300DC6653 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
 		A32C6551260C557700DC6653 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		A32C6554260C557700DC6653 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		A32C6556260C557700DC6653 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		A32C6588260C844E00DC6653 /* KissXML.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = KissXML.framework; sourceTree = "<group>"; };
 		A3F3DA27260CA5FC0057AF24 /* PassItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PassItem.swift; sourceTree = "<group>"; };
 		A3F3DA29260CA8440057AF24 /* PassItem+KeePassKit.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "PassItem+KeePassKit.swift"; sourceTree = "<group>"; };
-		A3F3DA2B260CB73F0057AF24 /* KeePassKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = KeePassKit.framework; sourceTree = "<group>"; };
 		A3F3DA33260DBEB50057AF24 /* PasteboardManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PasteboardManager.swift; sourceTree = "<group>"; };
 		A3F3DA35260DC1D10057AF24 /* PassDatabaseManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PassDatabaseManager.swift; sourceTree = "<group>"; };
+		EBA44A656624B8CD1C05172E /* Pods-Passs.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Passs.debug.xcconfig"; path = "Target Support Files/Pods-Passs/Pods-Passs.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -56,19 +52,37 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				A3F3DA2D260CB7F90057AF24 /* KeePassKit.framework in Frameworks */,
-				A32C658A260C845400DC6653 /* KissXML.framework in Frameworks */,
+				C36AB2D5AB40F2100342ABC8 /* Pods_Passs.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		168E9655F2F473A54AE91AA6 /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				EBA44A656624B8CD1C05172E /* Pods-Passs.debug.xcconfig */,
+				A1BE885742778874F9F7BB11 /* Pods-Passs.release.xcconfig */,
+			);
+			path = Pods;
+			sourceTree = "<group>";
+		};
+		5FB1834A3E031CBCCDD4B639 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				096CD049FCD875D09982CB67 /* Pods_Passs.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 		A32C653C260C557200DC6653 = {
 			isa = PBXGroup;
 			children = (
 				A32C6547260C557200DC6653 /* Passs */,
 				A32C6546260C557200DC6653 /* Products */,
+				168E9655F2F473A54AE91AA6 /* Pods */,
+				5FB1834A3E031CBCCDD4B639 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -85,7 +99,6 @@
 			children = (
 				A3F3DA32260DBEAA0057AF24 /* Service */,
 				A3F3DA26260CA5E00057AF24 /* Model */,
-				A32C6566260C5D1400DC6653 /* Third party */,
 				A32C6548260C557300DC6653 /* AppDelegate.swift */,
 				A32C654C260C557300DC6653 /* ViewController.swift */,
 				A32C6551260C557700DC6653 /* Assets.xcassets */,
@@ -93,15 +106,6 @@
 				A32C6556260C557700DC6653 /* Info.plist */,
 			);
 			path = Passs;
-			sourceTree = "<group>";
-		};
-		A32C6566260C5D1400DC6653 /* Third party */ = {
-			isa = PBXGroup;
-			children = (
-				A3F3DA2B260CB73F0057AF24 /* KeePassKit.framework */,
-				A32C6588260C844E00DC6653 /* KissXML.framework */,
-			);
-			path = "Third party";
 			sourceTree = "<group>";
 		};
 		A3F3DA26260CA5E00057AF24 /* Model */ = {
@@ -129,10 +133,12 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = A32C6559260C557700DC6653 /* Build configuration list for PBXNativeTarget "Passs" */;
 			buildPhases = (
+				DB2F66A65660A25F26E3CD04 /* [CP] Check Pods Manifest.lock */,
 				A32C6541260C557200DC6653 /* Sources */,
 				A32C6542260C557200DC6653 /* Frameworks */,
 				A32C6543260C557200DC6653 /* Resources */,
 				A32C6577260C650700DC6653 /* Embed Frameworks */,
+				85D5035C9DA10D480DC005E9 /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -186,6 +192,48 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		85D5035C9DA10D480DC005E9 /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-Passs/Pods-Passs-frameworks-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-Passs/Pods-Passs-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-Passs/Pods-Passs-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		DB2F66A65660A25F26E3CD04 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-Passs-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		A32C6541260C557200DC6653 /* Sources */ = {
@@ -333,25 +381,13 @@
 		};
 		A32C655A260C557700DC6653 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = EBA44A656624B8CD1C05172E /* Pods-Passs.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = M9YPX79TYZ;
-				FRAMEWORK_SEARCH_PATHS = (
-					"$(inherited)",
-					"$(PROJECT_DIR)/Passs/Third\\ party",
-					"$(PROJECT_DIR)/Passs/Third\\ party",
-					"$(PROJECT_DIR)/Passs/Third\\ party",
-					"$(PROJECT_DIR)/Passs/Third\\ party",
-					"$(PROJECT_DIR)/Passs/Third\\ party",
-					"$(PROJECT_DIR)/Passs/Third\\ party",
-					"$(PROJECT_DIR)/Passs/Third\\ party",
-					"$(PROJECT_DIR)/Passs/Third\\ party",
-					"$(PROJECT_DIR)/Passs/Third\\ party",
-					"$(PROJECT_DIR)/Passs/Third\\ party",
-					"$(PROJECT_DIR)/Passs/Third\\ party",
-				);
+				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
 				INFOPLIST_FILE = Passs/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -367,25 +403,13 @@
 		};
 		A32C655B260C557700DC6653 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = A1BE885742778874F9F7BB11 /* Pods-Passs.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = M9YPX79TYZ;
-				FRAMEWORK_SEARCH_PATHS = (
-					"$(inherited)",
-					"$(PROJECT_DIR)/Passs/Third\\ party",
-					"$(PROJECT_DIR)/Passs/Third\\ party",
-					"$(PROJECT_DIR)/Passs/Third\\ party",
-					"$(PROJECT_DIR)/Passs/Third\\ party",
-					"$(PROJECT_DIR)/Passs/Third\\ party",
-					"$(PROJECT_DIR)/Passs/Third\\ party",
-					"$(PROJECT_DIR)/Passs/Third\\ party",
-					"$(PROJECT_DIR)/Passs/Third\\ party",
-					"$(PROJECT_DIR)/Passs/Third\\ party",
-					"$(PROJECT_DIR)/Passs/Third\\ party",
-					"$(PROJECT_DIR)/Passs/Third\\ party",
-				);
+				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
 				INFOPLIST_FILE = Passs/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				LD_RUNPATH_SEARCH_PATHS = (
