@@ -11,5 +11,5 @@ target 'Passs' do
     pod 'RxSwift'
     pod 'RxCocoa'
     pod 'RxRealm'
-    pod 'KeePassKit', :git => 'https://github.com/maxep/KeePassKit.git', :branch => 'cocoapods', :submodules => true
+    pod 'KeePassKit', :git => 'https://github.com/MacPass/KeePassKit.git', :branch => 'cocoapods', :submodules => true
 end
