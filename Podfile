@@ -1,5 +1,5 @@
 source 'https://github.com/CocoaPods/Specs.git'
-source 'https://github.com/MacPass/KeePassKit'
+source 'https://github.com/MacPass/KeePassKit.git'
 platform :ios, '12.0'
 inhibit_all_warnings!
 use_frameworks!
@@ -11,6 +11,5 @@ target 'Passs' do
     pod 'RxSwift'
     pod 'RxCocoa'
     pod 'RxRealm'
-    pod 'KeePassKit'
-    pod 'KissXML' -> 5.2.3
+    pod 'KeePassKit', :git => 'https://github.com/maxep/KeePassKit.git', :branch => 'cocoapods', :submodules => true
 end

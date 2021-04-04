@@ -17,6 +17,8 @@
 		A3F3DA2A260CA8440057AF24 /* PassItem+KeePassKit.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3F3DA29260CA8440057AF24 /* PassItem+KeePassKit.swift */; };
 		A3F3DA2D260CB7F90057AF24 /* KeePassKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A3F3DA2B260CB73F0057AF24 /* KeePassKit.framework */; };
 		A3F3DA2E260CB7F90057AF24 /* KeePassKit.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = A3F3DA2B260CB73F0057AF24 /* KeePassKit.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		A3F3DA34260DBEB60057AF24 /* PasteboardManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3F3DA33260DBEB50057AF24 /* PasteboardManager.swift */; };
+		A3F3DA36260DC1D10057AF24 /* PassDatabaseManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3F3DA35260DC1D10057AF24 /* PassDatabaseManager.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -45,6 +47,8 @@
 		A3F3DA27260CA5FC0057AF24 /* PassItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PassItem.swift; sourceTree = "<group>"; };
 		A3F3DA29260CA8440057AF24 /* PassItem+KeePassKit.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "PassItem+KeePassKit.swift"; sourceTree = "<group>"; };
 		A3F3DA2B260CB73F0057AF24 /* KeePassKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = KeePassKit.framework; sourceTree = "<group>"; };
+		A3F3DA33260DBEB50057AF24 /* PasteboardManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PasteboardManager.swift; sourceTree = "<group>"; };
+		A3F3DA35260DC1D10057AF24 /* PassDatabaseManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PassDatabaseManager.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -79,6 +83,7 @@
 		A32C6547260C557200DC6653 /* Passs */ = {
 			isa = PBXGroup;
 			children = (
+				A3F3DA32260DBEAA0057AF24 /* Service */,
 				A3F3DA26260CA5E00057AF24 /* Model */,
 				A32C6566260C5D1400DC6653 /* Third party */,
 				A32C6548260C557300DC6653 /* AppDelegate.swift */,
@@ -106,6 +111,15 @@
 				A3F3DA29260CA8440057AF24 /* PassItem+KeePassKit.swift */,
 			);
 			path = Model;
+			sourceTree = "<group>";
+		};
+		A3F3DA32260DBEAA0057AF24 /* Service */ = {
+			isa = PBXGroup;
+			children = (
+				A3F3DA33260DBEB50057AF24 /* PasteboardManager.swift */,
+				A3F3DA35260DC1D10057AF24 /* PassDatabaseManager.swift */,
+			);
+			path = Service;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -180,6 +194,8 @@
 			files = (
 				A3F3DA28260CA5FC0057AF24 /* PassItem.swift in Sources */,
 				A3F3DA2A260CA8440057AF24 /* PassItem+KeePassKit.swift in Sources */,
+				A3F3DA34260DBEB60057AF24 /* PasteboardManager.swift in Sources */,
+				A3F3DA36260DC1D10057AF24 /* PassDatabaseManager.swift in Sources */,
 				A32C654D260C557300DC6653 /* ViewController.swift in Sources */,
 				A32C6549260C557300DC6653 /* AppDelegate.swift in Sources */,
 			);

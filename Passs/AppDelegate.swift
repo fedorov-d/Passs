@@ -10,16 +10,27 @@ import UIKit
 @main
 class AppDelegate: UIResponder, UIApplicationDelegate {
     var window: UIWindow?
+    let pasteboardManager = PasteboardManager()
     
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.
-        let navigationController = UINavigationController(rootViewController: ViewController())
+        let navigationController = UINavigationController(rootViewController: PasswordsViewController())
         window = UIWindow()
         window?.rootViewController = navigationController
         window?.makeKeyAndVisible()
         return true
     }
 
+    func applicationDidEnterBackground(_ application: UIApplication) {
+        var identifier: UIBackgroundTaskIdentifier? = nil
+        identifier = application.beginBackgroundTask {
+            self.pasteboardManager.dropPasswordIfNeeded {
+                if let id = identifier {
+                    application.endBackgroundTask(id)
+                }
+            }
+        }
+    }
 
 }
 
