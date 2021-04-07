@@ -65,7 +65,7 @@ class PasswordsViewController: UIViewController, UITableViewDataSource, UITableV
         let cell = tableView.dequeueReusableCell(withIdentifier: "cell.id")
         let item = databaseManager.passwordGroups[indexPath.section].items[indexPath.row]
         cell?.textLabel?.text = item.title
-        return cell!
+        return cell ?? UITableViewCell()
     }
     
     func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {

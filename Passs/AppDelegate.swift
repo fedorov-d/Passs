@@ -10,12 +10,19 @@ import UIKit
 @main
 class AppDelegate: UIResponder, UIApplicationDelegate {
     var window: UIWindow?
-    let pasteboardManager = PasteboardManager()
+    let pasteboardManager:PasteboardManager = PasteboardManagerImp()
+    let databasesProvider:DatabasesProvider = DatabasesProviderImp()
     
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.
-        let passwordsViewController = PasswordsViewController(databaseManager: PassDatabaseManager(databaseURL: URL(string: "")!, password: ""), pasteboardManager: pasteboardManager)
-        let navigationController = UINavigationController(rootViewController: passwordsViewController)
+        
+        if let options = launchOptions, let launchURL = options[UIApplication.LaunchOptionsKey.url] as? URL {
+            try? databasesProvider.addDatabase(from: launchURL)
+        }
+        
+        
+        let databaseListViewController = DatabaseListViewController(databasesProvider: databasesProvider)
+        let navigationController = UINavigationController(rootViewController: databaseListViewController)
         window = UIWindow()
         window?.rootViewController = navigationController
         window?.makeKeyAndVisible()
@@ -31,6 +38,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                 }
             }
         }
+    }
+    
+    func application(_ app: UIApplication, open url: URL, options: [UIApplication.OpenURLOptionsKey : Any] = [:]) -> Bool {
+        print("test")
+        return true
     }
 
 }

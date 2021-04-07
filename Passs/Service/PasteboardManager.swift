@@ -7,7 +7,12 @@
 
 import UIKit
 
-class PasteboardManager {
+protocol PasteboardManager {
+    func copy(password: String)
+    func dropPasswordIfNeeded(completion: @escaping () -> ())
+}
+
+class PasteboardManagerImp: PasteboardManager {
     private var shouldDropPassword = false
     
     func copy(password: String) {
