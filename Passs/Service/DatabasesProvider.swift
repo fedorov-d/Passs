@@ -18,22 +18,40 @@ protocol DatabasesProvider {
     var databases: [StoredDatabase] { get }
 }
 
+struct StoredDatabaseImp: StoredDatabase {
+    var url: URL
+    var name: String
+}
+
 class DatabasesProviderImp: DatabasesProvider {
-    func addDatabase(from url: URL) throws { 
-        if let documentsURL = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first {
-            try FileManager.default.copyItem(at: url, to: documentsURL)
+    
+    func addDatabase(from url: URL) throws {
+        let filename = url.lastPathComponent
+        let fURL = documentsURL.appendingPathComponent(filename)
+        try FileManager.default.copyItem(at: url, to: fURL)
+        databases.append(StoredDatabaseImp(url: fURL, name: filename))
+    }
+    
+    func deleteDatabase(_ database: StoredDatabase) {
+        if let _ = try? FileManager.default.removeItem(at: database.url),
+           let index = databases.firstIndex(where: { $0.url == database.url }) {
+            databases.remove(at: index)
         }
     }
     
-    func deleteDatabase(_: StoredDatabase) {
-        
-    }
+    lazy var databases: [StoredDatabase] = {
+        let fileManager = FileManager.default
+        if let fileURLs = try? fileManager.contentsOfDirectory(at: documentsURL, includingPropertiesForKeys: nil) {
+            return fileURLs
+                .filter { $0.isFileURL && supportedExtensions.contains($0.pathExtension) }
+                .map { url in
+                StoredDatabaseImp(url: url, name: url.lastPathComponent)
+            }
+        }
+        return []
+    }()
     
-    var databases: [StoredDatabase]
+    let supportedExtensions = ["kdb", "kdbx"]
     
-    init() {
-        databases = []
-    }
-    
-    
+    private let documentsURL = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first!
 }

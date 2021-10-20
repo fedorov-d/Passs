@@ -11,6 +11,7 @@ class DatabaseListViewController: UIViewController {
     private let databasesProvider: DatabasesProvider
     
     private let cellId = "database.cell.id"
+    private let completion: (URL, String) -> ()
     
     private lazy var tableView: UITableView = {
         let tableView = UITableView()
@@ -20,8 +21,9 @@ class DatabaseListViewController: UIViewController {
         return tableView
     }()
     
-    init(databasesProvider: DatabasesProvider) {
+    init(databasesProvider: DatabasesProvider, completion: @escaping (URL, String) -> ()) {
         self.databasesProvider = databasesProvider
+        self.completion = completion
         super.init(nibName: nil, bundle: nil)
     }
     
@@ -49,5 +51,15 @@ extension DatabaseListViewController: UITableViewDataSource, UITableViewDelegate
         let database = databasesProvider.databases[indexPath.row]
         cell?.textLabel?.text = database.name
         return cell ?? UITableViewCell()
+    }
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        tableView.deselectRow(at: indexPath, animated: true)
+        let database = databasesProvider.databases[indexPath.row]
+        let enterPasswordController = EnterPasswordViewController { [weak self] password in
+            self?.dismiss(animated: true)
+            self?.completion(database.url, password)
+        }
+        present(enterPasswordController, animated: true)
     }
 }

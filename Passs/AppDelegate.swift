@@ -14,15 +14,23 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     let databasesProvider:DatabasesProvider = DatabasesProviderImp()
     
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
-        // Override point for customization after application launch.
-        
         if let options = launchOptions, let launchURL = options[UIApplication.LaunchOptionsKey.url] as? URL {
-            try? databasesProvider.addDatabase(from: launchURL)
+            do {
+                try databasesProvider.addDatabase(from: launchURL)
+            } catch (let error) {
+                print(error)
+            }
         }
         
-        
-        let databaseListViewController = DatabaseListViewController(databasesProvider: databasesProvider)
-        let navigationController = UINavigationController(rootViewController: databaseListViewController)
+        let navigationController = UINavigationController()
+        let databaseListViewController = DatabaseListViewController(databasesProvider: databasesProvider) { [unowned self] databaseURL, password in
+            let passDatabaseManager = PassDatabaseManager(databaseURL: databaseURL,
+                                                          password: password)
+            let passwordsViewController = PasswordsViewController(databaseManager: passDatabaseManager,
+                                                                  pasteboardManager: self.pasteboardManager)
+            navigationController.pushViewController(passwordsViewController, animated: true)
+        }
+        navigationController.viewControllers = [databaseListViewController]
         window = UIWindow()
         window?.rootViewController = navigationController
         window?.makeKeyAndVisible()
@@ -41,7 +49,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
     
     func application(_ app: UIApplication, open url: URL, options: [UIApplication.OpenURLOptionsKey : Any] = [:]) -> Bool {
-        print("test")
+        do {
+            try databasesProvider.addDatabase(from: url)
+        } catch (let error) {
+            print(error)
+        }
         return true
     }
 

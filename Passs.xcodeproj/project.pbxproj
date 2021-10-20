@@ -11,6 +11,8 @@
 		A32C654D260C557300DC6653 /* PasswordsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A32C654C260C557300DC6653 /* PasswordsViewController.swift */; };
 		A32C6552260C557700DC6653 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A32C6551260C557700DC6653 /* Assets.xcassets */; };
 		A32C6555260C557700DC6653 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A32C6553260C557700DC6653 /* LaunchScreen.storyboard */; };
+		A3C9AB46261F685200170B55 /* EnterPasswordViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3C9AB45261F685200170B55 /* EnterPasswordViewController.swift */; };
+		A3C9AB482620680600170B55 /* CategorySelectorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3C9AB472620680600170B55 /* CategorySelectorView.swift */; };
 		A3F3DA28260CA5FC0057AF24 /* PassItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3F3DA27260CA5FC0057AF24 /* PassItem.swift */; };
 		A3F3DA2A260CA8440057AF24 /* PassItem+KeePassKit.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3F3DA29260CA8440057AF24 /* PassItem+KeePassKit.swift */; };
 		A3F3DA34260DBEB60057AF24 /* PasteboardManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3F3DA33260DBEB50057AF24 /* PasteboardManager.swift */; };
@@ -42,6 +44,8 @@
 		A32C6551260C557700DC6653 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		A32C6554260C557700DC6653 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		A32C6556260C557700DC6653 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		A3C9AB45261F685200170B55 /* EnterPasswordViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EnterPasswordViewController.swift; sourceTree = "<group>"; };
+		A3C9AB472620680600170B55 /* CategorySelectorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategorySelectorView.swift; sourceTree = "<group>"; };
 		A3F3DA27260CA5FC0057AF24 /* PassItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PassItem.swift; sourceTree = "<group>"; };
 		A3F3DA29260CA8440057AF24 /* PassItem+KeePassKit.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "PassItem+KeePassKit.swift"; sourceTree = "<group>"; };
 		A3F3DA33260DBEB50057AF24 /* PasteboardManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PasteboardManager.swift; sourceTree = "<group>"; };
@@ -134,8 +138,10 @@
 		A3F4959D261E241300E4AA7E /* Controller */ = {
 			isa = PBXGroup;
 			children = (
+				A3C9AB472620680600170B55 /* CategorySelectorView.swift */,
 				A32C654C260C557300DC6653 /* PasswordsViewController.swift */,
 				A3F4959E261E242700E4AA7E /* DatabaseListViewController.swift */,
+				A3C9AB45261F685200170B55 /* EnterPasswordViewController.swift */,
 			);
 			path = Controller;
 			sourceTree = "<group>";
@@ -255,11 +261,13 @@
 			buildActionMask = 2147483647;
 			files = (
 				A3F3DA28260CA5FC0057AF24 /* PassItem.swift in Sources */,
+				A3C9AB482620680600170B55 /* CategorySelectorView.swift in Sources */,
 				A3F3DA2A260CA8440057AF24 /* PassItem+KeePassKit.swift in Sources */,
 				A3F3DA34260DBEB60057AF24 /* PasteboardManager.swift in Sources */,
 				A3F3DA36260DC1D10057AF24 /* PassDatabaseManager.swift in Sources */,
 				A3F4959F261E242700E4AA7E /* DatabaseListViewController.swift in Sources */,
 				A32C654D260C557300DC6653 /* PasswordsViewController.swift in Sources */,
+				A3C9AB46261F685200170B55 /* EnterPasswordViewController.swift in Sources */,
 				A3F4959C261E22F700E4AA7E /* DatabasesProvider.swift in Sources */,
 				A32C6549260C557300DC6653 /* AppDelegate.swift in Sources */,
 			);
