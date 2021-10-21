@@ -12,21 +12,49 @@ protocol PasteboardManager {
     func dropPasswordIfNeeded(completion: @escaping () -> ())
 }
 
+protocol Pasteboard: AnyObject {
+    var value: String? { get set }
+}
+
+extension UIPasteboard: Pasteboard {
+    var value: String? {
+        get {
+            return string
+        }
+        set {
+            string = newValue
+        }
+    }
+}
+
 class PasteboardManagerImp: PasteboardManager {
-    private var shouldDropPassword = false
+
+    private let clearInterval: TimeInterval
+    private var pasteboard: Pasteboard
+
+    init(
+        clearInterval: TimeInterval = Constants.clearPasteboardTimeInterval,
+        pasteboard: Pasteboard = UIPasteboard.general
+    ) {
+        self.clearInterval = clearInterval
+        self.pasteboard = pasteboard
+    }
+
+    private var needsDropPassword = false
     
     func copy(password: String) {
-        self.shouldDropPassword = true
-        UIPasteboard.general.string = password
+        self.needsDropPassword = true
+        pasteboard.value = password
         dropPasswordIfNeeded { }
     }
     
     func dropPasswordIfNeeded(completion: @escaping () -> ()) {
-        if self.shouldDropPassword {
-            Timer.scheduledTimer(withTimeInterval: 20, repeats: false) { _ in
-                UIPasteboard.general.string = ""
+        if self.needsDropPassword {
+            let timer = Timer(timeInterval: 20, repeats: false) { [weak self] _ in
+                self?.pasteboard.value = nil
                 completion()
             }
+            RunLoop.main.add(timer, forMode: .common)
         } else {
             completion()
         }

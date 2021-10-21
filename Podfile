@@ -7,11 +7,11 @@ use_frameworks!
 # versions probably should be set explicitly
 target 'Passs' do
     pod 'SnapKit'
-    pod 'RealmSwift'
-    pod 'RxSwift'
-    pod 'RxCocoa'
-    pod 'RxRealm'
     pod 'KeePassKit', :git => 'https://github.com/fedorov-d/KeePassKit.git', :submodules => true
+end
+
+target 'PasssTests' do
+  pod 'KeePassKit', :git => 'https://github.com/fedorov-d/KeePassKit.git', :submodules => true
 end
 
 post_install do |installer|
