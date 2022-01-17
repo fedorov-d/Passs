@@ -8,7 +8,13 @@
 import Foundation
 import KeePassKit
 
-class PassDatabaseManager {
+protocol PassDatabaseManager {
+    var passwordGroups: [PassGroup] { get }
+    var databaseName: String? { get }
+    func load()
+}
+
+class PassDatabaseManagerImp: PassDatabaseManager {
     private(set) var passwordGroups = [PassGroup]()
     private(set) var databaseName: String?
     

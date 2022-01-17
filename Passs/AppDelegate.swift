@@ -10,10 +10,13 @@ import UIKit
 @main
 class AppDelegate: UIResponder, UIApplicationDelegate {
     var window: UIWindow?
-    let pasteboardManager:PasteboardManager = PasteboardManagerImp()
-    let databasesProvider:DatabasesProvider = DatabasesProviderImp()
+    let pasteboardManager: PasteboardManager = PasteboardManagerImp()
+    let databasesProvider: DatabasesProvider = DatabasesProviderImp()
     
-    func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
+    func application(
+        _ application: UIApplication,
+        didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?
+    ) -> Bool {
         if let options = launchOptions, let launchURL = options[UIApplication.LaunchOptionsKey.url] as? URL {
             do {
                 try databasesProvider.addDatabase(from: launchURL)
@@ -23,14 +26,26 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         }
         
         let navigationController = UINavigationController()
-        let databaseListViewController = DatabaseListViewController(databasesProvider: databasesProvider) { [unowned self] databaseURL, password in
-            let passDatabaseManager = PassDatabaseManager(databaseURL: databaseURL,
-                                                          password: password)
-            let passwordsViewController = PasswordsViewController(databaseManager: passDatabaseManager,
-                                                                  pasteboardManager: self.pasteboardManager)
-            navigationController.pushViewController(passwordsViewController, animated: true)
+        let databaseListViewController = DatabaseListViewController(
+            databasesProvider: databasesProvider
+        ) { [unowned self] databaseURL, password in
+            let passDatabaseManager = PassDatabaseManagerImp(
+                databaseURL: databaseURL,
+                password: password
+            )
+            let groupsViewController = GroupsViewController(
+                databaseManager: passDatabaseManager
+            ) { [unowned self] group in
+                let passwordsViewController = PasswordsViewController(
+                    passwordGroup: group,
+                    pasteboardManager: self.pasteboardManager
+                )
+                navigationController.pushViewController(passwordsViewController, animated: true)
+            }
+            navigationController.pushViewController(groupsViewController, animated: true)
         }
         navigationController.viewControllers = [databaseListViewController]
+        navigationController.navigationBar.prefersLargeTitles = false
         window = UIWindow()
         window?.rootViewController = navigationController
         window?.makeKeyAndVisible()
@@ -38,9 +53,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
 
     func applicationDidEnterBackground(_ application: UIApplication) {
+        guard pasteboardManager.needsDropPassword else { return }
         var identifier: UIBackgroundTaskIdentifier? = nil
         identifier = application.beginBackgroundTask {
-            self.pasteboardManager.dropPasswordIfNeeded {
+            self.pasteboardManager.dropPassword {
                 if let id = identifier {
                     application.endBackgroundTask(id)
                 }
@@ -56,6 +72,5 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         }
         return true
     }
-
 }
 

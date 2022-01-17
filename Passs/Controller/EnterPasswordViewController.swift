@@ -9,11 +9,13 @@ import UIKit
 import SnapKit
 
 class EnterPasswordViewController: UIViewController, UITextFieldDelegate {
-    
+
+    @available(*, unavailable)
     override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: Bundle?) {
         fatalError("init(nibName:bundle:) has not been implemented")
     }
-    
+
+    @available(*, unavailable)
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
@@ -37,6 +39,8 @@ class EnterPasswordViewController: UIViewController, UITextFieldDelegate {
         textField.delegate = self
         textField.tintColor = .black
         textField.textColor = .black
+        textField.clearButtonMode = .whileEditing
+        textField.addTarget(self, action: #selector(textFieldTextDidChange(_:)), for: .editingChanged)
         return textField
     }()
     
@@ -49,6 +53,16 @@ class EnterPasswordViewController: UIViewController, UITextFieldDelegate {
         view.layer.shadowOffset = CGSize(width: 3, height: -5)
         view.layer.shadowRadius = 5
         return view
+    }()
+
+    private lazy var nextButton: UIButton = {
+        let button = UIButton()
+        let baseImage = UIImage(named: "arrow.right.circle.fill")
+        button.setBackgroundImage(baseImage?.tinted(with: .black), for: .normal)
+        button.setBackgroundImage(baseImage?.tinted(with: .lightGray), for: .disabled)
+        button.addTarget(self, action: #selector(nextButtonTapped), for: .touchUpInside)
+        button.isEnabled = false
+        return button
     }()
     
     // MARK: ViewController lifecycle
@@ -68,10 +82,10 @@ class EnterPasswordViewController: UIViewController, UITextFieldDelegate {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        textField.becomeFirstResponder()
     }
-    
+
     override func viewDidAppear(_ animated: Bool) {
+        textField.becomeFirstResponder()
         super.viewDidAppear(animated)
     }
     
@@ -87,6 +101,7 @@ class EnterPasswordViewController: UIViewController, UITextFieldDelegate {
     private func addSubviews() {
         view.addSubview(backgroundView)
         backgroundView.addSubview(textField)
+        backgroundView.addSubview(nextButton)
     }
     
     private func setupConstraints() {
@@ -96,9 +111,16 @@ class EnterPasswordViewController: UIViewController, UITextFieldDelegate {
         }
         
         textField.snp.makeConstraints { make in
-            make.leading.trailing.equalToSuperview().inset(20)
+            make.leading.equalToSuperview().inset(20)
+            make.trailing.equalTo(nextButton.snp.leading).offset(-20)
             make.top.equalToSuperview().offset(20)
-            make.height.equalTo(44)
+            make.height.equalTo(40)
+        }
+
+        nextButton.snp.makeConstraints { make in
+            make.trailing.equalToSuperview().offset(-20)
+            make.height.centerY.equalTo(textField)
+            make.width.equalTo(textField.snp.height)
         }
     }
     
@@ -115,4 +137,19 @@ class EnterPasswordViewController: UIViewController, UITextFieldDelegate {
             }
         }
     }
+
+}
+
+extension EnterPasswordViewController {
+
+    @objc
+    private func nextButtonTapped() {
+        completion(textField.text ?? "")
+    }
+
+    @objc
+    private func textFieldTextDidChange(_ sender: UITextField) {
+        nextButton.isEnabled = sender.text?.count ?? 0 > 0
+    }
+
 }

@@ -9,7 +9,8 @@ import UIKit
 
 protocol PasteboardManager {
     func copy(password: String)
-    func dropPasswordIfNeeded(completion: @escaping () -> ())
+    var needsDropPassword: Bool { get }
+    func dropPassword(completion: @escaping () -> ())
 }
 
 protocol Pasteboard: AnyObject {
@@ -40,24 +41,25 @@ class PasteboardManagerImp: PasteboardManager {
         self.pasteboard = pasteboard
     }
 
-    private var needsDropPassword = false
+    private(set) var needsDropPassword = false
     
     func copy(password: String) {
         self.needsDropPassword = true
         pasteboard.value = password
-        dropPasswordIfNeeded { }
+        dropPassword()
     }
     
-    func dropPasswordIfNeeded(completion: @escaping () -> ()) {
-        if self.needsDropPassword {
-            let timer = Timer(timeInterval: 20, repeats: false) { [weak self] _ in
-                self?.pasteboard.value = nil
-                completion()
-            }
-            RunLoop.main.add(timer, forMode: .common)
-        } else {
+    func dropPassword(completion: @escaping (() -> Void) = {}) {
+        guard self.needsDropPassword else {
             completion()
+            return
         }
+        let timer = Timer(timeInterval: 20, repeats: false) { [weak self] _ in
+            completion()
+            guard let self = self else { return }
+            self.pasteboard.value = nil
+        }
+        RunLoop.main.add(timer, forMode: .common)
     }
     
 }

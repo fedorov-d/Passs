@@ -1,44 +1,41 @@
 //
-//  ViewController.swift
+//  GroupsViewController.swift
 //  Passs
 //
-//  Created by Dmitry Fedorov on 25.03.2021.
+//  Created by Dmitry Fedorov on 15.01.2022.
 //
 
 import UIKit
-import KeePassKit
-import SnapKit
 
-class PasswordsViewController: UIViewController, UITableViewDelegate {
-    
-    private let passwordGroup: PassGroup
-    private let pasteboardManager: PasteboardManager
-    
-    init(passwordGroup: PassGroup, pasteboardManager: PasteboardManager) {
-        self.passwordGroup = passwordGroup
-        self.pasteboardManager = pasteboardManager
+class GroupsViewController: UIViewController {
+
+    private let databaseManager: PassDatabaseManager
+    private let groupSelected: (PassGroup) -> Void
+
+    init(databaseManager: PassDatabaseManager, groupSelected: @escaping (PassGroup) -> Void) {
+        self.databaseManager = databaseManager
+        self.groupSelected = groupSelected
         super.init(nibName: nil, bundle: nil)
     }
-    
+
+    @available(*, unavailable)
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-    
+
     private lazy var tableView: UITableView = {
-        let tableView = UITableView()
+        let tableView = UITableView(frame: .zero, style: .grouped)
         tableView.rowHeight = 48
         tableView.dataSource = self
         tableView.delegate = self
         tableView.register(UITableViewCell.self, forCellReuseIdentifier: "cell.id")
         return tableView
     }()
-    
-    // MARK: - UIViewController lifecycle
-    
+
     override func loadView() {
         view = UIView()
         view.addSubview(tableView)
-        
+
         tableView.snp.makeConstraints { make in
             make.edges.equalToSuperview()
         }
@@ -46,34 +43,35 @@ class PasswordsViewController: UIViewController, UITableViewDelegate {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.navigationItem.title = passwordGroup.title
+        self.databaseManager.load()
+        self.navigationItem.largeTitleDisplayMode = .never
+        self.navigationItem.title = self.databaseManager.databaseName
+
         tableView.reloadData()
     }
-
 }
 
-extension PasswordsViewController: UITableViewDataSource {
+extension GroupsViewController: UITableViewDataSource {
 
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        passwordGroup.items.count
+        return databaseManager.passwordGroups.count
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "cell.id", for: indexPath)
-        let item = passwordGroup.items[indexPath.row]
-        cell.textLabel?.text = item.title
+        let group = databaseManager.passwordGroups[indexPath.row]
+        cell.textLabel?.text = group.title
+        cell.accessoryType = .disclosureIndicator
         return cell
     }
 
 }
 
-extension PasswordsViewController: UITabBarDelegate {
+extension GroupsViewController: UITableViewDelegate {
 
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        tableView.deselectRow(at: indexPath, animated: true)
-        let item = passwordGroup.items[indexPath.row]
-        guard let password = item.password else { return }
-        pasteboardManager.copy(password: password)
+        let group = databaseManager.passwordGroups[indexPath.row]
+        groupSelected(group)
     }
 
 }
