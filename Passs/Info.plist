@@ -121,5 +121,7 @@
 	<true/>
 	<key>UIFileSharingEnabled</key>
 	<true/>
+	<key>NSFaceIDUsageDescription</key>
+	<string>Used to access saved passwords</string>
 </dict>
 </plist>
