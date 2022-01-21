@@ -125,7 +125,11 @@ class EnterPasswordViewController: UIViewController, UITextFieldDelegate {
     }
     
     private func setupKeyboardObserver() {
-        NotificationCenter.default.addObserver(forName: UIResponder.keyboardWillShowNotification, object: nil, queue: .main) { [weak self] note in
+        NotificationCenter.default.addObserver(
+            forName: UIResponder.keyboardWillShowNotification,
+            object: nil,
+            queue: .main
+        ) { [weak self] note in
             guard let keyboardValue = note.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue else { return }
             let keyboardScreenEndFrame = keyboardValue.cgRectValue
             

@@ -113,10 +113,11 @@ extension DatabaseListViewController: UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: cellId)
+        let cell = tableView.dequeueReusableCell(withIdentifier: cellId, for: indexPath)
         let database = databasesProvider.databases[indexPath.row]
-        cell?.textLabel?.text = database.name
-        return cell ?? UITableViewCell()
+        cell.textLabel?.text = database.name
+        cell.accessoryType = .disclosureIndicator
+        return cell
     }
 
 }
@@ -130,7 +131,6 @@ extension DatabaseListViewController: UITableViewDelegate {
             self?.dismiss(animated: true)
             self?.completion(database.url, password)
         }
-//        let navigationController = UINavigationController(rootViewController: enterPasswordController)
         present(enterPasswordController, animated: true)
     }
 
