@@ -127,7 +127,7 @@ extension DatabaseListViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
         let database = databasesProvider.databases[indexPath.row]
-        let enterPasswordController = EnterPasswordViewController { [weak self] password in
+        let enterPasswordController = EnterPasswordViewController { [weak self] password, useBiometry in
             self?.dismiss(animated: true)
             self?.completion(database.url, password)
         }

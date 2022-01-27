@@ -57,7 +57,7 @@ class PasteboardManagerImp: PasteboardManager {
         let timer = Timer(timeInterval: 20, repeats: false) { [weak self] _ in
             completion()
             guard let self = self else { return }
-            self.pasteboard.value = nil
+            self.pasteboard.value = ""
         }
         RunLoop.main.add(timer, forMode: .common)
     }

@@ -48,7 +48,7 @@ class KeychainManagerImp: KeychainManager {
         var itemCopy: AnyObject?
         let status = SecItemCopyMatching(query as CFDictionary, &itemCopy)
         guard status == errSecSuccess, let data = itemCopy as? Data else { return nil }
-        return String(data: data, encoding: .utf8)
+        return  String(data: data, encoding: .utf8)
     }
 
 }

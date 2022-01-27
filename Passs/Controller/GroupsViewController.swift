@@ -44,7 +44,7 @@ class GroupsViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         self.databaseManager.load()
-        self.navigationItem.largeTitleDisplayMode = .never
+        self.navigationItem.largeTitleDisplayMode = .always
         self.navigationItem.title = self.databaseManager.databaseName
 
         tableView.reloadData()
