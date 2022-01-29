@@ -32,7 +32,9 @@ class PassDatabaseManagerImp: PassDatabaseManager {
         let tree = try? KPKTree(contentsOf: databaseURL, key: compositeKey)
         databaseName = tree?.root?.title
         if let groups = tree?.root?.groups {
-            self.passwordGroups = groups
+            self.passwordGroups = groups.sorted(by: {
+                $0.title?.localizedCaseInsensitiveCompare($1.title ?? "") == .orderedAscending
+            })
         }
         self.password = nil
     }

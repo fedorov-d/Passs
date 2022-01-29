@@ -11,12 +11,13 @@ import UniformTypeIdentifiers
 
 class DatabaseListViewController: UIViewController {
     private let databasesProvider: DatabasesProvider
+    private let keychainManager: KeychainManager
     
     private let cellId = "database.cell.id"
     private let completion: (URL, String) -> ()
     
     private lazy var tableView: UITableView = {
-        let tableView = UITableView()
+        let tableView = UITableView(frame: .zero, style: .grouped)
         tableView.dataSource = self
         tableView.delegate = self
         tableView.register(UITableViewCell.self, forCellReuseIdentifier: cellId)
@@ -32,8 +33,13 @@ class DatabaseListViewController: UIViewController {
         return button
     }()
     
-    init(databasesProvider: DatabasesProvider, completion: @escaping (URL, String) -> ()) {
+    init(
+        databasesProvider: DatabasesProvider,
+        keychainManager: KeychainManager,
+        completion: @escaping (URL, String) -> ()
+    ) {
         self.databasesProvider = databasesProvider
+        self.keychainManager = keychainManager
         self.completion = completion
         super.init(nibName: nil, bundle: nil)
     }
@@ -117,6 +123,7 @@ extension DatabaseListViewController: UITableViewDataSource {
         let database = databasesProvider.databases[indexPath.row]
         cell.textLabel?.text = database.name
         cell.accessoryType = .disclosureIndicator
+        cell.imageView?.image = UIImage(systemName: "square.stack.3d.up")?.tinted(with: .white)
         return cell
     }
 
@@ -127,9 +134,17 @@ extension DatabaseListViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
         let database = databasesProvider.databases[indexPath.row]
-        let enterPasswordController = EnterPasswordViewController { [weak self] password, useBiometry in
-            self?.dismiss(animated: true)
-            self?.completion(database.url, password)
+        if let password = keychainManager.savedPassword(for: database.url.lastPathComponent) {
+            self.dismiss(animated: true)
+            self.completion(database.url, password)
+            return
+        }
+        let enterPasswordController = EnterPasswordViewController { [unowned self] password, useBiometry in
+            if useBiometry {
+                try? keychainManager.savePassword(password, for: database.url.lastPathComponent)
+            }
+            self.dismiss(animated: true)
+            self.completion(database.url, password)
         }
         present(enterPasswordController, animated: true)
     }

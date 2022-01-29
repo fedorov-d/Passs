@@ -62,6 +62,7 @@ extension GroupsViewController: UITableViewDataSource {
         let group = databaseManager.passwordGroups[indexPath.row]
         cell.textLabel?.text = group.title
         cell.accessoryType = .disclosureIndicator
+        cell.imageView?.image = UIImage(systemName: "folder")?.tinted(with: .white)
         return cell
     }
 
@@ -70,6 +71,7 @@ extension GroupsViewController: UITableViewDataSource {
 extension GroupsViewController: UITableViewDelegate {
 
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        tableView.deselectRow(at: indexPath, animated: true)
         let group = databaseManager.passwordGroups[indexPath.row]
         groupSelected(group)
     }

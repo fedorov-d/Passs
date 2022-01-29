@@ -59,9 +59,6 @@ class EnterPasswordViewController: UIViewController, UITextFieldDelegate {
     private lazy var backgroundView: UIView = {
         let view = UIView()
         view.backgroundColor = .white
-//        view.layer.maskedCorners = [.layerMinXMinYCorner, .layerMaxXMinYCorner]
-//        view.layer.cornerRadius = 14.0
-//        view.layer.masksToBounds = true
         view.layer.shadowColor = UIColor.black.cgColor
         view.layer.shadowOffset = CGSize(width: 3, height: -5)
         view.layer.shadowRadius = 5
@@ -70,8 +67,9 @@ class EnterPasswordViewController: UIViewController, UITextFieldDelegate {
 
     private lazy var nextButton: UIButton = {
         let button = UIButton()
-        let baseImage = UIImage(named: "arrow.right.circle.fill")
-        button.setImage(baseImage?.tinted(with: .black), for: .normal)
+        let configuration = UIImage.SymbolConfiguration(pointSize: 22, weight: .bold, scale: .large)
+        let baseImage = UIImage(systemName: "arrow.right.circle.fill", withConfiguration: configuration)
+        button.setImage(baseImage?.tinted(with: .systemGreen), for: .normal)
         button.setImage(baseImage?.tinted(with: .lightGray), for: .disabled)
         button.addTarget(self, action: #selector(nextButtonTapped), for: .touchUpInside)
         button.isEnabled = false
@@ -155,14 +153,14 @@ class EnterPasswordViewController: UIViewController, UITextFieldDelegate {
         textField.snp.makeConstraints { make in
             make.leading.equalToSuperview().inset(20)
             make.trailing.equalTo(nextButton.snp.leading).offset(-20)
+            make.height.equalTo(nextButton)
             make.top.equalToSuperview()
-            make.height.equalTo(44)
         }
 
         nextButton.snp.makeConstraints { make in
             make.trailing.equalToSuperview().offset(-20)
             make.centerY.equalTo(textField)
-            make.height.width.equalTo(textField.snp.height)
+            make.height.width.equalTo(48)
         }
 
         separatorView.snp.makeConstraints { make in
@@ -173,13 +171,13 @@ class EnterPasswordViewController: UIViewController, UITextFieldDelegate {
 
         unlockWithTouchIdLabel.snp.makeConstraints { make in
             make.leading.equalTo(textField.snp.leading)
-            make.centerY.equalTo(separatorView.snp.bottom).offset(22)
+            make.centerY.equalTo(separatorView.snp.bottom).offset(24)
         }
 
         unlockWithTouchIdSwitch.snp.makeConstraints { make in
             make.trailing.equalTo(nextButton.snp.trailing)
             make.centerY.equalTo(unlockWithTouchIdLabel.snp.centerY)
-            make.centerY.equalTo(backgroundView.snp.bottom).inset(22)
+            make.centerY.equalTo(backgroundView.snp.bottom).inset(24)
         }
     }
     

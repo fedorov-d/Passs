@@ -25,7 +25,7 @@ class PasswordsViewController: UIViewController, UITableViewDelegate {
     }
     
     private lazy var tableView: UITableView = {
-        let tableView = UITableView()
+        let tableView = UITableView(frame: .zero, style: .grouped)
         tableView.rowHeight = 48
         tableView.dataSource = self
         tableView.delegate = self
@@ -62,6 +62,7 @@ extension PasswordsViewController: UITableViewDataSource {
         let cell = tableView.dequeueReusableCell(withIdentifier: "cell.id", for: indexPath)
         let item = passwordGroup.items[indexPath.row]
         cell.textLabel?.text = item.title
+        cell.imageView?.image = UIImage(systemName: "square.fill.on.square.fill")?.tinted(with: .white)
         return cell
     }
 

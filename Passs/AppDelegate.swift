@@ -10,8 +10,10 @@ import UIKit
 @main
 class AppDelegate: UIResponder, UIApplicationDelegate {
     var window: UIWindow?
+    
     let pasteboardManager: PasteboardManager = PasteboardManagerImp()
     let databasesProvider: DatabasesProvider = DatabasesProviderImp()
+    let keychainManager: KeychainManager = KeychainManagerImp()
     
     func application(
         _ application: UIApplication,
@@ -27,7 +29,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         let navigationController = UINavigationController()
         let databaseListViewController = DatabaseListViewController(
-            databasesProvider: databasesProvider
+            databasesProvider: databasesProvider,
+            keychainManager: keychainManager
         ) { [unowned self] databaseURL, password in
             let passDatabaseManager = PassDatabaseManagerImp(
                 databaseURL: databaseURL,
@@ -45,7 +48,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             navigationController.pushViewController(groupsViewController, animated: true)
         }
         navigationController.viewControllers = [databaseListViewController]
-        navigationController.navigationBar.prefersLargeTitles = false
+        navigationController.navigationBar.prefersLargeTitles = true
         window = UIWindow()
         window?.rootViewController = navigationController
         window?.makeKeyAndVisible()
