@@ -15,12 +15,18 @@ class DatabaseListViewController: UIViewController {
     
     private let cellId = "database.cell.id"
     private let completion: (URL, String) -> ()
+    private lazy var dateFormatter: DateFormatter = {
+        let formatter = DateFormatter()
+        formatter.dateStyle = .medium
+        formatter.timeStyle = .short
+        return formatter
+    }()
     
     private lazy var tableView: UITableView = {
         let tableView = UITableView(frame: .zero, style: .grouped)
         tableView.dataSource = self
         tableView.delegate = self
-        tableView.register(UITableViewCell.self, forCellReuseIdentifier: cellId)
+        tableView.register(SubtitleTableViewCell.self, forCellReuseIdentifier: cellId)
         return tableView
     }()
 
@@ -83,7 +89,7 @@ extension DatabaseListViewController {
             )
             documentPickerController = UIDocumentPickerViewController(forOpeningContentTypes: types)
         } else {
-            documentPickerController = UIDocumentPickerViewController(documentTypes: ["com.df.passs.kdbx", "com.df.passs.kdb"], in: .import)
+            documentPickerController = UIDocumentPickerViewController(documentTypes: ["com.df.passs.kdbx", "com.df.passs.kdb"], in: .open)
         }
         documentPickerController.delegate = self
         self.present(documentPickerController, animated: true, completion: nil)
@@ -122,8 +128,14 @@ extension DatabaseListViewController: UITableViewDataSource {
         let cell = tableView.dequeueReusableCell(withIdentifier: cellId, for: indexPath)
         let database = databasesProvider.databases[indexPath.row]
         cell.textLabel?.text = database.name
+        if let modificationDate = database.modificationDate {
+            cell.detailTextLabel?.text = "Last modified on " + dateFormatter.string(from: modificationDate)
+        } else {
+            cell.detailTextLabel?.text = ""
+        }
+        cell.detailTextLabel?.textColor = .secondaryLabel
         cell.accessoryType = .disclosureIndicator
-        cell.imageView?.image = UIImage(systemName: "square.stack.3d.up")?.tinted(with: .white)
+        cell.imageView?.image = UIImage(systemName: "square.stack.3d.up")?.tinted(with: .systemBlue)
         return cell
     }
 
@@ -134,19 +146,24 @@ extension DatabaseListViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
         let database = databasesProvider.databases[indexPath.row]
-        if let password = keychainManager.savedPassword(for: database.url.lastPathComponent) {
-            self.dismiss(animated: true)
-            self.completion(database.url, password)
-            return
-        }
-        let enterPasswordController = EnterPasswordViewController { [unowned self] password, useBiometry in
-            if useBiometry {
-                try? keychainManager.savePassword(password, for: database.url.lastPathComponent)
+        do {
+            if let password = try keychainManager.savedPassword(for: database.url.lastPathComponent) {
+                self.dismiss(animated: true)
+                self.completion(database.url, password)
+                return
             }
-            self.dismiss(animated: true)
-            self.completion(database.url, password)
+        } catch (let error) {
+            guard let error = error as? KeychainError,
+                  error != KeychainError.userCancelled else { return }
+            let enterPasswordController = EnterPasswordViewController { [unowned self] password, useBiometry in
+                if useBiometry {
+                    try? keychainManager.savePassword(password, for: database.url.lastPathComponent)
+                }
+                self.dismiss(animated: true)
+                self.completion(database.url, password)
+            }
+            present(enterPasswordController, animated: true)
         }
-        present(enterPasswordController, animated: true)
     }
 
 }

@@ -8,7 +8,7 @@
 import UIKit
 
 protocol PasteboardManager {
-    func copy(password: String)
+    func copy(_: String)
     var needsDropPassword: Bool { get }
     func dropPassword(completion: @escaping () -> ())
 }
@@ -32,6 +32,9 @@ class PasteboardManagerImp: PasteboardManager {
 
     private let clearInterval: TimeInterval
     private var pasteboard: Pasteboard
+    private var timer: Timer?
+
+    private let dropPasswordInterval: TimeInterval = 20
 
     init(
         clearInterval: TimeInterval = Constants.clearPasteboardTimeInterval,
@@ -43,9 +46,9 @@ class PasteboardManagerImp: PasteboardManager {
 
     private(set) var needsDropPassword = false
     
-    func copy(password: String) {
+    func copy(_ value: String) {
         self.needsDropPassword = true
-        pasteboard.value = password
+        pasteboard.value = value
         dropPassword()
     }
     
@@ -54,12 +57,15 @@ class PasteboardManagerImp: PasteboardManager {
             completion()
             return
         }
-        let timer = Timer(timeInterval: 20, repeats: false) { [weak self] _ in
+        timer?.invalidate()
+        timer = Timer(timeInterval: dropPasswordInterval, repeats: false) { [weak self] _ in
             completion()
             guard let self = self else { return }
             self.pasteboard.value = ""
         }
-        RunLoop.main.add(timer, forMode: .common)
+        if let timer = timer {
+            RunLoop.main.add(timer, forMode: .common)
+        }
     }
     
 }

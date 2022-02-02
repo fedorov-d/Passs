@@ -10,11 +10,12 @@ import Security
 
 enum KeychainError: Error {
     case cantSavePassword
+    case userCancelled
 }
 
 protocol KeychainManager: AnyObject {
     func savePassword(_: String, for database: String) throws
-    func savedPassword(for database: String) -> String?
+    func savedPassword(for database: String) throws -> String?
 }
 
 class KeychainManagerImp: KeychainManager {
@@ -47,7 +48,7 @@ class KeychainManagerImp: KeychainManager {
         userDefaults.bool(forKey: database) == true
     }
 
-    func savedPassword(for database: String) -> String? {
+    func savedPassword(for database: String) throws -> String? {
         guard hasSavedPassword(for: database) else { return nil }
 
         let query: [String: Any] = [kSecClass as String: kSecClassInternetPassword,
@@ -58,9 +59,15 @@ class KeychainManagerImp: KeychainManager {
                                     kSecReturnData as String: true]
         var itemCopy: AnyObject?
         let status = SecItemCopyMatching(query as CFDictionary, &itemCopy)
-        guard status == errSecSuccess,
-              let data = itemCopy as? Data else { return nil }
-        return String(data: data, encoding: .utf8)
+        switch status {
+        case errSecUserCanceled:
+            throw KeychainError.userCancelled
+        case errSecSuccess:
+            guard let data = itemCopy as? Data else { return nil }
+            return String(data: data, encoding: .utf8)
+        default:
+            return nil
+        }
     }
 
 }

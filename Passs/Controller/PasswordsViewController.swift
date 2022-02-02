@@ -9,7 +9,7 @@ import UIKit
 import KeePassKit
 import SnapKit
 
-class PasswordsViewController: UIViewController, UITableViewDelegate {
+class PasswordsViewController: UIViewController {
     
     private let passwordGroup: PassGroup
     private let pasteboardManager: PasteboardManager
@@ -26,7 +26,7 @@ class PasswordsViewController: UIViewController, UITableViewDelegate {
     
     private lazy var tableView: UITableView = {
         let tableView = UITableView(frame: .zero, style: .grouped)
-        tableView.rowHeight = 48
+        tableView.rowHeight = 56
         tableView.dataSource = self
         tableView.delegate = self
         tableView.register(UITableViewCell.self, forCellReuseIdentifier: "cell.id")
@@ -62,10 +62,42 @@ extension PasswordsViewController: UITableViewDataSource {
         let cell = tableView.dequeueReusableCell(withIdentifier: "cell.id", for: indexPath)
         let item = passwordGroup.items[indexPath.row]
         cell.textLabel?.text = item.title
-        cell.imageView?.image = UIImage(systemName: "square.fill.on.square.fill")?.tinted(with: .white)
+        cell.imageView?.image = UIImage(systemName: "square.on.square")?.tinted(with: .systemBlue)
         return cell
     }
 
+}
+
+extension PasswordsViewController: UITableViewDelegate {
+
+    func tableView(
+        _ tableView: UITableView,
+        leadingSwipeActionsConfigurationForRowAt indexPath: IndexPath
+    ) -> UISwipeActionsConfiguration? {
+        let action = UIContextualAction(style: .normal, title: "Copy username") { [unowned self] action, view, closure in
+            let item = self.passwordGroup.items[indexPath.row]
+            guard let username = item.username else { return }
+            self.pasteboardManager.copy(username)
+            closure(true)
+        }
+        action.backgroundColor = .systemBlue
+        return UISwipeActionsConfiguration(actions: [action])
+    }
+
+    func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
+        let action = UIContextualAction(style: .normal, title: "Copy password") { [unowned self] action, view, closure in
+            let item = self.passwordGroup.items[indexPath.row]
+            guard let password = item.password else { return }
+            self.pasteboardManager.copy(password)
+            closure(true)
+        }
+        action.backgroundColor = .systemBlue
+        return UISwipeActionsConfiguration(actions: [action])
+    }
+
+    func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
+        return true
+    }
 }
 
 extension PasswordsViewController: UITabBarDelegate {
@@ -74,7 +106,7 @@ extension PasswordsViewController: UITabBarDelegate {
         tableView.deselectRow(at: indexPath, animated: true)
         let item = passwordGroup.items[indexPath.row]
         guard let password = item.password else { return }
-        pasteboardManager.copy(password: password)
+        pasteboardManager.copy(password)
     }
 
 }

@@ -44,7 +44,7 @@ class GroupsViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         self.databaseManager.load()
-        self.navigationItem.largeTitleDisplayMode = .always
+        self.navigationItem.largeTitleDisplayMode = .never
         self.navigationItem.title = self.databaseManager.databaseName
 
         tableView.reloadData()
@@ -62,7 +62,7 @@ extension GroupsViewController: UITableViewDataSource {
         let group = databaseManager.passwordGroups[indexPath.row]
         cell.textLabel?.text = group.title
         cell.accessoryType = .disclosureIndicator
-        cell.imageView?.image = UIImage(systemName: "folder")?.tinted(with: .white)
+        cell.imageView?.image = UIImage(systemName: "folder")?.tinted(with: .systemBlue)
         return cell
     }
 

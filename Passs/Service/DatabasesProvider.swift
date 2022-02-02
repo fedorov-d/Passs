@@ -10,6 +10,7 @@ import Foundation
 protocol StoredDatabase {
     var url: URL { get }
     var name: String { get }
+    var modificationDate: Date? { get }
 }
 
 protocol DatabasesProvider {
@@ -19,8 +20,9 @@ protocol DatabasesProvider {
 }
 
 struct StoredDatabaseImp: StoredDatabase {
-    var url: URL
-    var name: String
+    let url: URL
+    let name: String
+    let modificationDate: Date?
 }
 
 class DatabasesProviderImp: DatabasesProvider {
@@ -28,8 +30,11 @@ class DatabasesProviderImp: DatabasesProvider {
     func addDatabase(from url: URL) throws {
         let filename = url.lastPathComponent
         let fURL = documentsURL.appendingPathComponent(filename)
-        try FileManager.default.copyItem(at: url, to: fURL)
-        databases.append(StoredDatabaseImp(url: fURL, name: filename))
+        let fileManager = FileManager.default
+        try fileManager.copyItem(at: url, to: fURL)
+        let attributes = try? fileManager.attributesOfItem(atPath: fURL.relativePath)
+        let date = attributes?[.modificationDate] as? Date
+        databases.append(StoredDatabaseImp(url: fURL, name: filename, modificationDate: date))
     }
     
     func deleteDatabase(_ database: StoredDatabase) {
@@ -45,7 +50,9 @@ class DatabasesProviderImp: DatabasesProvider {
             return fileURLs
                 .filter { $0.isFileURL && supportedExtensions.contains($0.pathExtension) }
                 .map { url in
-                StoredDatabaseImp(url: url, name: url.lastPathComponent)
+                    let attributes = try? fileManager.attributesOfItem(atPath: url.relativePath)
+                    let modificationDate = attributes?[.modificationDate] as? Date
+                    return StoredDatabaseImp(url: url, name: url.lastPathComponent, modificationDate: modificationDate)
             }
         }
         return []

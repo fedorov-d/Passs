@@ -230,14 +230,6 @@ class EnterPasswordViewController: UIViewController, UITextFieldDelegate {
             }
             animator.startAnimation()
         }
-
-//        NotificationCenter.default.addObserver(
-//            forName: UIResponder.keyboardDidHideNotification,
-//            object: nil,
-//            queue: .main
-//        ) { [weak self] _ in
-//            self?.dismiss(animated: true, completion: nil)
-//        }
     }
 
 }
@@ -258,7 +250,6 @@ extension EnterPasswordViewController {
     @objc
     private func dismissViewController() {
         view.endEditing(true)
-//        dismiss(animated: true, completion: nil)
     }
 
 }
