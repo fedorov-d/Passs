@@ -13,7 +13,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     let pasteboardManager: PasteboardManager = PasteboardManagerImp()
     let databasesProvider: DatabasesProvider = DatabasesProviderImp()
     let keychainManager: KeychainManager = KeychainManagerImp()
-    let recentPasswordsManager: RecentPasswordsManager = RecentPasswordsManagerImp()
     
     func application(
         _ application: UIApplication,
@@ -23,7 +22,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             do {
                 try databasesProvider.addDatabase(from: launchURL)
             } catch (let error) {
-                print(error)
+                Swift.debugPrint(error)
             }
         }
         
@@ -36,21 +35,22 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                 databaseURL: databaseURL,
                 password: password
             )
+            let recentPasswordsManager = RecentPasswordsManagerImp(databaseURL: databaseURL)
             let groupsViewController = GroupsViewController(
                 databaseManager: passDatabaseManager,
                 recentPasswordsManager: recentPasswordsManager,
                 searchResultsControllerProvider: {
                     PasswordsViewController(
                         pasteboardManager: self.pasteboardManager,
-                        recentPasswordsManager: self.recentPasswordsManager
+                        recentPasswordsManager: recentPasswordsManager
                     )
                 },
                 groupSelected: { [unowned self] group in
                     let passwordsViewController = PasswordsViewController(
                         title: group.title,
-                        items: group.items,
+                        items: group.items.sortedByName(),
                         pasteboardManager: self.pasteboardManager,
-                        recentPasswordsManager: self.recentPasswordsManager
+                        recentPasswordsManager: recentPasswordsManager
                     )
                     navigationController.pushViewController(passwordsViewController, animated: true)
                 })
@@ -90,7 +90,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         do {
             try databasesProvider.addDatabase(from: url)
         } catch (let error) {
-            print(error)
+            Swift.debugPrint(error)
         }
         return true
     }

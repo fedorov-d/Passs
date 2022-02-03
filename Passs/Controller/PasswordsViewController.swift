@@ -16,18 +16,12 @@ protocol PasswordsSeachResultsDispalyController: AnyObject {
 
 class PasswordsViewController: UIViewController, PasswordsSeachResultsDispalyController {
 
-    private var sortedItems: [PassItem] = []
-
     var items: [PassItem] {
-        get {
-            sortedItems
-        } set {
-            sortedItems = newValue.sorted {
-                $0.title?.localizedCaseInsensitiveCompare($1.title ?? "") == .orderedAscending
-            }
+        didSet {
             tableView.reloadData()
         }
     }
+
     var sectionTitle: String?
 
     private let pasteboardManager: PasteboardManager
@@ -39,10 +33,10 @@ class PasswordsViewController: UIViewController, PasswordsSeachResultsDispalyCon
         pasteboardManager: PasteboardManager,
         recentPasswordsManager: RecentPasswordsManager
     ) {
+        self.items = items
         self.pasteboardManager = pasteboardManager
         self.recentPasswordsManager = recentPasswordsManager
         super.init(nibName: nil, bundle: nil)
-        self.items = items
         self.title = title
     }
 
@@ -165,4 +159,12 @@ extension PasswordsViewController {
         self.recentPasswordsManager.push(item: passItem)
     }
 
+}
+
+extension Array where Element == PassItem {
+    func sortedByName() -> [Element] {
+        return self.sorted {
+            $0.title?.localizedCaseInsensitiveCompare($1.title ?? "") == .orderedAscending
+        }
+    }
 }

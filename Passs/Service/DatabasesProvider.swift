@@ -13,10 +13,15 @@ protocol StoredDatabase {
     var modificationDate: Date? { get }
 }
 
-protocol DatabasesProvider {
+protocol DatabasesProvider: AnyObject {
     func addDatabase(from url: URL) throws
     func deleteDatabase(_: StoredDatabase)
     var databases: [StoredDatabase] { get }
+    var delegate: DatabasesProviderDelegate? { get set }
+}
+
+protocol DatabasesProviderDelegate: AnyObject {
+    func didAddDatabase(at index: Int)
 }
 
 struct StoredDatabaseImp: StoredDatabase {
@@ -26,8 +31,15 @@ struct StoredDatabaseImp: StoredDatabase {
 }
 
 class DatabasesProviderImp: DatabasesProvider {
+
+    weak var delegate: DatabasesProviderDelegate?
     
     func addDatabase(from url: URL) throws {
+        guard url.startAccessingSecurityScopedResource() else {
+            Swift.debugPrint("Cannot access security-scoped URL: \(url)")
+            return
+        }
+        defer { url.stopAccessingSecurityScopedResource() }
         let filename = url.lastPathComponent
         let fURL = documentsURL.appendingPathComponent(filename)
         let fileManager = FileManager.default
@@ -35,6 +47,7 @@ class DatabasesProviderImp: DatabasesProvider {
         let attributes = try? fileManager.attributesOfItem(atPath: fURL.relativePath)
         let date = attributes?[.modificationDate] as? Date
         databases.append(StoredDatabaseImp(url: fURL, name: filename, modificationDate: date))
+        delegate?.didAddDatabase(at: databases.count - 1)
     }
     
     func deleteDatabase(_ database: StoredDatabase) {

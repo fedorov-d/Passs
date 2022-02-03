@@ -40,6 +40,7 @@ class DatabaseListViewController: UIViewController {
         self.keychainManager = keychainManager
         self.completion = completion
         super.init(nibName: nil, bundle: nil)
+        self.databasesProvider.delegate = self
     }
     
     required init?(coder: NSCoder) {
@@ -103,14 +104,10 @@ extension DatabaseListViewController: UIDocumentPickerDelegate {
 
     func documentPicker(_ controller: UIDocumentPickerViewController, didPickDocumentsAt urls: [URL]) {
         guard let url = urls.first else { return }
-        let indexPath = IndexPath(row: databasesProvider.databases.count, section: 0)
         do {
             try databasesProvider.addDatabase(from: url)
-            tableView.performBatchUpdates {
-                tableView.insertRows(at: [indexPath], with: .top)
-            } completion: { _ in }
         } catch (let error) {
-
+            Swift.debugPrint(error)
         }
     }
 
@@ -160,6 +157,17 @@ extension DatabaseListViewController: UITableViewDelegate {
                   error != KeychainError.userCancelled else { return }
             presentEnterPassword(for: database)
         }
+    }
+
+}
+
+extension DatabaseListViewController: DatabasesProviderDelegate {
+
+    func didAddDatabase(at index: Int) {
+        let indexPath = IndexPath(row: index, section: 0)
+        tableView.performBatchUpdates {
+            tableView.insertRows(at: [indexPath], with: .top)
+        } completion: { _ in }
     }
 
 }

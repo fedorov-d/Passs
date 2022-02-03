@@ -13,20 +13,38 @@ protocol RecentPasswordsManager {
 }
 
 class RecentPasswordsManagerImp: RecentPasswordsManager {
-    private(set) var items: [PassItem] = []
+    private(set) var items: [String] = []
+    private let userDefaults = UserDefaults.standard
+
+    private var storageKey: String {
+        return databaseURL.lastPathComponent + " " + "recentPasswordItems"
+    }
+
+    private let databaseURL: URL
+
+    init(databaseURL: URL) {
+        self.databaseURL = databaseURL
+        items = userDefaults.object(forKey: storageKey) as? [String] ?? []
+    }
 
     func push(item: PassItem) {
-        items.insert(item, at: 0)
+        guard !items.contains(key(for: item)) else { return }
+        items.insert(key(for: item), at: 0)
         if items.count > 5 {
             items.removeLast()
         }
+        userDefaults.set(items, forKey: storageKey)
     }
 
     func matchingItems(for items: [PassItem]) -> [PassItem] {
-        self.items.compactMap { passItem -> PassItem? in
+        self.items.compactMap { key -> PassItem? in
             items.first { pItem in
-                pItem.title == passItem.title && pItem.username == passItem.username
+                self.key(for: pItem) == key
             }
         }
+    }
+
+    private func key(for item: PassItem) -> String {
+        return (item.title ?? "") + (item.username ?? "")
     }
 }
