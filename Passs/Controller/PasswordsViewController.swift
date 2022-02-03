@@ -9,32 +9,57 @@ import UIKit
 import KeePassKit
 import SnapKit
 
-class PasswordsViewController: UIViewController {
-    
-    private let passwordGroup: PassGroup
-    private let pasteboardManager: PasteboardManager
-    
-    init(passwordGroup: PassGroup, pasteboardManager: PasteboardManager) {
-        self.passwordGroup = passwordGroup
-        self.pasteboardManager = pasteboardManager
-        super.init(nibName: nil, bundle: nil)
+protocol PasswordsSeachResultsDispalyController: AnyObject {
+    var items: [PassItem] { get set }
+    var sectionTitle: String? { get set }
+}
+
+class PasswordsViewController: UIViewController, PasswordsSeachResultsDispalyController {
+
+    private var sortedItems: [PassItem] = []
+
+    var items: [PassItem] {
+        get {
+            sortedItems
+        } set {
+            sortedItems = newValue.sorted {
+                $0.title?.localizedCaseInsensitiveCompare($1.title ?? "") == .orderedAscending
+            }
+            tableView.reloadData()
+        }
     }
-    
+    var sectionTitle: String?
+
+    private let pasteboardManager: PasteboardManager
+    private let recentPasswordsManager: RecentPasswordsManager
+
+    init(
+        title: String? = nil,
+        items: [PassItem] = [],
+        pasteboardManager: PasteboardManager,
+        recentPasswordsManager: RecentPasswordsManager
+    ) {
+        self.pasteboardManager = pasteboardManager
+        self.recentPasswordsManager = recentPasswordsManager
+        super.init(nibName: nil, bundle: nil)
+        self.items = items
+        self.title = title
+    }
+
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-    
+
     private lazy var tableView: UITableView = {
         let tableView = UITableView(frame: .zero, style: .grouped)
-        tableView.rowHeight = 56
         tableView.dataSource = self
         tableView.delegate = self
-        tableView.register(UITableViewCell.self, forCellReuseIdentifier: "cell.id")
+        tableView.register(SubtitleTableViewCell.self, forCellReuseIdentifier: "cell.id")
         return tableView
     }()
-    
+
     // MARK: - UIViewController lifecycle
-    
+
     override func loadView() {
         view = UIView()
         view.addSubview(tableView)
@@ -46,7 +71,8 @@ class PasswordsViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.navigationItem.title = passwordGroup.title
+        self.navigationItem.title = title
+        self.navigationItem.largeTitleDisplayMode = .never
         tableView.reloadData()
     }
 
@@ -55,15 +81,25 @@ class PasswordsViewController: UIViewController {
 extension PasswordsViewController: UITableViewDataSource {
 
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        passwordGroup.items.count
+        items.count
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "cell.id", for: indexPath)
-        let item = passwordGroup.items[indexPath.row]
+        let item = items[indexPath.row]
         cell.textLabel?.text = item.title
+        cell.detailTextLabel?.text = item.username
+        cell.detailTextLabel?.textColor = .secondaryLabel
         cell.imageView?.image = UIImage(systemName: "square.on.square")?.tinted(with: .systemBlue)
         return cell
+    }
+
+    func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+        return sectionTitle
+    }
+
+    func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+        23
     }
 
 }
@@ -74,39 +110,59 @@ extension PasswordsViewController: UITableViewDelegate {
         _ tableView: UITableView,
         leadingSwipeActionsConfigurationForRowAt indexPath: IndexPath
     ) -> UISwipeActionsConfiguration? {
-        let action = UIContextualAction(style: .normal, title: "Copy username") { [unowned self] action, view, closure in
-            let item = self.passwordGroup.items[indexPath.row]
-            guard let username = item.username else { return }
-            self.pasteboardManager.copy(username)
-            closure(true)
+        swipeActionConfiguration(
+            with: "Copy username"
+        ) { [unowned self] in
+            let item = self.items[indexPath.row]
+            self.copyUsername(item)
         }
-        action.backgroundColor = .systemBlue
-        return UISwipeActionsConfiguration(actions: [action])
     }
 
     func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
-        let action = UIContextualAction(style: .normal, title: "Copy password") { [unowned self] action, view, closure in
-            let item = self.passwordGroup.items[indexPath.row]
-            guard let password = item.password else { return }
-            self.pasteboardManager.copy(password)
-            closure(true)
+        swipeActionConfiguration(
+            with: "Copy password"
+        ) { [unowned self] in
+            let item = self.items[indexPath.row]
+            self.copyPasswords(item)
         }
-        action.backgroundColor = .systemBlue
-        return UISwipeActionsConfiguration(actions: [action])
     }
 
-    func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
-        return true
-    }
 }
 
 extension PasswordsViewController: UITabBarDelegate {
 
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
-        let item = passwordGroup.items[indexPath.row]
-        guard let password = item.password else { return }
-        pasteboardManager.copy(password)
+        let item = items[indexPath.row]
+        copyPasswords(item)
+    }
+
+}
+
+extension PasswordsViewController {
+
+    private func swipeActionConfiguration(
+        with title: String,
+        completion: @escaping () -> Void
+    ) -> UISwipeActionsConfiguration {
+        let action = UIContextualAction(style: .normal, title: title) { action, view, closure in
+            completion()
+            closure(true)
+        }
+        action.backgroundColor = .systemBlue
+        return UISwipeActionsConfiguration(actions: [action])
+    }
+
+    private func copyUsername(_ passItem: PassItem) {
+        guard let username = passItem.username else { return }
+        self.pasteboardManager.copy(username)
+        self.recentPasswordsManager.push(item: passItem)
+    }
+
+    private func copyPasswords(_ passItem: PassItem) {
+        guard let password = passItem.password else { return }
+        self.pasteboardManager.copy(password)
+        self.recentPasswordsManager.push(item: passItem)
     }
 
 }

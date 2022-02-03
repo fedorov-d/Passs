@@ -15,9 +15,10 @@ class DatabaseListViewController: UIViewController {
     
     private let cellId = "database.cell.id"
     private let completion: (URL, String) -> ()
+
     private lazy var dateFormatter: DateFormatter = {
         let formatter = DateFormatter()
-        formatter.dateStyle = .medium
+        formatter.dateStyle = .short
         formatter.timeStyle = .short
         return formatter
     }()
@@ -28,15 +29,6 @@ class DatabaseListViewController: UIViewController {
         tableView.delegate = self
         tableView.register(SubtitleTableViewCell.self, forCellReuseIdentifier: cellId)
         return tableView
-    }()
-
-    private lazy var importDatabaseButton: UIButton = {
-        let button = UIButton()
-        button.setTitle("Import database", for: .normal)
-        button.setTitleColor(.black, for: .normal)
-        button.setTitleColor(.darkGray, for: .highlighted)
-        button.addTarget(self, action: #selector(importTapped), for: .touchUpInside)
-        return button
     }()
     
     init(
@@ -58,15 +50,9 @@ class DatabaseListViewController: UIViewController {
         view = UIView()
 
         view.addSubview(tableView)
-        view.addSubview(importDatabaseButton)
 
         tableView.snp.makeConstraints { make in
             make.edges.equalToSuperview()
-        }
-        importDatabaseButton.snp.makeConstraints { make in
-            make.leading.trailing.equalToSuperview().inset(24)
-            make.bottom.equalToSuperview().offset(-view.safeAreaInsets.bottom - 24)
-            make.height.equalTo(44)
         }
     }
     
@@ -74,6 +60,22 @@ class DatabaseListViewController: UIViewController {
         super.viewDidLoad()
         self.navigationItem.title = "Databases"
         self.navigationItem.backButtonTitle = ""
+        self.navigationItem.rightBarButtonItem = UIBarButtonItem(
+            barButtonSystemItem: .add,
+            target: self,
+            action: #selector(importTapped)
+        )
+    }
+
+    private func presentEnterPassword(for database: StoredDatabase) {
+        let enterPasswordController = EnterPasswordViewController { [unowned self] password, useBiometry in
+            if useBiometry {
+                try? keychainManager.savePassword(password, for: database.url.lastPathComponent)
+            }
+            self.dismiss(animated: true)
+            self.completion(database.url, password)
+        }
+        present(enterPasswordController, animated: true)
     }
 }
 
@@ -147,22 +149,16 @@ extension DatabaseListViewController: UITableViewDelegate {
         tableView.deselectRow(at: indexPath, animated: true)
         let database = databasesProvider.databases[indexPath.row]
         do {
-            if let password = try keychainManager.savedPassword(for: database.url.lastPathComponent) {
-                self.dismiss(animated: true)
-                self.completion(database.url, password)
+            guard let password = try keychainManager.savedPassword(for: database.url.lastPathComponent) else {
+                presentEnterPassword(for: database)
                 return
             }
+            self.dismiss(animated: true)
+            self.completion(database.url, password)
         } catch (let error) {
             guard let error = error as? KeychainError,
                   error != KeychainError.userCancelled else { return }
-            let enterPasswordController = EnterPasswordViewController { [unowned self] password, useBiometry in
-                if useBiometry {
-                    try? keychainManager.savePassword(password, for: database.url.lastPathComponent)
-                }
-                self.dismiss(animated: true)
-                self.completion(database.url, password)
-            }
-            present(enterPasswordController, animated: true)
+            presentEnterPassword(for: database)
         }
     }
 

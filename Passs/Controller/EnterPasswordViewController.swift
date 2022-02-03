@@ -39,11 +39,7 @@ class EnterPasswordViewController: UIViewController, UITextFieldDelegate {
         let font = UIFont.preferredFont(forTextStyle: .callout)
         textField.font = font
         let placeholderTextColor: UIColor
-        if #available(iOS 13, *) {
-            placeholderTextColor = .label
-        } else {
-            placeholderTextColor = .lightGray
-        }
+        placeholderTextColor = .label
         textField.attributedPlaceholder = NSAttributedString(
             string: "Password",
             attributes: [

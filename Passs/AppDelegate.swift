@@ -7,13 +7,13 @@
 
 import UIKit
 
-@main
 class AppDelegate: UIResponder, UIApplicationDelegate {
     var window: UIWindow?
     
     let pasteboardManager: PasteboardManager = PasteboardManagerImp()
     let databasesProvider: DatabasesProvider = DatabasesProviderImp()
     let keychainManager: KeychainManager = KeychainManagerImp()
+    let recentPasswordsManager: RecentPasswordsManager = RecentPasswordsManagerImp()
     
     func application(
         _ application: UIApplication,
@@ -37,14 +37,23 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                 password: password
             )
             let groupsViewController = GroupsViewController(
-                databaseManager: passDatabaseManager
-            ) { [unowned self] group in
-                let passwordsViewController = PasswordsViewController(
-                    passwordGroup: group,
-                    pasteboardManager: self.pasteboardManager
-                )
-                navigationController.pushViewController(passwordsViewController, animated: true)
-            }
+                databaseManager: passDatabaseManager,
+                recentPasswordsManager: recentPasswordsManager,
+                searchResultsControllerProvider: {
+                    PasswordsViewController(
+                        pasteboardManager: self.pasteboardManager,
+                        recentPasswordsManager: self.recentPasswordsManager
+                    )
+                },
+                groupSelected: { [unowned self] group in
+                    let passwordsViewController = PasswordsViewController(
+                        title: group.title,
+                        items: group.items,
+                        pasteboardManager: self.pasteboardManager,
+                        recentPasswordsManager: self.recentPasswordsManager
+                    )
+                    navigationController.pushViewController(passwordsViewController, animated: true)
+                })
             navigationController.pushViewController(groupsViewController, animated: true)
         }
         navigationController.viewControllers = [databaseListViewController]
@@ -52,6 +61,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         window = UIWindow()
         window?.rootViewController = navigationController
         window?.makeKeyAndVisible()
+        if let application = application as? Application {
+            application.onLockout = {
+                guard navigationController.viewControllers.count > 1 else { return }
+                navigationController.popToRootViewController(animated: false)
+            }
+        }
         return true
     }
 

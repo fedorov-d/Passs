@@ -10,11 +10,20 @@ import UIKit
 class GroupsViewController: UIViewController {
 
     private let databaseManager: PassDatabaseManager
+    private let recentPasswordsManager: RecentPasswordsManager
     private let groupSelected: (PassGroup) -> Void
+    private let searchResultsControllerProvider: () -> PasswordsSeachResultsDispalyController & UIViewController
 
-    init(databaseManager: PassDatabaseManager, groupSelected: @escaping (PassGroup) -> Void) {
+    init(
+        databaseManager: PassDatabaseManager,
+        recentPasswordsManager: RecentPasswordsManager,
+        searchResultsControllerProvider: @escaping () -> PasswordsSeachResultsDispalyController & UIViewController,
+        groupSelected: @escaping (PassGroup) -> Void
+    ) {
         self.databaseManager = databaseManager
+        self.recentPasswordsManager = recentPasswordsManager
         self.groupSelected = groupSelected
+        self.searchResultsControllerProvider = searchResultsControllerProvider
         super.init(nibName: nil, bundle: nil)
     }
 
@@ -44,11 +53,42 @@ class GroupsViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         self.databaseManager.load()
-        self.navigationItem.largeTitleDisplayMode = .never
+        self.navigationItem.largeTitleDisplayMode = .always
         self.navigationItem.title = self.databaseManager.databaseName
 
         tableView.reloadData()
+
+        navigationItem.searchController = UISearchController(searchResultsController: searchResultsControllerProvider())
+        navigationItem.searchController?.searchResultsUpdater = self
+        navigationItem.searchController?.obscuresBackgroundDuringPresentation = false
+        navigationItem.hidesSearchBarWhenScrolling = true
+        definesPresentationContext = false
     }
+}
+
+extension GroupsViewController: UISearchResultsUpdating {
+
+    func updateSearchResults(for searchController: UISearchController) {
+        guard let passwordsController = searchController.searchResultsController
+                as? PasswordsSeachResultsDispalyController & UIViewController else { return }
+        let items = databaseManager.passwordGroups.flatMap { group in
+            return group.items
+        }
+        let text = searchController.searchBar.text
+        if text == nil || text!.isEmpty {
+            let items = recentPasswordsManager.matchingItems(for: items)
+            guard items.count > 0 else { return }
+            passwordsController.view.isHidden = false
+            passwordsController.sectionTitle = "Recent items"
+            passwordsController.items = items
+            return
+        }
+        passwordsController.sectionTitle = "Matching items"
+        passwordsController.items = items.filter { item in
+            item.title?.lowercased().contains(searchController.searchBar.text?.lowercased() ?? "") ?? false
+        }
+    }
+
 }
 
 extension GroupsViewController: UITableViewDataSource {
