@@ -14,7 +14,7 @@ class PasteboardManagerTests: XCTestCase {
             pasteboard: pasteboard
         )
 
-        pasteboardManager.copy(password: "test")
+        pasteboardManager.copy("test")
         XCTAssertEqual(pasteboard.value, "test")
     }
 

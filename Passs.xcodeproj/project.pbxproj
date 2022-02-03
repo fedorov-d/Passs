@@ -471,7 +471,9 @@
 			baseConfigurationReference = BDD5B3A1CD787FB487C055B9 /* Pods-PasssTests.debug.xcconfig */;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
+				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = M9YPX79TYZ;
 				INFOPLIST_FILE = PasssTests/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 14.5;
 				LD_RUNPATH_SEARCH_PATHS = (
