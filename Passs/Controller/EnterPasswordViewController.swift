@@ -7,6 +7,7 @@
 
 import UIKit
 import SnapKit
+import Combine
 
 class EnterPasswordViewController: UIViewController, UITextFieldDelegate {
 
@@ -28,6 +29,7 @@ class EnterPasswordViewController: UIViewController, UITextFieldDelegate {
     }
     
     private let completion: (String, Bool) -> ()
+    private var subscriptionSet = Set<AnyCancellable>()
     
     private lazy var textField: UITextField = {
         let textField = UITextField()
@@ -178,54 +180,45 @@ class EnterPasswordViewController: UIViewController, UITextFieldDelegate {
     }
     
     private func setupKeyboardObserver() {
-        NotificationCenter.default.addObserver(
-            forName: UIResponder.keyboardWillShowNotification,
-            object: nil,
-            queue: .main
-        ) { [weak self] note in
-            guard let keyboardValue = note.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue,
-                  let duration = note.userInfo?[UIResponder.keyboardAnimationDurationUserInfoKey] as? TimeInterval,
-                  let curveInt = note.userInfo?[UIResponder.keyboardAnimationCurveUserInfoKey] as? Int,
-                  let curve = UIView.AnimationCurve(rawValue: curveInt),
-                  let self = self else { return }
-            let keyboardScreenEndFrame = keyboardValue.cgRectValue
-            self.backgroundView.snp.remakeConstraints { make in
-                make.leading.trailing.equalToSuperview()
-                make.bottom.equalToSuperview().inset(keyboardScreenEndFrame.height)
-            }
-            let animator = UIViewPropertyAnimator(
-                duration: duration,
-                curve: curve) {
-                    self.view.backgroundColor = .black.withAlphaComponent(0.15)
-                    self.view.layoutIfNeeded()
-                }
-            animator.startAnimation()
-        }
 
-        NotificationCenter.default.addObserver(
-            forName: UIResponder.keyboardWillHideNotification,
-            object: nil,
-            queue: .main
-        ) { [weak self] note in
-            guard let duration = note.userInfo?[UIResponder.keyboardAnimationDurationUserInfoKey] as? TimeInterval,
-                  let curveInt = note.userInfo?[UIResponder.keyboardAnimationCurveUserInfoKey] as? Int,
-                  let curve = UIView.AnimationCurve(rawValue: curveInt),
-                  let self = self else { return }
-            self.backgroundView.snp.remakeConstraints { make in
-                make.leading.trailing.equalToSuperview()
-                make.top.equalTo(self.view.snp.bottom)
-            }
-            let animator = UIViewPropertyAnimator(
-                duration: duration,
-                curve: curve) {
-                    self.view.backgroundColor = .clear
-                    self.view.layoutIfNeeded()
+        keyboardWillShowPublisher()
+            .sink { [weak self] keyboardParams in
+                guard let self = self else { return }
+                self.backgroundView.snp.remakeConstraints { make in
+                    make.leading.trailing.equalToSuperview()
+                    make.bottom.equalToSuperview().inset(keyboardParams.frameEnd.height)
                 }
-            animator.addCompletion { _ in
-                self.dismiss(animated: false, completion: nil)
+                let animator = UIViewPropertyAnimator(
+                    duration: keyboardParams.animationDuration,
+                    curve: keyboardParams.animationCurve
+                ) {
+                        self.view.backgroundColor = .black.withAlphaComponent(0.15)
+                        self.view.layoutIfNeeded()
+                    }
+                animator.startAnimation()
             }
-            animator.startAnimation()
-        }
+            .store(in: &subscriptionSet)
+
+        keyboardWillHidePublisher()
+            .sink { [weak self] keyboardParams in
+                guard let self = self else { return }
+                self.backgroundView.snp.remakeConstraints { make in
+                    make.leading.trailing.equalToSuperview()
+                    make.top.equalTo(self.view.snp.bottom)
+                }
+                let animator = UIViewPropertyAnimator(
+                    duration: keyboardParams.animationDuration,
+                    curve: keyboardParams.animationCurve
+                ) {
+                        self.view.backgroundColor = .clear
+                        self.view.layoutIfNeeded()
+                    }
+                animator.addCompletion { _ in
+                    self.dismiss(animated: false, completion: nil)
+                }
+                animator.startAnimation()
+            }
+            .store(in: &subscriptionSet)
     }
 
 }

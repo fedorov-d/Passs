@@ -13,6 +13,7 @@
 		A32C654D260C557300DC6653 /* PasswordsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A32C654C260C557300DC6653 /* PasswordsViewController.swift */; };
 		A32C6552260C557700DC6653 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A32C6551260C557700DC6653 /* Assets.xcassets */; };
 		A32C6555260C557700DC6653 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A32C6553260C557700DC6653 /* LaunchScreen.storyboard */; };
+		A3B5E32627AD9EE40061CAC6 /* UIViewController+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3B5E32527AD9EE40061CAC6 /* UIViewController+Extensions.swift */; };
 		A3C9AB46261F685200170B55 /* EnterPasswordViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3C9AB45261F685200170B55 /* EnterPasswordViewController.swift */; };
 		A3C9AB482620680600170B55 /* CategorySelectorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3C9AB472620680600170B55 /* CategorySelectorView.swift */; };
 		A3CAA30B27A9B93D00330FAC /* SubtitleTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3CAA30A27A9B93D00330FAC /* SubtitleTableViewCell.swift */; };
@@ -71,6 +72,7 @@
 		A32C6551260C557700DC6653 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		A32C6554260C557700DC6653 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		A32C6556260C557700DC6653 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		A3B5E32527AD9EE40061CAC6 /* UIViewController+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewController+Extensions.swift"; sourceTree = "<group>"; };
 		A3C9AB45261F685200170B55 /* EnterPasswordViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EnterPasswordViewController.swift; sourceTree = "<group>"; };
 		A3C9AB472620680600170B55 /* CategorySelectorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategorySelectorView.swift; sourceTree = "<group>"; };
 		A3CAA30A27A9B93D00330FAC /* SubtitleTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubtitleTableViewCell.swift; sourceTree = "<group>"; };
@@ -191,6 +193,7 @@
 			isa = PBXGroup;
 			children = (
 				A3CFA4C5279289740020F82F /* UIImage+Extensions.swift */,
+				A3B5E32527AD9EE40061CAC6 /* UIViewController+Extensions.swift */,
 			);
 			path = Common;
 			sourceTree = "<group>";
@@ -434,6 +437,7 @@
 				A3CFA4C8279349370020F82F /* GroupsViewController.swift in Sources */,
 				A3F3DA36260DC1D10057AF24 /* PassDatabaseManager.swift in Sources */,
 				A3F4959F261E242700E4AA7E /* DatabaseListViewController.swift in Sources */,
+				A3B5E32627AD9EE40061CAC6 /* UIViewController+Extensions.swift in Sources */,
 				A32C654D260C557300DC6653 /* PasswordsViewController.swift in Sources */,
 				A3CFA4CA2795F9650020F82F /* KeychainManager.swift in Sources */,
 				A3CAA31127AB138000330FAC /* UIButton+Helpers.swift in Sources */,
