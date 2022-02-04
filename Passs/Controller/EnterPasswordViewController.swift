@@ -76,7 +76,7 @@ class EnterPasswordViewController: UIViewController, UITextFieldDelegate {
 
     private lazy var separatorView: UIView = {
         let view = UIView()
-        view.backgroundColor = .black.withAlphaComponent(0.1)
+        view.backgroundColor = UIColor.black.withAlphaComponent(0.1)
         return view
     }()
 
@@ -192,7 +192,7 @@ class EnterPasswordViewController: UIViewController, UITextFieldDelegate {
                     duration: keyboardParams.animationDuration,
                     curve: keyboardParams.animationCurve
                 ) {
-                        self.view.backgroundColor = .black.withAlphaComponent(0.15)
+                        self.view.backgroundColor = UIColor.black.withAlphaComponent(0.15)
                         self.view.layoutIfNeeded()
                     }
                 animator.startAnimation()
