@@ -19,7 +19,7 @@ platform :ios do
   desc "Tests lane"
   lane :tests do
     run_tests(workspace: "Passs.xcworkspace",
-              device: "iPhone 12 mini",
+              device: "iPhone 8",
               scheme: "PasssTests")
   end
 end
