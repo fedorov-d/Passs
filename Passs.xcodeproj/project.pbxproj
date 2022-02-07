@@ -14,8 +14,12 @@
 		A32C6552260C557700DC6653 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A32C6551260C557700DC6653 /* Assets.xcassets */; };
 		A32C6555260C557700DC6653 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A32C6553260C557700DC6653 /* LaunchScreen.storyboard */; };
 		A3B5E32627AD9EE40061CAC6 /* UIViewController+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3B5E32527AD9EE40061CAC6 /* UIViewController+Extensions.swift */; };
+		A3B5E32D27AEA7340061CAC6 /* AuthenticationServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A3B5E32C27AEA7340061CAC6 /* AuthenticationServices.framework */; };
+		A3B5E33027AEA7340061CAC6 /* CredentialProviderViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3B5E32F27AEA7340061CAC6 /* CredentialProviderViewController.swift */; };
+		A3B5E33327AEA7340061CAC6 /* MainInterface.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A3B5E33127AEA7340061CAC6 /* MainInterface.storyboard */; };
+		A3B5E33827AEA7340061CAC6 /* CredentialProvider.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = A3B5E32B27AEA7330061CAC6 /* CredentialProvider.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		A3B5E33E27AEACEF0061CAC6 /* AuthenticationServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A3B5E32C27AEA7340061CAC6 /* AuthenticationServices.framework */; };
 		A3C9AB46261F685200170B55 /* EnterPasswordViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3C9AB45261F685200170B55 /* EnterPasswordViewController.swift */; };
-		A3C9AB482620680600170B55 /* CategorySelectorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3C9AB472620680600170B55 /* CategorySelectorView.swift */; };
 		A3CAA30B27A9B93D00330FAC /* SubtitleTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3CAA30A27A9B93D00330FAC /* SubtitleTableViewCell.swift */; };
 		A3CAA30D27AB060300330FAC /* Application.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3CAA30C27AB060200330FAC /* Application.swift */; };
 		A3CAA30F27AB06CF00330FAC /* main.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3CAA30E27AB06CF00330FAC /* main.swift */; };
@@ -42,6 +46,13 @@
 			remoteGlobalIDString = A32C6544260C557200DC6653;
 			remoteInfo = Passs;
 		};
+		A3B5E33627AEA7340061CAC6 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = A32C653D260C557200DC6653 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = A3B5E32A27AEA7330061CAC6;
+			remoteInfo = CredentialProvider;
+		};
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -53,6 +64,17 @@
 			files = (
 			);
 			name = "Embed Frameworks";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		A3B5E33C27AEA7340061CAC6 /* Embed App Extensions */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 13;
+			files = (
+				A3B5E33827AEA7340061CAC6 /* CredentialProvider.appex in Embed App Extensions */,
+			);
+			name = "Embed App Extensions";
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXCopyFilesBuildPhase section */
@@ -73,8 +95,14 @@
 		A32C6554260C557700DC6653 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		A32C6556260C557700DC6653 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		A3B5E32527AD9EE40061CAC6 /* UIViewController+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewController+Extensions.swift"; sourceTree = "<group>"; };
+		A3B5E32B27AEA7330061CAC6 /* CredentialProvider.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = CredentialProvider.appex; sourceTree = BUILT_PRODUCTS_DIR; };
+		A3B5E32C27AEA7340061CAC6 /* AuthenticationServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AuthenticationServices.framework; path = System/Library/Frameworks/AuthenticationServices.framework; sourceTree = SDKROOT; };
+		A3B5E32F27AEA7340061CAC6 /* CredentialProviderViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CredentialProviderViewController.swift; sourceTree = "<group>"; };
+		A3B5E33227AEA7340061CAC6 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/MainInterface.storyboard; sourceTree = "<group>"; };
+		A3B5E33427AEA7340061CAC6 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		A3B5E33527AEA7340061CAC6 /* CredentialProvider.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = CredentialProvider.entitlements; sourceTree = "<group>"; };
+		A3B5E33D27AEACEF0061CAC6 /* Passs.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Passs.entitlements; sourceTree = "<group>"; };
 		A3C9AB45261F685200170B55 /* EnterPasswordViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EnterPasswordViewController.swift; sourceTree = "<group>"; };
-		A3C9AB472620680600170B55 /* CategorySelectorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategorySelectorView.swift; sourceTree = "<group>"; };
 		A3CAA30A27A9B93D00330FAC /* SubtitleTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubtitleTableViewCell.swift; sourceTree = "<group>"; };
 		A3CAA30C27AB060200330FAC /* Application.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Application.swift; sourceTree = "<group>"; };
 		A3CAA30E27AB06CF00330FAC /* main.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = main.swift; sourceTree = "<group>"; };
@@ -106,7 +134,16 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A3B5E33E27AEACEF0061CAC6 /* AuthenticationServices.framework in Frameworks */,
 				C36AB2D5AB40F2100342ABC8 /* Pods_Passs.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		A3B5E32827AEA7330061CAC6 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				A3B5E32D27AEA7340061CAC6 /* AuthenticationServices.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -129,6 +166,7 @@
 			children = (
 				096CD049FCD875D09982CB67 /* Pods_Passs.framework */,
 				61C958F420CCDECE8DEC67FD /* Pods_PasssTests.framework */,
+				A3B5E32C27AEA7340061CAC6 /* AuthenticationServices.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -147,6 +185,7 @@
 			children = (
 				A32C6547260C557200DC6653 /* Passs */,
 				A31842452721D69200786744 /* PasssTests */,
+				A3B5E32E27AEA7340061CAC6 /* CredentialProvider */,
 				A32C6546260C557200DC6653 /* Products */,
 				168E9655F2F473A54AE91AA6 /* Pods */,
 				5FB1834A3E031CBCCDD4B639 /* Frameworks */,
@@ -158,6 +197,7 @@
 			children = (
 				A32C6545260C557200DC6653 /* Passs.app */,
 				A31842442721D69200786744 /* PasssTests.xctest */,
+				A3B5E32B27AEA7330061CAC6 /* CredentialProvider.appex */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -176,8 +216,20 @@
 				A32C6551260C557700DC6653 /* Assets.xcassets */,
 				A32C6553260C557700DC6653 /* LaunchScreen.storyboard */,
 				A32C6556260C557700DC6653 /* Info.plist */,
+				A3B5E33D27AEACEF0061CAC6 /* Passs.entitlements */,
 			);
 			path = Passs;
+			sourceTree = "<group>";
+		};
+		A3B5E32E27AEA7340061CAC6 /* CredentialProvider */ = {
+			isa = PBXGroup;
+			children = (
+				A3B5E32F27AEA7340061CAC6 /* CredentialProviderViewController.swift */,
+				A3B5E33127AEA7340061CAC6 /* MainInterface.storyboard */,
+				A3B5E33427AEA7340061CAC6 /* Info.plist */,
+				A3B5E33527AEA7340061CAC6 /* CredentialProvider.entitlements */,
+			);
+			path = CredentialProvider;
 			sourceTree = "<group>";
 		};
 		A3CAA30927A9B91A00330FAC /* Cells */ = {
@@ -223,7 +275,6 @@
 		A3F4959D261E241300E4AA7E /* Controller */ = {
 			isa = PBXGroup;
 			children = (
-				A3C9AB472620680600170B55 /* CategorySelectorView.swift */,
 				A32C654C260C557300DC6653 /* PasswordsViewController.swift */,
 				A3F4959E261E242700E4AA7E /* DatabaseListViewController.swift */,
 				A3C9AB45261F685200170B55 /* EnterPasswordViewController.swift */,
@@ -265,15 +316,34 @@
 				A32C6543260C557200DC6653 /* Resources */,
 				A32C6577260C650700DC6653 /* Embed Frameworks */,
 				85D5035C9DA10D480DC005E9 /* [CP] Embed Pods Frameworks */,
+				A3B5E33C27AEA7340061CAC6 /* Embed App Extensions */,
 			);
 			buildRules = (
 			);
 			dependencies = (
+				A3B5E33727AEA7340061CAC6 /* PBXTargetDependency */,
 			);
 			name = Passs;
 			productName = Passs;
 			productReference = A32C6545260C557200DC6653 /* Passs.app */;
 			productType = "com.apple.product-type.application";
+		};
+		A3B5E32A27AEA7330061CAC6 /* CredentialProvider */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = A3B5E33927AEA7340061CAC6 /* Build configuration list for PBXNativeTarget "CredentialProvider" */;
+			buildPhases = (
+				A3B5E32727AEA7330061CAC6 /* Sources */,
+				A3B5E32827AEA7330061CAC6 /* Frameworks */,
+				A3B5E32927AEA7330061CAC6 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = CredentialProvider;
+			productName = CredentialProvider;
+			productReference = A3B5E32B27AEA7330061CAC6 /* CredentialProvider.appex */;
+			productType = "com.apple.product-type.app-extension";
 		};
 /* End PBXNativeTarget section */
 
@@ -281,7 +351,7 @@
 		A32C653D260C557200DC6653 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastSwiftUpdateCheck = 1250;
+				LastSwiftUpdateCheck = 1320;
 				LastUpgradeCheck = 1230;
 				TargetAttributes = {
 					A31842432721D69200786744 = {
@@ -290,6 +360,9 @@
 					};
 					A32C6544260C557200DC6653 = {
 						CreatedOnToolsVersion = 12.3;
+					};
+					A3B5E32A27AEA7330061CAC6 = {
+						CreatedOnToolsVersion = 13.2.1;
 					};
 				};
 			};
@@ -308,6 +381,7 @@
 			targets = (
 				A32C6544260C557200DC6653 /* Passs */,
 				A31842432721D69200786744 /* PasssTests */,
+				A3B5E32A27AEA7330061CAC6 /* CredentialProvider */,
 			);
 		};
 /* End PBXProject section */
@@ -326,6 +400,14 @@
 			files = (
 				A32C6555260C557700DC6653 /* LaunchScreen.storyboard in Resources */,
 				A32C6552260C557700DC6653 /* Assets.xcassets in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		A3B5E32927AEA7330061CAC6 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				A3B5E33327AEA7340061CAC6 /* MainInterface.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -428,7 +510,6 @@
 				A3CAA30D27AB060300330FAC /* Application.swift in Sources */,
 				A3F3DA28260CA5FC0057AF24 /* PassItem.swift in Sources */,
 				A3CAA30F27AB06CF00330FAC /* main.swift in Sources */,
-				A3C9AB482620680600170B55 /* CategorySelectorView.swift in Sources */,
 				A3F3DA2A260CA8440057AF24 /* PassItem+KeePassKit.swift in Sources */,
 				A3CAA31327ABCFB000330FAC /* RecentPasswordsManager.swift in Sources */,
 				A3CFA4C6279289740020F82F /* UIImage+Extensions.swift in Sources */,
@@ -448,6 +529,14 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		A3B5E32727AEA7330061CAC6 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				A3B5E33027AEA7340061CAC6 /* CredentialProviderViewController.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
@@ -455,6 +544,11 @@
 			isa = PBXTargetDependency;
 			target = A32C6544260C557200DC6653 /* Passs */;
 			targetProxy = A31842492721D69200786744 /* PBXContainerItemProxy */;
+		};
+		A3B5E33727AEA7340061CAC6 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = A3B5E32A27AEA7330061CAC6 /* CredentialProvider */;
+			targetProxy = A3B5E33627AEA7340061CAC6 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
@@ -465,6 +559,14 @@
 				A32C6554260C557700DC6653 /* Base */,
 			);
 			name = LaunchScreen.storyboard;
+			sourceTree = "<group>";
+		};
+		A3B5E33127AEA7340061CAC6 /* MainInterface.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				A3B5E33227AEA7340061CAC6 /* Base */,
+			);
+			name = MainInterface.storyboard;
 			sourceTree = "<group>";
 		};
 /* End PBXVariantGroup section */
@@ -638,10 +740,12 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = EBA44A656624B8CD1C05172E /* Pods-Passs.debug.xcconfig */;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = Passs/Passs.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = M9YPX79TYZ;
+				DEVELOPMENT_TEAM = 3YK694S6H3;
 				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
 				INFOPLIST_FILE = Passs/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
@@ -649,7 +753,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.df.Passs;
+				PRODUCT_BUNDLE_IDENTIFIER = com.sw1.dftest;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
 				SWIFT_VERSION = 5.0;
@@ -661,10 +765,12 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = A1BE885742778874F9F7BB11 /* Pods-Passs.release.xcconfig */;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = Passs/Passs.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = M9YPX79TYZ;
+				DEVELOPMENT_TEAM = 3YK694S6H3;
 				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
 				INFOPLIST_FILE = Passs/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
@@ -672,9 +778,65 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.df.Passs;
+				PRODUCT_BUNDLE_IDENTIFIER = com.sw1.dftest;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+		A3B5E33A27AEA7340061CAC6 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++17";
+				CODE_SIGN_ENTITLEMENTS = CredentialProvider/CredentialProvider.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 3YK694S6H3;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = CredentialProvider/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = CredentialProvider;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.sw1.dftest.ff;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		A3B5E33B27AEA7340061CAC6 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++17";
+				CODE_SIGN_ENTITLEMENTS = CredentialProvider/CredentialProvider.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 3YK694S6H3;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = CredentialProvider/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = CredentialProvider;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.sw1.dftest.ff;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -706,6 +868,15 @@
 			buildConfigurations = (
 				A32C655A260C557700DC6653 /* Debug */,
 				A32C655B260C557700DC6653 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		A3B5E33927AEA7340061CAC6 /* Build configuration list for PBXNativeTarget "CredentialProvider" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				A3B5E33A27AEA7340061CAC6 /* Debug */,
+				A3B5E33B27AEA7340061CAC6 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

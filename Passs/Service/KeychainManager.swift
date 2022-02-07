@@ -26,17 +26,17 @@ class KeychainManagerImp: KeychainManager {
         userDefaults.set(true, forKey: database)
         userDefaults.synchronize()
 
-        let access = SecAccessControlCreateWithFlags(
-            nil,
-            kSecAttrAccessibleWhenPasscodeSetThisDeviceOnly,
-            .userPresence,
-            nil
-        )
+//        let access = SecAccessControlCreateWithFlags(
+//            nil,
+//            kSecAttrAccessibleWhenUnlockedThisDeviceOnly,
+//            [.biometryAny],
+//            nil
+//        )
         let query: [String: Any] = [
             kSecClass as String: kSecClassInternetPassword,
             kSecAttrAccount as String: database,
             kSecAttrServer as String: "",
-            kSecAttrAccessControl as String: access as Any,
+//            kSecAttrAccessControl as String: access as Any,
             kSecValueData as String: password.data(using: .utf8) as Any
         ]
 
