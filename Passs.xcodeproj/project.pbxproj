@@ -19,6 +19,7 @@
 		A3B5E33327AEA7340061CAC6 /* MainInterface.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A3B5E33127AEA7340061CAC6 /* MainInterface.storyboard */; };
 		A3B5E33827AEA7340061CAC6 /* CredentialProvider.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = A3B5E32B27AEA7330061CAC6 /* CredentialProvider.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		A3B5E33E27AEACEF0061CAC6 /* AuthenticationServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A3B5E32C27AEA7340061CAC6 /* AuthenticationServices.framework */; };
+		A3B5E34027B16E620061CAC6 /* LocalAuthManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3B5E33F27B16E620061CAC6 /* LocalAuthManager.swift */; };
 		A3C9AB46261F685200170B55 /* EnterPasswordViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3C9AB45261F685200170B55 /* EnterPasswordViewController.swift */; };
 		A3CAA30B27A9B93D00330FAC /* SubtitleTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3CAA30A27A9B93D00330FAC /* SubtitleTableViewCell.swift */; };
 		A3CAA30D27AB060300330FAC /* Application.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3CAA30C27AB060200330FAC /* Application.swift */; };
@@ -102,6 +103,7 @@
 		A3B5E33427AEA7340061CAC6 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		A3B5E33527AEA7340061CAC6 /* CredentialProvider.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = CredentialProvider.entitlements; sourceTree = "<group>"; };
 		A3B5E33D27AEACEF0061CAC6 /* Passs.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Passs.entitlements; sourceTree = "<group>"; };
+		A3B5E33F27B16E620061CAC6 /* LocalAuthManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalAuthManager.swift; sourceTree = "<group>"; };
 		A3C9AB45261F685200170B55 /* EnterPasswordViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EnterPasswordViewController.swift; sourceTree = "<group>"; };
 		A3CAA30A27A9B93D00330FAC /* SubtitleTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubtitleTableViewCell.swift; sourceTree = "<group>"; };
 		A3CAA30C27AB060200330FAC /* Application.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Application.swift; sourceTree = "<group>"; };
@@ -267,6 +269,7 @@
 				A3F4959B261E22F700E4AA7E /* DatabasesProvider.swift */,
 				A318424E2721DB5F00786744 /* Constants.swift */,
 				A3CFA4C92795F9650020F82F /* KeychainManager.swift */,
+				A3B5E33F27B16E620061CAC6 /* LocalAuthManager.swift */,
 				A3CAA31227ABCFB000330FAC /* RecentPasswordsManager.swift */,
 			);
 			path = Service;
@@ -524,6 +527,7 @@
 				A3CAA31127AB138000330FAC /* UIButton+Helpers.swift in Sources */,
 				A3C9AB46261F685200170B55 /* EnterPasswordViewController.swift in Sources */,
 				A3F4959C261E22F700E4AA7E /* DatabasesProvider.swift in Sources */,
+				A3B5E34027B16E620061CAC6 /* LocalAuthManager.swift in Sources */,
 				A318424F2721DB5F00786744 /* Constants.swift in Sources */,
 				A32C6549260C557300DC6653 /* AppDelegate.swift in Sources */,
 			);

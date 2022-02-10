@@ -8,10 +8,11 @@
 import UIKit
 import MobileCoreServices
 import UniformTypeIdentifiers
+import LocalAuthentication
 
 class DatabaseListViewController: UIViewController {
     private let databasesProvider: DatabasesProvider
-    private let keychainManager: KeychainManager
+    private let localAuthManager: LocalAuthManager
     
     private let cellId = "database.cell.id"
     private let completion: (URL, String) -> ()
@@ -33,11 +34,11 @@ class DatabaseListViewController: UIViewController {
     
     init(
         databasesProvider: DatabasesProvider,
-        keychainManager: KeychainManager,
+        localAuthManager: LocalAuthManager,
         completion: @escaping (URL, String) -> ()
     ) {
         self.databasesProvider = databasesProvider
-        self.keychainManager = keychainManager
+        self.localAuthManager = localAuthManager
         self.completion = completion
         super.init(nibName: nil, bundle: nil)
         self.databasesProvider.delegate = self
@@ -71,7 +72,7 @@ class DatabaseListViewController: UIViewController {
     private func presentEnterPassword(for database: StoredDatabase) {
         let enterPasswordController = EnterPasswordViewController { [unowned self] password, useBiometry in
             if useBiometry {
-                try? keychainManager.savePassword(password, for: database.url.lastPathComponent)
+                try? localAuthManager.savePassword(password, for: database.url.lastPathComponent)
             }
             self.dismiss(animated: true)
             self.completion(database.url, password)
@@ -145,17 +146,26 @@ extension DatabaseListViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
         let database = databasesProvider.databases[indexPath.row]
-        do {
-            guard let password = try keychainManager.savedPassword(for: database.url.lastPathComponent) else {
-                presentEnterPassword(for: database)
-                return
+        localAuthManager.password(for: database.url.lastPathComponent) { result in
+            switch result {
+            case .success(let password):
+                self.dismiss(animated: true)
+                self.completion(database.url, password)
+            case .failure(let error):
+                switch error {
+                case is LAError:
+                    let error = error as! LAError
+                    if error.code == .userFallback {
+                        self.presentEnterPassword(for: database)
+                    }
+                case is KeychainError:
+                    let error = error as! KeychainError
+                    if error == .itemNotFound {
+                        self.presentEnterPassword(for: database)
+                    }
+                default: break
+                }
             }
-            self.dismiss(animated: true)
-            self.completion(database.url, password)
-        } catch (let error) {
-            guard let error = error as? KeychainError,
-                  error != KeychainError.userCancelled else { return }
-            presentEnterPassword(for: database)
         }
     }
 

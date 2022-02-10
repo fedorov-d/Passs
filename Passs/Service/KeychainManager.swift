@@ -11,52 +11,51 @@ import Security
 enum KeychainError: Error {
     case cantSavePassword
     case userCancelled
+    case itemNotFound
 }
 
 protocol KeychainManager: AnyObject {
-    func savePassword(_: String, for database: String) throws
-    func savedPassword(for database: String) throws -> String?
+    func setItem(_: String, for key: String) throws
+    func item(for key: String) throws -> String?
+    func deleteItem(for key: String) throws
 }
 
 class KeychainManagerImp: KeychainManager {
 
-    let userDefaults = UserDefaults.standard
+    func setItem(_ item: String, for key: String) throws {
 
-    func savePassword(_ password: String, for database: String) throws {
-        userDefaults.set(true, forKey: database)
-        userDefaults.synchronize()
+        var query: [AnyHashable: Any] = [kSecClass: kSecClassInternetPassword,
+                                        kSecAttrServer: "",
+                                        kSecAttrAccount: key]
+        let status: OSStatus
+        if let _ = try? self.item(for: query) {
+            let updateQuery = [kSecValueData: item.data(using: .utf8)]
+            status = SecItemUpdate(updateQuery as CFDictionary, query as CFDictionary)
+        } else {
+            query[kSecValueData] = item.data(using: .utf8)
+            status = SecItemAdd(query as CFDictionary, nil)
 
-//        let access = SecAccessControlCreateWithFlags(
-//            nil,
-//            kSecAttrAccessibleWhenUnlockedThisDeviceOnly,
-//            [.biometryAny],
-//            nil
-//        )
-        let query: [String: Any] = [
-            kSecClass as String: kSecClassInternetPassword,
-            kSecAttrAccount as String: database,
-            kSecAttrServer as String: "",
-//            kSecAttrAccessControl as String: access as Any,
-            kSecValueData as String: password.data(using: .utf8) as Any
-        ]
-
-        let status = SecItemAdd(query as CFDictionary, nil)
-        guard status == errSecSuccess else { throw KeychainError.cantSavePassword }
+        }
+        guard status == errSecSuccess else {
+            throw KeychainError.cantSavePassword
+        }
+        let itm = try self.item(for: key)
+        print(itm)
     }
 
-    func hasSavedPassword(for database: String) -> Bool {
-        userDefaults.bool(forKey: database) == true
+    func item(for key: String) throws -> String? {
+        let query = query(for: key)
+        return try self.item(for: query)
     }
 
-    func savedPassword(for database: String) throws -> String? {
-        guard hasSavedPassword(for: database) else { return nil }
+    func deleteItem(for key: String) throws {
+        let query = [kSecClass: kSecClassGenericPassword,
+                     kSecAttrAccount: key
+        ] as [String: Any]
+        let _ = SecItemDelete(query as CFDictionary)
+    }
 
-        let query: [String: Any] = [kSecClass as String: kSecClassInternetPassword,
-                                    kSecAttrAccount as String: database,
-                                    kSecAttrServer as String: "",
-                                    kSecMatchLimit as String: kSecMatchLimitOne,
-                                    kSecUseOperationPrompt as String: "Access your password on the keychain",
-                                    kSecReturnData as String: true]
+    private func item(for query: [AnyHashable: Any]) throws -> String? {
         var itemCopy: AnyObject?
         let status = SecItemCopyMatching(query as CFDictionary, &itemCopy)
         switch status {
@@ -68,6 +67,14 @@ class KeychainManagerImp: KeychainManager {
         default:
             return nil
         }
+    }
+
+    private func query(for key: String) -> [AnyHashable: Any] {
+        [kSecClass: kSecClassInternetPassword,
+        kSecAttrServer: "",
+        kSecAttrAccount: key,
+        kSecMatchLimit: kSecMatchLimitOne,
+        kSecReturnData: true]
     }
 
 }

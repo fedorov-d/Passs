@@ -29,7 +29,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         let navigationController = UINavigationController()
         let databaseListViewController = DatabaseListViewController(
             databasesProvider: databasesProvider,
-            keychainManager: keychainManager
+            localAuthManager: LocalAuthManagerImp(keychainManager: keychainManager)
         ) { [unowned self] databaseURL, password in
             let passDatabaseManager = PassDatabaseManagerImp(
                 databaseURL: databaseURL,
