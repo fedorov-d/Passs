@@ -11,6 +11,9 @@ import Combine
 
 class EnterPasswordViewController: UIViewController, UITextFieldDelegate {
 
+    private let passDatabaseManager: PassDatabaseManager
+    private let database: StoredDatabase
+
     @available(*, unavailable)
     override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: Bundle?) {
         fatalError("init(nibName:bundle:) has not been implemented")
@@ -21,7 +24,13 @@ class EnterPasswordViewController: UIViewController, UITextFieldDelegate {
         fatalError("init(coder:) has not been implemented")
     }
     
-    init(completion: @escaping (String, Bool) -> ()) {
+    init(
+        passDatabaseManager: PassDatabaseManager,
+        database: StoredDatabase,
+        completion: @escaping (String, Bool) -> ()
+    ) {
+        self.passDatabaseManager = passDatabaseManager
+        self.database = database
         self.completion = completion
         super.init(nibName: nil, bundle: nil)
         modalPresentationStyle = .overCurrentContext
@@ -30,18 +39,26 @@ class EnterPasswordViewController: UIViewController, UITextFieldDelegate {
     
     private let completion: (String, Bool) -> ()
     private var subscriptionSet = Set<AnyCancellable>()
+
+    private lazy var stackView: UIStackView = {
+        let stackView = UIStackView()
+        stackView.axis = .vertical
+        stackView.alignment = .fill
+        stackView.distribution = .fillProportionally
+        stackView.spacing = 10
+        return stackView
+    }()
     
     private lazy var textField: UITextField = {
         let textField = UITextField()
         textField.isSecureTextEntry = true
-        textField.backgroundColor = .white
+        textField.textAlignment = .center
         textField.delegate = self
-        textField.tintColor = .darkText
-        textField.textColor = .darkText
         let font = UIFont.preferredFont(forTextStyle: .callout)
         textField.font = font
         let placeholderTextColor: UIColor
         placeholderTextColor = .label
+        textField.borderStyle = .roundedRect
         textField.attributedPlaceholder = NSAttributedString(
             string: "Password",
             attributes: [
@@ -56,7 +73,7 @@ class EnterPasswordViewController: UIViewController, UITextFieldDelegate {
     
     private lazy var backgroundView: UIView = {
         let view = UIView()
-        view.backgroundColor = .white
+        view.backgroundColor = .tertiarySystemBackground
         view.layer.shadowColor = UIColor.black.cgColor
         view.layer.shadowOffset = CGSize(width: 3, height: -5)
         view.layer.shadowRadius = 5
@@ -65,26 +82,30 @@ class EnterPasswordViewController: UIViewController, UITextFieldDelegate {
 
     private lazy var nextButton: UIButton = {
         let button = UIButton()
-        let configuration = UIImage.SymbolConfiguration(pointSize: 22, weight: .bold, scale: .large)
-        let baseImage = UIImage(systemName: "arrow.right.circle.fill", withConfiguration: configuration)
-        button.setImage(baseImage?.tinted(with: .systemGreen), for: .normal)
-        button.setImage(baseImage?.tinted(with: .lightGray), for: .disabled)
+        button.setTitle("Unlock", for: .normal)
+        button.backgroundColor = .secondarySystemBackground
+        button.setTitleColor(.secondaryLabel, for: .disabled)
+        button.setTitleColor(.systemBlue, for: .normal)
+        button.layer.cornerRadius = 4
+        button.layer.masksToBounds = true
         button.addTarget(self, action: #selector(nextButtonTapped), for: .touchUpInside)
         button.isEnabled = false
         return button
-    }()
-
-    private lazy var separatorView: UIView = {
-        let view = UIView()
-        view.backgroundColor = UIColor.black.withAlphaComponent(0.1)
-        return view
     }()
 
     private lazy var unlockWithTouchIdLabel: UILabel = {
         let label = UILabel()
         label.text = "Unlock with Touch id"
         label.font = .preferredFont(forTextStyle: .footnote)
-        label.textColor = .darkGray
+        label.textColor = .secondaryLabel
+        return label
+    }()
+
+    private lazy var errordLabel: UILabel = {
+        let label = UILabel()
+        label.font = .preferredFont(forTextStyle: .footnote)
+        label.textColor = .systemRed
+        label.isHidden = true
         return label
     }()
 
@@ -127,7 +148,7 @@ class EnterPasswordViewController: UIViewController, UITextFieldDelegate {
     // MARK: UITextFieldDelegate
     
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
-        completion(textField.text ?? "", unlockWithTouchIdSwitch.isOn)
+        nextButtonTapped()
         return true
     }
     
@@ -135,11 +156,12 @@ class EnterPasswordViewController: UIViewController, UITextFieldDelegate {
     
     private func addSubviews() {
         view.addSubview(backgroundView)
-        backgroundView.addSubview(textField)
-        backgroundView.addSubview(nextButton)
-        backgroundView.addSubview(separatorView)
-        backgroundView.addSubview(unlockWithTouchIdLabel)
-        backgroundView.addSubview(unlockWithTouchIdSwitch)
+        backgroundView.addSubview(stackView)
+        stackView.addArrangedSubview(textField)
+        stackView.addArrangedSubview(unlockWithTouchIdLabel)
+        stackView.addArrangedSubview(unlockWithTouchIdSwitch)
+        stackView.addArrangedSubview(errordLabel)
+        stackView.addArrangedSubview(nextButton)
     }
     
     private func setupConstraints() {
@@ -148,34 +170,30 @@ class EnterPasswordViewController: UIViewController, UITextFieldDelegate {
             make.top.equalTo(self.view.snp.bottom)
         }
 
+        stackView.snp.makeConstraints { make in
+            make.edges.equalToSuperview().inset(20)
+        }
+
         textField.snp.makeConstraints { make in
-            make.leading.equalToSuperview().inset(20)
-            make.trailing.equalTo(nextButton.snp.leading).offset(-20)
-            make.height.equalTo(nextButton)
-            make.top.equalToSuperview()
+//            make.leading.trailing.equalToSuperview().inset(20)
+            make.height.equalTo(48)
+//            make.top.equalToSuperview().offset(20)
         }
-
+//
+//        unlockWithTouchIdLabel.snp.makeConstraints { make in
+//            make.leading.equalTo(textField.snp.leading)
+//            make.centerY.equalTo(textField.snp.bottom).offset(24)
+//        }
+//
+//        unlockWithTouchIdSwitch.snp.makeConstraints { make in
+//            make.trailing.equalToSuperview().offset(-20)
+//            make.centerY.equalTo(unlockWithTouchIdLabel.snp.centerY)
+//        }
+//
         nextButton.snp.makeConstraints { make in
-            make.trailing.equalToSuperview().offset(-20)
-            make.centerY.equalTo(textField)
-            make.height.width.equalTo(48)
-        }
-
-        separatorView.snp.makeConstraints { make in
-            make.leading.trailing.equalToSuperview().inset(20)
-            make.top.equalTo(textField.snp.bottom)
-            make.height.equalTo(1)
-        }
-
-        unlockWithTouchIdLabel.snp.makeConstraints { make in
-            make.leading.equalTo(textField.snp.leading)
-            make.centerY.equalTo(separatorView.snp.bottom).offset(24)
-        }
-
-        unlockWithTouchIdSwitch.snp.makeConstraints { make in
-            make.trailing.equalTo(nextButton.snp.trailing)
-            make.centerY.equalTo(unlockWithTouchIdLabel.snp.centerY)
-            make.centerY.equalTo(backgroundView.snp.bottom).inset(24)
+//            make.leading.trailing.bottom.equalToSuperview().inset(20)
+//            make.top.equalTo(unlockWithTouchIdSwitch.snp.bottom).offset(15)
+            make.height.equalTo(48)
         }
     }
     
@@ -227,12 +245,29 @@ extension EnterPasswordViewController {
 
     @objc
     private func nextButtonTapped() {
-        completion(textField.text ?? "", unlockWithTouchIdSwitch.isOn)
+        let password = textField.text ?? ""
+        do {
+            try passDatabaseManager.load(databaseURL: self.database.url, password:password)
+            completion(password, unlockWithTouchIdSwitch.isOn)
+        } catch (let error) {
+            errordLabel.text = "Invalid password"
+            UIView.animate(withDuration: 0.3) {
+                self.errordLabel.isHidden = false
+            }
+        }
     }
 
     @objc
     private func textFieldTextDidChange(_ sender: UITextField) {
         nextButton.isEnabled = sender.text?.count ?? 0 > 0
+        if sender.text?.count ?? 0 == 0 {
+            unlockWithTouchIdSwitch.isOn = false
+        }
+        if errordLabel.isHidden == false {
+            UIView.animate(withDuration: 0.3) {
+                self.errordLabel.isHidden = true
+            }
+        }
         unlockWithTouchIdSwitch.isEnabled = nextButton.isEnabled
     }
 

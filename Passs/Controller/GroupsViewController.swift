@@ -20,6 +20,7 @@ class GroupsViewController: UIViewController {
         searchResultsControllerProvider: @escaping () -> PasswordsSeachResultsDispalyController & UIViewController,
         groupSelected: @escaping (PassGroup) -> Void
     ) {
+        precondition(databaseManager.passwordGroups?.count ?? 0 > 0)
         self.databaseManager = databaseManager
         self.recentPasswordsManager = recentPasswordsManager
         self.groupSelected = groupSelected
@@ -52,7 +53,6 @@ class GroupsViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.databaseManager.load()
         self.navigationItem.largeTitleDisplayMode = .always
         self.navigationItem.title = self.databaseManager.databaseName
 
@@ -70,9 +70,10 @@ extension GroupsViewController: UISearchResultsUpdating {
 
     func updateSearchResults(for searchController: UISearchController) {
         guard let passwordsController = searchController.searchResultsController
-                as? PasswordsSeachResultsDispalyController & UIViewController else { return }
-        let items = databaseManager.passwordGroups.flatMap { group in
-            return group.items
+                as? PasswordsSeachResultsDispalyController & UIViewController,
+        let groups = databaseManager.passwordGroups else { return }
+        let items = groups.flatMap { group in
+            group.items
         }
         let text = searchController.searchBar.text
         if text == nil || text!.isEmpty {
@@ -94,12 +95,12 @@ extension GroupsViewController: UISearchResultsUpdating {
 extension GroupsViewController: UITableViewDataSource {
 
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return databaseManager.passwordGroups.count
+        return databaseManager.passwordGroups?.count ?? 0
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "cell.id", for: indexPath)
-        let group = databaseManager.passwordGroups[indexPath.row]
+        guard let group = databaseManager.passwordGroups?[indexPath.row] else { fatalError() }
         cell.textLabel?.text = group.title
         cell.accessoryType = .disclosureIndicator
         cell.imageView?.image = UIImage(systemName: "folder")?.tinted(with: .systemBlue)
@@ -112,7 +113,7 @@ extension GroupsViewController: UITableViewDelegate {
 
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
-        let group = databaseManager.passwordGroups[indexPath.row]
+        guard let group = databaseManager.passwordGroups?[indexPath.row] else { return }
         groupSelected(group)
     }
 

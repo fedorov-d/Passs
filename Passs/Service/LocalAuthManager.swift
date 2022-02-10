@@ -36,7 +36,7 @@ final class LocalAuthManagerImp: LocalAuthManager {
                 completion(.failure(KeychainError.itemNotFound))
                 return
             }
-            LAContext().evaluatePolicy(.deviceOwnerAuthenticationWithBiometrics, localizedReason: "test") { success, error in
+            LAContext().evaluatePolicy(.deviceOwnerAuthenticationWithBiometrics, localizedReason: "Unlock database") { success, error in
                 DispatchQueue.main.async {
                     if success {
                         completion(.success(password))

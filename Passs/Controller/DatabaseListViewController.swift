@@ -13,9 +13,10 @@ import LocalAuthentication
 class DatabaseListViewController: UIViewController {
     private let databasesProvider: DatabasesProvider
     private let localAuthManager: LocalAuthManager
+    private let passDatabaseManager: PassDatabaseManager
     
     private let cellId = "database.cell.id"
-    private let completion: (URL, String) -> ()
+    private let completion: () -> Void
 
     private lazy var dateFormatter: DateFormatter = {
         let formatter = DateFormatter()
@@ -34,10 +35,12 @@ class DatabaseListViewController: UIViewController {
     
     init(
         databasesProvider: DatabasesProvider,
+        passDatabaseManager: PassDatabaseManager,
         localAuthManager: LocalAuthManager,
-        completion: @escaping (URL, String) -> ()
+        completion: @escaping () -> ()
     ) {
         self.databasesProvider = databasesProvider
+        self.passDatabaseManager = passDatabaseManager
         self.localAuthManager = localAuthManager
         self.completion = completion
         super.init(nibName: nil, bundle: nil)
@@ -70,14 +73,33 @@ class DatabaseListViewController: UIViewController {
     }
 
     private func presentEnterPassword(for database: StoredDatabase) {
-        let enterPasswordController = EnterPasswordViewController { [unowned self] password, useBiometry in
+        let enterPasswordController = EnterPasswordViewController(
+            passDatabaseManager: passDatabaseManager,
+            database: database
+        ) { [unowned self] password, useBiometry in
             if useBiometry {
                 try? localAuthManager.savePassword(password, for: database.url.lastPathComponent)
             }
             self.dismiss(animated: true)
-            self.completion(database.url, password)
+            self.completion()
         }
         present(enterPasswordController, animated: true)
+    }
+
+    private func handlePasswordError(_ error: Error, for database: StoredDatabase) {
+        switch error {
+        case is LAError:
+            let error = error as! LAError
+            if error.code == .userFallback || error.code == .biometryLockout {
+                self.presentEnterPassword(for: database)
+            }
+        case is KeychainError:
+            let error = error as! KeychainError
+            if error == .itemNotFound {
+                self.presentEnterPassword(for: database)
+            }
+        default: break
+        }
     }
 }
 
@@ -121,7 +143,7 @@ extension DatabaseListViewController: UIDocumentPickerDelegate {
 extension DatabaseListViewController: UITableViewDataSource {
 
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return databasesProvider.databases.count
+        databasesProvider.databases.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -146,25 +168,18 @@ extension DatabaseListViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
         let database = databasesProvider.databases[indexPath.row]
-        localAuthManager.password(for: database.url.lastPathComponent) { result in
+        localAuthManager.password(for: database.url.lastPathComponent) { [weak self] result in
+            guard let self = self else { return }
             switch result {
             case .success(let password):
-                self.dismiss(animated: true)
-                self.completion(database.url, password)
-            case .failure(let error):
-                switch error {
-                case is LAError:
-                    let error = error as! LAError
-                    if error.code == .userFallback {
-                        self.presentEnterPassword(for: database)
-                    }
-                case is KeychainError:
-                    let error = error as! KeychainError
-                    if error == .itemNotFound {
-                        self.presentEnterPassword(for: database)
-                    }
-                default: break
+                do {
+                    try self.passDatabaseManager.load(databaseURL: database.url, password: password)
+                    self.completion()
+                } catch (let error) {
+                    self.handlePasswordError(error, for: database)
                 }
+            case .failure(let error):
+                self.handlePasswordError(error, for: database)
             }
         }
     }

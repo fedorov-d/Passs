@@ -30,7 +30,7 @@ final class RecentPasswordsManagerImp: RecentPasswordsManager {
     func push(item: PassItem) {
         guard !items.contains(key(for: item)) else { return }
         items.insert(key(for: item), at: 0)
-        if items.count > 5 {
+        if items.count > Constants.maxRecentItems {
             items.removeLast()
         }
         userDefaults.set(items, forKey: storageKey)

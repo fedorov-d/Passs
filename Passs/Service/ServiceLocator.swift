@@ -12,7 +12,7 @@ protocol ServiceLocator: AnyObject {
     func databasesProvider() -> DatabasesProvider
     func keychainManager() -> KeychainManager
     func localAuthManager() -> LocalAuthManager
-    func passDatabaseManager(databaseURL: URL, password: String) -> PassDatabaseManager
+    func passDatabaseManager() -> PassDatabaseManager
     func recentPasswordsManager(databaseURL: URL) -> RecentPasswordsManager
     func pasteboardManager() -> PasteboardManager
 }
@@ -34,8 +34,8 @@ final class ServiceLocatorImp: ServiceLocator {
         LocalAuthManagerImp(keychainManager: keychainManager())
     }
 
-    func passDatabaseManager(databaseURL: URL, password: String) -> PassDatabaseManager {
-        PassDatabaseManagerImp(databaseURL: databaseURL, password: password)
+    func passDatabaseManager() -> PassDatabaseManager {
+        PassDatabaseManagerImp()
     }
 
     func recentPasswordsManager(databaseURL: URL) -> RecentPasswordsManager {

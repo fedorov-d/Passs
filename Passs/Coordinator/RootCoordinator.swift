@@ -25,11 +25,10 @@ final class RootCoordinator {
         navigationController.viewControllers = [databaseListViewController()]
     }
 
-    private func showGroupsViewController(for databaseURL: URL, password: String) {
-        let passDatabaseManager = self.serviceLocator.passDatabaseManager(
-            databaseURL: databaseURL,
-            password: password
-        )
+    private func showGroupsViewController(passDatabaseManager: PassDatabaseManager) {
+        guard let databaseURL = passDatabaseManager.databaseURL else {
+            fatalError()
+        }
         let recentPasswordsManager = self.serviceLocator.recentPasswordsManager(databaseURL: databaseURL)
         let groupsViewController = self.groupsViewController(
             passDatabaseManager: passDatabaseManager,
@@ -49,11 +48,14 @@ final class RootCoordinator {
 
 extension RootCoordinator {
     private func databaseListViewController() -> DatabaseListViewController {
-        DatabaseListViewController(
+        let passDatabaseManager = serviceLocator.passDatabaseManager()
+        return DatabaseListViewController(
             databasesProvider: serviceLocator.databasesProvider(),
-            localAuthManager: serviceLocator.localAuthManager(),
-            completion: showGroupsViewController(for:password:)
-        )
+            passDatabaseManager: passDatabaseManager,
+            localAuthManager: serviceLocator.localAuthManager()) { [weak self] in
+                guard let self = self else { return }
+                self.showGroupsViewController(passDatabaseManager: passDatabaseManager)
+            }
     }
 
     private func groupsViewController(
