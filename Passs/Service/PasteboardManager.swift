@@ -28,7 +28,7 @@ extension UIPasteboard: Pasteboard {
     }
 }
 
-class PasteboardManagerImp: PasteboardManager {
+final class PasteboardManagerImp: PasteboardManager {
 
     private let clearInterval: TimeInterval
     private var pasteboard: Pasteboard

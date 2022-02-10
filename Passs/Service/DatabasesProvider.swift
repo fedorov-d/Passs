@@ -30,7 +30,7 @@ struct StoredDatabaseImp: StoredDatabase {
     let modificationDate: Date?
 }
 
-class DatabasesProviderImp: DatabasesProvider {
+final class DatabasesProviderImp: DatabasesProvider {
 
     weak var delegate: DatabasesProviderDelegate?
     

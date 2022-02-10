@@ -20,7 +20,7 @@ protocol KeychainManager: AnyObject {
     func deleteItem(for key: String) throws
 }
 
-class KeychainManagerImp: KeychainManager {
+final class KeychainManagerImp: KeychainManager {
 
     func setItem(_ item: String, for key: String) throws {
 
@@ -39,8 +39,6 @@ class KeychainManagerImp: KeychainManager {
         guard status == errSecSuccess else {
             throw KeychainError.cantSavePassword
         }
-        let itm = try self.item(for: key)
-        print(itm)
     }
 
     func item(for key: String) throws -> String? {

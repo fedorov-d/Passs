@@ -13,6 +13,8 @@
 		A32C654D260C557300DC6653 /* PasswordsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A32C654C260C557300DC6653 /* PasswordsViewController.swift */; };
 		A32C6552260C557700DC6653 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A32C6551260C557700DC6653 /* Assets.xcassets */; };
 		A32C6555260C557700DC6653 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A32C6553260C557700DC6653 /* LaunchScreen.storyboard */; };
+		A365CAB127B4F0F2009877D1 /* RootCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = A365CAB027B4F0F2009877D1 /* RootCoordinator.swift */; };
+		A365CAB327B4FAE9009877D1 /* ServiceLocator.swift in Sources */ = {isa = PBXBuildFile; fileRef = A365CAB227B4FAE9009877D1 /* ServiceLocator.swift */; };
 		A3B5E32627AD9EE40061CAC6 /* UIViewController+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3B5E32527AD9EE40061CAC6 /* UIViewController+Extensions.swift */; };
 		A3B5E32D27AEA7340061CAC6 /* AuthenticationServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A3B5E32C27AEA7340061CAC6 /* AuthenticationServices.framework */; };
 		A3B5E33027AEA7340061CAC6 /* CredentialProviderViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3B5E32F27AEA7340061CAC6 /* CredentialProviderViewController.swift */; };
@@ -95,6 +97,8 @@
 		A32C6551260C557700DC6653 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		A32C6554260C557700DC6653 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		A32C6556260C557700DC6653 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		A365CAB027B4F0F2009877D1 /* RootCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RootCoordinator.swift; sourceTree = "<group>"; };
+		A365CAB227B4FAE9009877D1 /* ServiceLocator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ServiceLocator.swift; sourceTree = "<group>"; };
 		A3B5E32527AD9EE40061CAC6 /* UIViewController+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewController+Extensions.swift"; sourceTree = "<group>"; };
 		A3B5E32B27AEA7330061CAC6 /* CredentialProvider.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = CredentialProvider.appex; sourceTree = BUILT_PRODUCTS_DIR; };
 		A3B5E32C27AEA7340061CAC6 /* AuthenticationServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AuthenticationServices.framework; path = System/Library/Frameworks/AuthenticationServices.framework; sourceTree = SDKROOT; };
@@ -207,6 +211,7 @@
 		A32C6547260C557200DC6653 /* Passs */ = {
 			isa = PBXGroup;
 			children = (
+				A365CAAF27B4F0D6009877D1 /* Coordinator */,
 				A3CAA30927A9B91A00330FAC /* Cells */,
 				A3CFA4C42792895B0020F82F /* Common */,
 				A3F4959D261E241300E4AA7E /* Controller */,
@@ -221,6 +226,14 @@
 				A3B5E33D27AEACEF0061CAC6 /* Passs.entitlements */,
 			);
 			path = Passs;
+			sourceTree = "<group>";
+		};
+		A365CAAF27B4F0D6009877D1 /* Coordinator */ = {
+			isa = PBXGroup;
+			children = (
+				A365CAB027B4F0F2009877D1 /* RootCoordinator.swift */,
+			);
+			path = Coordinator;
 			sourceTree = "<group>";
 		};
 		A3B5E32E27AEA7340061CAC6 /* CredentialProvider */ = {
@@ -264,6 +277,7 @@
 		A3F3DA32260DBEAA0057AF24 /* Service */ = {
 			isa = PBXGroup;
 			children = (
+				A365CAB227B4FAE9009877D1 /* ServiceLocator.swift */,
 				A3F3DA33260DBEB50057AF24 /* PasteboardManager.swift */,
 				A3F3DA35260DC1D10057AF24 /* PassDatabaseManager.swift */,
 				A3F4959B261E22F700E4AA7E /* DatabasesProvider.swift */,
@@ -523,6 +537,8 @@
 				A3F4959F261E242700E4AA7E /* DatabaseListViewController.swift in Sources */,
 				A3B5E32627AD9EE40061CAC6 /* UIViewController+Extensions.swift in Sources */,
 				A32C654D260C557300DC6653 /* PasswordsViewController.swift in Sources */,
+				A365CAB127B4F0F2009877D1 /* RootCoordinator.swift in Sources */,
+				A365CAB327B4FAE9009877D1 /* ServiceLocator.swift in Sources */,
 				A3CFA4CA2795F9650020F82F /* KeychainManager.swift in Sources */,
 				A3CAA31127AB138000330FAC /* UIButton+Helpers.swift in Sources */,
 				A3C9AB46261F685200170B55 /* EnterPasswordViewController.swift in Sources */,

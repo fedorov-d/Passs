@@ -14,22 +14,16 @@ protocol LocalAuthManager: AnyObject {
     func password(for database: String, completion: @escaping (Result<String, Error>) -> Void)
 }
 
-class LocalAuthManagerImp: LocalAuthManager {
+final class LocalAuthManagerImp: LocalAuthManager {
 
     private let keychainManager: KeychainManager
-    private let context: LAContext = {
-        let context = LAContext()
-        context.touchIDAuthenticationAllowableReuseDuration = 5
-        return context
-    }()
 
     init(keychainManager: KeychainManager) {
         self.keychainManager = keychainManager
     }
 
     func isLocalAuthAvailable() -> Bool {
-        var error: NSError?
-        return context.canEvaluatePolicy(.deviceOwnerAuthenticationWithBiometrics, error: &error)
+        return LAContext().canEvaluatePolicy(.deviceOwnerAuthenticationWithBiometrics, error: nil)
     }
 
     func savePassword(_ password: String, for database: String) throws {
@@ -42,7 +36,7 @@ class LocalAuthManagerImp: LocalAuthManager {
                 completion(.failure(KeychainError.itemNotFound))
                 return
             }
-            context.evaluatePolicy(.deviceOwnerAuthenticationWithBiometrics, localizedReason: "test") { success, error in
+            LAContext().evaluatePolicy(.deviceOwnerAuthenticationWithBiometrics, localizedReason: "test") { success, error in
                 DispatchQueue.main.async {
                     if success {
                         completion(.success(password))

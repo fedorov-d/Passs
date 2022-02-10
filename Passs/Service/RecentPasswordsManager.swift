@@ -12,7 +12,7 @@ protocol RecentPasswordsManager {
     func matchingItems(for items: [PassItem]) -> [PassItem]
 }
 
-class RecentPasswordsManagerImp: RecentPasswordsManager {
+final class RecentPasswordsManagerImp: RecentPasswordsManager {
     private(set) var items: [String] = []
     private let userDefaults = UserDefaults.standard
 

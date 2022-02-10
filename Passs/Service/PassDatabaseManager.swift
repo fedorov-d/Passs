@@ -14,7 +14,7 @@ protocol PassDatabaseManager {
     func load()
 }
 
-class PassDatabaseManagerImp: PassDatabaseManager {
+final class PassDatabaseManagerImp: PassDatabaseManager {
     private(set) var passwordGroups = [PassGroup]()
     private(set) var databaseName: String?
     
