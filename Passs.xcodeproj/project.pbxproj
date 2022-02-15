@@ -14,6 +14,8 @@
 		A32C6552260C557700DC6653 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A32C6551260C557700DC6653 /* Assets.xcassets */; };
 		A32C6555260C557700DC6653 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A32C6553260C557700DC6653 /* LaunchScreen.storyboard */; };
 		A35A8B0E27B56B8E00216C24 /* UIButton+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = A35A8B0D27B56B8E00216C24 /* UIButton+Extensions.swift */; };
+		A35A8B1227BC2F1500216C24 /* UnlockViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A35A8B1127BC2F1500216C24 /* UnlockViewController.swift */; };
+		A35A8B1627BC33B000216C24 /* TextFieldCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A35A8B1527BC33B000216C24 /* TextFieldCell.swift */; };
 		A365CAB127B4F0F2009877D1 /* RootCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = A365CAB027B4F0F2009877D1 /* RootCoordinator.swift */; };
 		A365CAB327B4FAE9009877D1 /* ServiceLocator.swift in Sources */ = {isa = PBXBuildFile; fileRef = A365CAB227B4FAE9009877D1 /* ServiceLocator.swift */; };
 		A3B5E32627AD9EE40061CAC6 /* UIViewController+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3B5E32527AD9EE40061CAC6 /* UIViewController+Extensions.swift */; };
@@ -99,6 +101,8 @@
 		A32C6554260C557700DC6653 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		A32C6556260C557700DC6653 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		A35A8B0D27B56B8E00216C24 /* UIButton+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIButton+Extensions.swift"; sourceTree = "<group>"; };
+		A35A8B1127BC2F1500216C24 /* UnlockViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UnlockViewController.swift; sourceTree = "<group>"; };
+		A35A8B1527BC33B000216C24 /* TextFieldCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextFieldCell.swift; sourceTree = "<group>"; };
 		A365CAB027B4F0F2009877D1 /* RootCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RootCoordinator.swift; sourceTree = "<group>"; };
 		A365CAB227B4FAE9009877D1 /* ServiceLocator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ServiceLocator.swift; sourceTree = "<group>"; };
 		A3B5E32527AD9EE40061CAC6 /* UIViewController+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewController+Extensions.swift"; sourceTree = "<group>"; };
@@ -254,6 +258,7 @@
 			children = (
 				A3CAA30A27A9B93D00330FAC /* SubtitleTableViewCell.swift */,
 				A3CAA31027AB138000330FAC /* UIButton+Helpers.swift */,
+				A35A8B1527BC33B000216C24 /* TextFieldCell.swift */,
 			);
 			path = Cells;
 			sourceTree = "<group>";
@@ -299,6 +304,7 @@
 				A3F4959E261E242700E4AA7E /* DatabaseListViewController.swift */,
 				A3C9AB45261F685200170B55 /* EnterPasswordViewController.swift */,
 				A3CFA4C7279349370020F82F /* GroupsViewController.swift */,
+				A35A8B1127BC2F1500216C24 /* UnlockViewController.swift */,
 			);
 			path = Controller;
 			sourceTree = "<group>";
@@ -527,6 +533,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A35A8B1227BC2F1500216C24 /* UnlockViewController.swift in Sources */,
 				A3CAA30D27AB060300330FAC /* Application.swift in Sources */,
 				A3F3DA28260CA5FC0057AF24 /* PassItem.swift in Sources */,
 				A3CAA30F27AB06CF00330FAC /* main.swift in Sources */,
@@ -545,6 +552,7 @@
 				A3CFA4CA2795F9650020F82F /* KeychainManager.swift in Sources */,
 				A3CAA31127AB138000330FAC /* UIButton+Helpers.swift in Sources */,
 				A3C9AB46261F685200170B55 /* EnterPasswordViewController.swift in Sources */,
+				A35A8B1627BC33B000216C24 /* TextFieldCell.swift in Sources */,
 				A3F4959C261E22F700E4AA7E /* DatabasesProvider.swift in Sources */,
 				A3B5E34027B16E620061CAC6 /* LocalAuthManager.swift in Sources */,
 				A318424F2721DB5F00786744 /* Constants.swift in Sources */,

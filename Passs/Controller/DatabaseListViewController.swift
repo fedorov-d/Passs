@@ -73,7 +73,7 @@ class DatabaseListViewController: UIViewController {
     }
 
     private func presentEnterPassword(for database: StoredDatabase) {
-        let enterPasswordController = EnterPasswordViewController(
+        let enterPasswordController = UnlockViewController(
             passDatabaseManager: passDatabaseManager,
             database: database
         ) { [unowned self] password, useBiometry in
@@ -83,7 +83,8 @@ class DatabaseListViewController: UIViewController {
             self.dismiss(animated: true)
             self.completion()
         }
-        present(enterPasswordController, animated: true)
+        let navigationController = UINavigationController(rootViewController: enterPasswordController)
+        present(navigationController, animated: true)
     }
 
     private func handlePasswordError(_ error: Error, for database: StoredDatabase) {
