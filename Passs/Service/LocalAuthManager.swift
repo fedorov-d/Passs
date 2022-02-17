@@ -36,17 +36,23 @@ final class LocalAuthManagerImp: LocalAuthManager {
                 completion(.failure(KeychainError.itemNotFound))
                 return
             }
-            LAContext().evaluatePolicy(.deviceOwnerAuthenticationWithBiometrics, localizedReason: "Unlock database") { success, error in
-                DispatchQueue.main.async {
-                    if success {
-                        completion(.success(password))
-                    } else if let error = error {
-                        completion(.failure(error))
-                    }
+            evaluatePolicy { success, error in
+                if success {
+                    completion(.success(password))
+                } else if let error = error {
+                    completion(.failure(error))
                 }
             }
-        } catch (let error) {
+        } catch let error {
             completion(.failure(error))
+        }
+    }
+
+    private func evaluatePolicy(completion: @escaping (Bool, Error?) -> Void) {
+        LAContext().evaluatePolicy(.deviceOwnerAuthenticationWithBiometrics, localizedReason: "Unlock database") { success, error in
+            DispatchQueue.main.async {
+                completion(success, error)
+            }
         }
     }
 

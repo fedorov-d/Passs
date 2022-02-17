@@ -10,7 +10,7 @@ import UIKit
 protocol PasteboardManager {
     func copy(_: String)
     var needsDropPassword: Bool { get }
-    func dropPassword(completion: @escaping () -> ())
+    func dropPassword(completion: @escaping () -> Void)
 }
 
 protocol Pasteboard: AnyObject {

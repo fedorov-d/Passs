@@ -27,7 +27,7 @@ class EnterPasswordViewController: UIViewController, UITextFieldDelegate {
     init(
         passDatabaseManager: PassDatabaseManager,
         database: StoredDatabase,
-        completion: @escaping (String, Bool) -> ()
+        completion: @escaping (String, Bool) -> Void
     ) {
         self.passDatabaseManager = passDatabaseManager
         self.database = database
@@ -37,7 +37,7 @@ class EnterPasswordViewController: UIViewController, UITextFieldDelegate {
         modalTransitionStyle = .crossDissolve
     }
     
-    private let completion: (String, Bool) -> ()
+    private let completion: (String, Bool) -> Void
     private var subscriptionSet = Set<AnyCancellable>()
 
     private lazy var stackView: UIStackView = {
@@ -249,7 +249,7 @@ extension EnterPasswordViewController {
         do {
             try passDatabaseManager.load(databaseURL: self.database.url, password:password)
             completion(password, unlockWithTouchIdSwitch.isOn)
-        } catch (let error) {
+        } catch _ {
             errordLabel.text = "Invalid password"
             UIView.animate(withDuration: 0.3) {
                 self.errordLabel.isHidden = false

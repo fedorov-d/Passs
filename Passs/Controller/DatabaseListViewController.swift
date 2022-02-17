@@ -37,7 +37,7 @@ class DatabaseListViewController: UIViewController {
         databasesProvider: DatabasesProvider,
         passDatabaseManager: PassDatabaseManager,
         localAuthManager: LocalAuthManager,
-        completion: @escaping () -> ()
+        completion: @escaping () -> Void
     ) {
         self.databasesProvider = databasesProvider
         self.passDatabaseManager = passDatabaseManager

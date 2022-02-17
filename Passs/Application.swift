@@ -25,7 +25,7 @@ class Application: UIApplication {
     }
 
     private func startTimer() {
-        timer = Timer(timeInterval: lockoutInterval, repeats: false, block: { [unowned self] timer in
+        timer = Timer(timeInterval: lockoutInterval, repeats: false, block: { [unowned self] _ in
             self.onLockout?()
         })
         RunLoop.main.add(timer!, forMode: .common)

@@ -16,6 +16,9 @@
 		A35A8B0E27B56B8E00216C24 /* UIButton+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = A35A8B0D27B56B8E00216C24 /* UIButton+Extensions.swift */; };
 		A35A8B1227BC2F1500216C24 /* UnlockViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A35A8B1127BC2F1500216C24 /* UnlockViewController.swift */; };
 		A35A8B1627BC33B000216C24 /* TextFieldCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A35A8B1527BC33B000216C24 /* TextFieldCell.swift */; };
+		A35A8B1827BCDE1500216C24 /* SwitchCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A35A8B1727BCDE1500216C24 /* SwitchCell.swift */; };
+		A35A8B1D27BE2C8200216C24 /* ColoredTableViewHeaderFooterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A35A8B1C27BE2C8200216C24 /* ColoredTableViewHeaderFooterView.swift */; };
+		A35A8B1F27BEB3FE00216C24 /* SelectKeyButtonCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A35A8B1E27BEB3FE00216C24 /* SelectKeyButtonCell.swift */; };
 		A365CAB127B4F0F2009877D1 /* RootCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = A365CAB027B4F0F2009877D1 /* RootCoordinator.swift */; };
 		A365CAB327B4FAE9009877D1 /* ServiceLocator.swift in Sources */ = {isa = PBXBuildFile; fileRef = A365CAB227B4FAE9009877D1 /* ServiceLocator.swift */; };
 		A3B5E32627AD9EE40061CAC6 /* UIViewController+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3B5E32527AD9EE40061CAC6 /* UIViewController+Extensions.swift */; };
@@ -29,7 +32,6 @@
 		A3CAA30B27A9B93D00330FAC /* SubtitleTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3CAA30A27A9B93D00330FAC /* SubtitleTableViewCell.swift */; };
 		A3CAA30D27AB060300330FAC /* Application.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3CAA30C27AB060200330FAC /* Application.swift */; };
 		A3CAA30F27AB06CF00330FAC /* main.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3CAA30E27AB06CF00330FAC /* main.swift */; };
-		A3CAA31127AB138000330FAC /* UIButton+Helpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3CAA31027AB138000330FAC /* UIButton+Helpers.swift */; };
 		A3CAA31327ABCFB000330FAC /* RecentPasswordsManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3CAA31227ABCFB000330FAC /* RecentPasswordsManager.swift */; };
 		A3CFA4C6279289740020F82F /* UIImage+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3CFA4C5279289740020F82F /* UIImage+Extensions.swift */; };
 		A3CFA4C8279349370020F82F /* GroupsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3CFA4C7279349370020F82F /* GroupsViewController.swift */; };
@@ -103,6 +105,9 @@
 		A35A8B0D27B56B8E00216C24 /* UIButton+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIButton+Extensions.swift"; sourceTree = "<group>"; };
 		A35A8B1127BC2F1500216C24 /* UnlockViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UnlockViewController.swift; sourceTree = "<group>"; };
 		A35A8B1527BC33B000216C24 /* TextFieldCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextFieldCell.swift; sourceTree = "<group>"; };
+		A35A8B1727BCDE1500216C24 /* SwitchCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwitchCell.swift; sourceTree = "<group>"; };
+		A35A8B1C27BE2C8200216C24 /* ColoredTableViewHeaderFooterView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColoredTableViewHeaderFooterView.swift; sourceTree = "<group>"; };
+		A35A8B1E27BEB3FE00216C24 /* SelectKeyButtonCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectKeyButtonCell.swift; sourceTree = "<group>"; };
 		A365CAB027B4F0F2009877D1 /* RootCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RootCoordinator.swift; sourceTree = "<group>"; };
 		A365CAB227B4FAE9009877D1 /* ServiceLocator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ServiceLocator.swift; sourceTree = "<group>"; };
 		A3B5E32527AD9EE40061CAC6 /* UIViewController+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewController+Extensions.swift"; sourceTree = "<group>"; };
@@ -118,7 +123,6 @@
 		A3CAA30A27A9B93D00330FAC /* SubtitleTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubtitleTableViewCell.swift; sourceTree = "<group>"; };
 		A3CAA30C27AB060200330FAC /* Application.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Application.swift; sourceTree = "<group>"; };
 		A3CAA30E27AB06CF00330FAC /* main.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = main.swift; sourceTree = "<group>"; };
-		A3CAA31027AB138000330FAC /* UIButton+Helpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIButton+Helpers.swift"; sourceTree = "<group>"; };
 		A3CAA31227ABCFB000330FAC /* RecentPasswordsManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecentPasswordsManager.swift; sourceTree = "<group>"; };
 		A3CFA4C5279289740020F82F /* UIImage+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIImage+Extensions.swift"; sourceTree = "<group>"; };
 		A3CFA4C7279349370020F82F /* GroupsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GroupsViewController.swift; sourceTree = "<group>"; };
@@ -257,8 +261,10 @@
 			isa = PBXGroup;
 			children = (
 				A3CAA30A27A9B93D00330FAC /* SubtitleTableViewCell.swift */,
-				A3CAA31027AB138000330FAC /* UIButton+Helpers.swift */,
 				A35A8B1527BC33B000216C24 /* TextFieldCell.swift */,
+				A35A8B1727BCDE1500216C24 /* SwitchCell.swift */,
+				A35A8B1C27BE2C8200216C24 /* ColoredTableViewHeaderFooterView.swift */,
+				A35A8B1E27BEB3FE00216C24 /* SelectKeyButtonCell.swift */,
 			);
 			path = Cells;
 			sourceTree = "<group>";
@@ -542,6 +548,7 @@
 				A3CFA4C6279289740020F82F /* UIImage+Extensions.swift in Sources */,
 				A3F3DA34260DBEB60057AF24 /* PasteboardManager.swift in Sources */,
 				A3CAA30B27A9B93D00330FAC /* SubtitleTableViewCell.swift in Sources */,
+				A35A8B1F27BEB3FE00216C24 /* SelectKeyButtonCell.swift in Sources */,
 				A3CFA4C8279349370020F82F /* GroupsViewController.swift in Sources */,
 				A3F3DA36260DC1D10057AF24 /* PassDatabaseManager.swift in Sources */,
 				A3F4959F261E242700E4AA7E /* DatabaseListViewController.swift in Sources */,
@@ -550,12 +557,13 @@
 				A365CAB127B4F0F2009877D1 /* RootCoordinator.swift in Sources */,
 				A365CAB327B4FAE9009877D1 /* ServiceLocator.swift in Sources */,
 				A3CFA4CA2795F9650020F82F /* KeychainManager.swift in Sources */,
-				A3CAA31127AB138000330FAC /* UIButton+Helpers.swift in Sources */,
 				A3C9AB46261F685200170B55 /* EnterPasswordViewController.swift in Sources */,
 				A35A8B1627BC33B000216C24 /* TextFieldCell.swift in Sources */,
+				A35A8B1D27BE2C8200216C24 /* ColoredTableViewHeaderFooterView.swift in Sources */,
 				A3F4959C261E22F700E4AA7E /* DatabasesProvider.swift in Sources */,
 				A3B5E34027B16E620061CAC6 /* LocalAuthManager.swift in Sources */,
 				A318424F2721DB5F00786744 /* Constants.swift in Sources */,
+				A35A8B1827BCDE1500216C24 /* SwitchCell.swift in Sources */,
 				A35A8B0E27B56B8E00216C24 /* UIButton+Extensions.swift in Sources */,
 				A32C6549260C557300DC6653 /* AppDelegate.swift in Sources */,
 			);

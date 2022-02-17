@@ -51,7 +51,7 @@ final class DatabasesProviderImp: DatabasesProvider {
     }
     
     func deleteDatabase(_ database: StoredDatabase) {
-        if let _ = try? FileManager.default.removeItem(at: database.url),
+        if (try? FileManager.default.removeItem(at: database.url)) != nil,
            let index = databases.firstIndex(where: { $0.url == database.url }) {
             databases.remove(at: index)
         }

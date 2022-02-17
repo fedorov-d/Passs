@@ -40,6 +40,10 @@ extension UIViewController {
         keyboardPublisher(for: UIResponder.keyboardWillHideNotification)
     }
 
+    func keyboardWillChangeFrameNotificationPublisher() -> AnyPublisher<KeyboardParams, Never> {
+        keyboardPublisher(for: UIResponder.keyboardWillChangeFrameNotification)
+    }
+
     private func keyboardPublisher(for name: Notification.Name) -> AnyPublisher<KeyboardParams, Never> {
         NotificationCenter.default.publisher(for: name, object: nil)
             .compactMap { note in

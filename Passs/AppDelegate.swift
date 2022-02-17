@@ -9,10 +9,10 @@ import UIKit
 
 class AppDelegate: UIResponder, UIApplicationDelegate {
     var window: UIWindow?
-    
+
     private var coordinator: RootCoordinator?
     private var serviceLocator = ServiceLocatorImp()
-    
+
     func application(
         _ application: UIApplication,
         didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?
@@ -46,7 +46,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             }
         }
     }
-    
+
     func application(
         _ app: UIApplication,
         open url: URL,
@@ -60,4 +60,3 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         return true
     }
 }
-
