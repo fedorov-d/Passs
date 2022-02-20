@@ -12,7 +12,7 @@ protocol PassDatabaseManager {
     var passwordGroups: [PassGroup]? { get }
     var databaseName: String? { get }
     var databaseURL: URL? { get }
-    func load(databaseURL: URL, password: String) throws
+    func load(databaseURL: URL, password: String?, keyFileData: Data?) throws
 }
 
 final class PassDatabaseManagerImp: PassDatabaseManager {
@@ -20,9 +20,15 @@ final class PassDatabaseManagerImp: PassDatabaseManager {
     private(set) var databaseName: String?
     private(set) var databaseURL: URL?
     
-    func load(databaseURL: URL, password: String) throws {
-        let key = KPKPasswordKey(password: password)!
-        let compositeKey = KPKCompositeKey(keys: [key])
+    func load(databaseURL: URL, password: String? = nil, keyFileData: Data? = nil) throws {
+        var keys = [KPKKey]()
+        if let password = password {
+            keys.append(KPKPasswordKey(password: password)!)
+        }
+        if let keyFileData = keyFileData {
+            keys.append(KPKKey(keyFileData: keyFileData))
+        }
+        let compositeKey = KPKCompositeKey(keys: keys)
         let tree = try KPKTree(contentsOf: databaseURL, key: compositeKey)
         databaseName = tree.root?.title
         self.databaseURL = databaseURL

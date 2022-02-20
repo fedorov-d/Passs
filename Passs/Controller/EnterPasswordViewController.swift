@@ -247,7 +247,7 @@ extension EnterPasswordViewController {
     private func nextButtonTapped() {
         let password = textField.text ?? ""
         do {
-            try passDatabaseManager.load(databaseURL: self.database.url, password:password)
+            try passDatabaseManager.load(databaseURL: self.database.url, password:password, keyFileData: nil)
             completion(password, unlockWithTouchIdSwitch.isOn)
         } catch _ {
             errordLabel.text = "Invalid password"

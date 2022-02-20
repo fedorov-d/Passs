@@ -42,6 +42,8 @@
 		A3F3DA36260DC1D10057AF24 /* PassDatabaseManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3F3DA35260DC1D10057AF24 /* PassDatabaseManager.swift */; };
 		A3F4959C261E22F700E4AA7E /* DatabasesProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3F4959B261E22F700E4AA7E /* DatabasesProvider.swift */; };
 		A3F4959F261E242700E4AA7E /* DatabaseListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3F4959E261E242700E4AA7E /* DatabaseListViewController.swift */; };
+		A3FF57D427BFD6F400D41659 /* UIDocumentPickerController+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3FF57D327BFD6F400D41659 /* UIDocumentPickerController+Extensions.swift */; };
+		A3FF57D627BFED1E00D41659 /* UnlockData.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3FF57D527BFED1E00D41659 /* UnlockData.swift */; };
 		AC4B5A89BE2359C8A81E7472 /* Pods_PasssTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 61C958F420CCDECE8DEC67FD /* Pods_PasssTests.framework */; };
 		C36AB2D5AB40F2100342ABC8 /* Pods_Passs.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 096CD049FCD875D09982CB67 /* Pods_Passs.framework */; };
 /* End PBXBuildFile section */
@@ -133,6 +135,8 @@
 		A3F3DA35260DC1D10057AF24 /* PassDatabaseManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PassDatabaseManager.swift; sourceTree = "<group>"; };
 		A3F4959B261E22F700E4AA7E /* DatabasesProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DatabasesProvider.swift; sourceTree = "<group>"; };
 		A3F4959E261E242700E4AA7E /* DatabaseListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DatabaseListViewController.swift; sourceTree = "<group>"; };
+		A3FF57D327BFD6F400D41659 /* UIDocumentPickerController+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIDocumentPickerController+Extensions.swift"; sourceTree = "<group>"; };
+		A3FF57D527BFED1E00D41659 /* UnlockData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UnlockData.swift; sourceTree = "<group>"; };
 		BDD5B3A1CD787FB487C055B9 /* Pods-PasssTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PasssTests.debug.xcconfig"; path = "Target Support Files/Pods-PasssTests/Pods-PasssTests.debug.xcconfig"; sourceTree = "<group>"; };
 		EBA44A656624B8CD1C05172E /* Pods-Passs.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Passs.debug.xcconfig"; path = "Target Support Files/Pods-Passs/Pods-Passs.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -275,6 +279,7 @@
 				A3CFA4C5279289740020F82F /* UIImage+Extensions.swift */,
 				A35A8B0D27B56B8E00216C24 /* UIButton+Extensions.swift */,
 				A3B5E32527AD9EE40061CAC6 /* UIViewController+Extensions.swift */,
+				A3FF57D327BFD6F400D41659 /* UIDocumentPickerController+Extensions.swift */,
 			);
 			path = Common;
 			sourceTree = "<group>";
@@ -284,6 +289,7 @@
 			children = (
 				A3F3DA27260CA5FC0057AF24 /* PassItem.swift */,
 				A3F3DA29260CA8440057AF24 /* PassItem+KeePassKit.swift */,
+				A3FF57D527BFED1E00D41659 /* UnlockData.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -326,7 +332,7 @@
 				A31842402721D69200786744 /* Sources */,
 				A31842412721D69200786744 /* Frameworks */,
 				A31842422721D69200786744 /* Resources */,
-				1CA4B3D977613A79196729F0 /* [CP] Embed Pods Frameworks */,
+				72C40F794F4B611F82193F9E /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -446,23 +452,6 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
-		1CA4B3D977613A79196729F0 /* [CP] Embed Pods Frameworks */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-PasssTests/Pods-PasssTests-frameworks-${CONFIGURATION}-input-files.xcfilelist",
-			);
-			name = "[CP] Embed Pods Frameworks";
-			outputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-PasssTests/Pods-PasssTests-frameworks-${CONFIGURATION}-output-files.xcfilelist",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-PasssTests/Pods-PasssTests-frameworks.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
 		3482704F82CF07B3211E4994 /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -483,6 +472,23 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		72C40F794F4B611F82193F9E /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-PasssTests/Pods-PasssTests-frameworks-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-PasssTests/Pods-PasssTests-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-PasssTests/Pods-PasssTests-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		85D5035C9DA10D480DC005E9 /* [CP] Embed Pods Frameworks */ = {
@@ -555,6 +561,7 @@
 				A3B5E32627AD9EE40061CAC6 /* UIViewController+Extensions.swift in Sources */,
 				A32C654D260C557300DC6653 /* PasswordsViewController.swift in Sources */,
 				A365CAB127B4F0F2009877D1 /* RootCoordinator.swift in Sources */,
+				A3FF57D427BFD6F400D41659 /* UIDocumentPickerController+Extensions.swift in Sources */,
 				A365CAB327B4FAE9009877D1 /* ServiceLocator.swift in Sources */,
 				A3CFA4CA2795F9650020F82F /* KeychainManager.swift in Sources */,
 				A3C9AB46261F685200170B55 /* EnterPasswordViewController.swift in Sources */,
@@ -562,6 +569,7 @@
 				A35A8B1D27BE2C8200216C24 /* ColoredTableViewHeaderFooterView.swift in Sources */,
 				A3F4959C261E22F700E4AA7E /* DatabasesProvider.swift in Sources */,
 				A3B5E34027B16E620061CAC6 /* LocalAuthManager.swift in Sources */,
+				A3FF57D627BFED1E00D41659 /* UnlockData.swift in Sources */,
 				A318424F2721DB5F00786744 /* Constants.swift in Sources */,
 				A35A8B1827BCDE1500216C24 /* SwitchCell.swift in Sources */,
 				A35A8B0E27B56B8E00216C24 /* UIButton+Extensions.swift in Sources */,

@@ -16,7 +16,9 @@ class DatabaseListViewController: UIViewController {
     private let passDatabaseManager: PassDatabaseManager
     
     private let cellId = "database.cell.id"
+
     private let completion: () -> Void
+    private let enterPassword: (_: StoredDatabase) -> Void
 
     private lazy var dateFormatter: DateFormatter = {
         let formatter = DateFormatter()
@@ -37,11 +39,13 @@ class DatabaseListViewController: UIViewController {
         databasesProvider: DatabasesProvider,
         passDatabaseManager: PassDatabaseManager,
         localAuthManager: LocalAuthManager,
+        enterPassword: @escaping (_: StoredDatabase) -> Void,
         completion: @escaping () -> Void
     ) {
         self.databasesProvider = databasesProvider
         self.passDatabaseManager = passDatabaseManager
         self.localAuthManager = localAuthManager
+        self.enterPassword = enterPassword
         self.completion = completion
         super.init(nibName: nil, bundle: nil)
         self.databasesProvider.delegate = self
@@ -73,18 +77,7 @@ class DatabaseListViewController: UIViewController {
     }
 
     private func presentEnterPassword(for database: StoredDatabase) {
-        let enterPasswordController = UnlockViewController(
-            passDatabaseManager: passDatabaseManager,
-            database: database
-        ) { [unowned self] password, useBiometry in
-            if useBiometry {
-                try? localAuthManager.savePassword(password, for: database.url.lastPathComponent)
-            }
-            self.dismiss(animated: true)
-            self.completion()
-        }
-        let navigationController = UINavigationController(rootViewController: enterPasswordController)
-        present(navigationController, animated: true)
+        self.enterPassword(database)
     }
 
     private func handlePasswordError(_ error: Error, for database: StoredDatabase) {
@@ -107,17 +100,7 @@ class DatabaseListViewController: UIViewController {
 extension DatabaseListViewController {
 
     @objc func importTapped() {
-        let documentPickerController: UIDocumentPickerViewController
-        if #available(iOS 14.0, *) {
-            let types = UTType.types(
-                tag: "kdbx",
-                tagClass: UTTagClass.filenameExtension,
-                conformingTo: nil
-            )
-            documentPickerController = UIDocumentPickerViewController(forOpeningContentTypes: types)
-        } else {
-            documentPickerController = UIDocumentPickerViewController(documentTypes: ["com.df.passs.kdbx", "com.df.passs.kdb"], in: .open)
-        }
+        let documentPickerController = UIDocumentPickerViewController.keepassDatabasesPicker()
         documentPickerController.delegate = self
         self.present(documentPickerController, animated: true, completion: nil)
     }
@@ -133,10 +116,6 @@ extension DatabaseListViewController: UIDocumentPickerDelegate {
         } catch (let error) {
             Swift.debugPrint(error)
         }
-    }
-
-    func documentPickerWasCancelled(_ controller: UIDocumentPickerViewController) {
-
     }
 
 }
@@ -169,12 +148,16 @@ extension DatabaseListViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
         let database = databasesProvider.databases[indexPath.row]
-        localAuthManager.password(for: database.url.lastPathComponent) { [weak self] result in
+        localAuthManager.unlockData(for: database.url.lastPathComponent) { [weak self] result in
             guard let self = self else { return }
             switch result {
-            case .success(let password):
+            case .success(let unlockData):
                 do {
-                    try self.passDatabaseManager.load(databaseURL: database.url, password: password)
+                    try self.passDatabaseManager.load(
+                        databaseURL: database.url,
+                        password: unlockData.password,
+                        keyFileData: unlockData.keyFileData
+                    )
                     self.completion()
                 } catch (let error) {
                     self.handlePasswordError(error, for: database)

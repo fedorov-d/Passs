@@ -28,9 +28,9 @@ final class KeychainManagerImp: KeychainManager {
                                         kSecAttrServer: "",
                                         kSecAttrAccount: key]
         let status: OSStatus
-        if let _ = try? self.item(for: query) {
+        if let _ = try? self.item(for: key) {
             let updateQuery = [kSecValueData: item.data(using: .utf8)]
-            status = SecItemUpdate(updateQuery as CFDictionary, query as CFDictionary)
+            status = SecItemUpdate(query as CFDictionary, updateQuery as CFDictionary)
         } else {
             query[kSecValueData] = item.data(using: .utf8)
             status = SecItemAdd(query as CFDictionary, nil)

@@ -9,9 +9,10 @@ import Foundation
 import LocalAuthentication
 
 protocol LocalAuthManager: AnyObject {
+    var biomeryType: LABiometryType { get }
     func isLocalAuthAvailable() -> Bool
-    func savePassword(_ password: String, for database: String) throws
-    func password(for database: String, completion: @escaping (Result<String, Error>) -> Void)
+    func saveUnlockData(_ unlockData: UnlockData, for database: String) throws
+    func unlockData(for database: String, completion: @escaping (Result<UnlockData, Error>) -> Void)
 }
 
 final class LocalAuthManagerImp: LocalAuthManager {
@@ -22,23 +23,32 @@ final class LocalAuthManagerImp: LocalAuthManager {
         self.keychainManager = keychainManager
     }
 
+    var biomeryType: LABiometryType {
+        LAContext().biometryType
+    }
+
     func isLocalAuthAvailable() -> Bool {
         return LAContext().canEvaluatePolicy(.deviceOwnerAuthenticationWithBiometrics, error: nil)
     }
 
-    func savePassword(_ password: String, for database: String) throws {
-        try keychainManager.setItem(password, for: database)
+    func saveUnlockData(_ unlockData: UnlockData, for database: String) throws {
+        let data = try JSONEncoder().encode(unlockData)
+        if let string = String(data: data, encoding: .utf8) {
+            try keychainManager.setItem(string, for: database)
+        }
     }
 
-    func password(for database: String, completion: @escaping (Result<String, Error>) -> Void) {
+    func unlockData(for database: String, completion: @escaping (Result<UnlockData, Error>) -> Void) {
         do {
-            guard let password = try keychainManager.item(for: database) else {
+            guard let string = try keychainManager.item(for: database),
+                  let data = string.data(using: .utf8),
+                  let unlockData = try? JSONDecoder().decode(UnlockData.self, from: data) else {
                 completion(.failure(KeychainError.itemNotFound))
                 return
             }
             evaluatePolicy { success, error in
                 if success {
-                    completion(.success(password))
+                    completion(.success(unlockData))
                 } else if let error = error {
                     completion(.failure(error))
                 }

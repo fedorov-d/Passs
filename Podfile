@@ -5,13 +5,17 @@ inhibit_all_warnings!
 use_frameworks!
 
 # versions probably should be set explicitly
-target 'Passs' do
-    pod 'SnapKit'
+def common
     pod 'KeePassKit', :git => 'https://github.com/fedorov-d/KeePassKit.git', :submodules => true
 end
 
+target 'Passs' do
+    pod 'SnapKit'
+    common
+end
+
 target 'PasssTests' do
-  pod 'KeePassKit', :git => 'https://github.com/fedorov-d/KeePassKit.git', :submodules => true
+  common
 end
 
 post_install do |installer|

@@ -25,6 +25,16 @@ final class RootCoordinator {
         navigationController.viewControllers = [databaseListViewController()]
     }
 
+    private func showUnlockViewController(for database: StoredDatabase, passDatabaseManager: PassDatabaseManager) {
+        let controller = self.unlockViewController(
+            for: database,
+            passDatabaseManager: passDatabaseManager,
+            localAuthManager: self.serviceLocator.localAuthManager()
+        )
+        let navigationController = UINavigationController(rootViewController: controller)
+        self.navigationController.present(navigationController, animated: true)
+    }
+
     private func showGroupsViewController(passDatabaseManager: PassDatabaseManager) {
         guard let databaseURL = passDatabaseManager.databaseURL else {
             fatalError()
@@ -52,10 +62,28 @@ extension RootCoordinator {
         return DatabaseListViewController(
             databasesProvider: serviceLocator.databasesProvider(),
             passDatabaseManager: passDatabaseManager,
-            localAuthManager: serviceLocator.localAuthManager()) { [weak self] in
-                guard let self = self else { return }
-                self.showGroupsViewController(passDatabaseManager: passDatabaseManager)
+            localAuthManager: serviceLocator.localAuthManager(),
+            enterPassword: { [weak self] database in
+                self?.showUnlockViewController(for: database, passDatabaseManager: passDatabaseManager)
+            }) { [weak self] in
+                self?.showGroupsViewController(passDatabaseManager: passDatabaseManager)
             }
+    }
+
+    private func unlockViewController(
+        for database: StoredDatabase,
+        passDatabaseManager: PassDatabaseManager,
+        localAuthManager: LocalAuthManager
+    ) -> UnlockViewController {
+        let enterPasswordController = UnlockViewController(
+            passDatabaseManager: passDatabaseManager,
+            localAuthManager: localAuthManager,
+            database: database
+        ) { [unowned self] in
+            self.navigationController.dismiss(animated: true)
+            self.showGroupsViewController(passDatabaseManager: passDatabaseManager)
+        }
+        return enterPasswordController
     }
 
     private func groupsViewController(
