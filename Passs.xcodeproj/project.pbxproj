@@ -21,6 +21,8 @@
 		A35A8B1F27BEB3FE00216C24 /* SelectKeyButtonCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A35A8B1E27BEB3FE00216C24 /* SelectKeyButtonCell.swift */; };
 		A365CAB127B4F0F2009877D1 /* RootCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = A365CAB027B4F0F2009877D1 /* RootCoordinator.swift */; };
 		A365CAB327B4FAE9009877D1 /* ServiceLocator.swift in Sources */ = {isa = PBXBuildFile; fileRef = A365CAB227B4FAE9009877D1 /* ServiceLocator.swift */; };
+		A392D9CA27C66FA500206161 /* SettingsManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = A392D9C927C66FA500206161 /* SettingsManager.swift */; };
+		A392D9CC27C79D2F00206161 /* UserDefaults+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = A392D9CB27C79D2F00206161 /* UserDefaults+Extensions.swift */; };
 		A3B5E32627AD9EE40061CAC6 /* UIViewController+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3B5E32527AD9EE40061CAC6 /* UIViewController+Extensions.swift */; };
 		A3B5E32D27AEA7340061CAC6 /* AuthenticationServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A3B5E32C27AEA7340061CAC6 /* AuthenticationServices.framework */; };
 		A3B5E33027AEA7340061CAC6 /* CredentialProviderViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3B5E32F27AEA7340061CAC6 /* CredentialProviderViewController.swift */; };
@@ -112,6 +114,8 @@
 		A35A8B1E27BEB3FE00216C24 /* SelectKeyButtonCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectKeyButtonCell.swift; sourceTree = "<group>"; };
 		A365CAB027B4F0F2009877D1 /* RootCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RootCoordinator.swift; sourceTree = "<group>"; };
 		A365CAB227B4FAE9009877D1 /* ServiceLocator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ServiceLocator.swift; sourceTree = "<group>"; };
+		A392D9C927C66FA500206161 /* SettingsManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsManager.swift; sourceTree = "<group>"; };
+		A392D9CB27C79D2F00206161 /* UserDefaults+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UserDefaults+Extensions.swift"; sourceTree = "<group>"; };
 		A3B5E32527AD9EE40061CAC6 /* UIViewController+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewController+Extensions.swift"; sourceTree = "<group>"; };
 		A3B5E32B27AEA7330061CAC6 /* CredentialProvider.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = CredentialProvider.appex; sourceTree = BUILT_PRODUCTS_DIR; };
 		A3B5E32C27AEA7340061CAC6 /* AuthenticationServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AuthenticationServices.framework; path = System/Library/Frameworks/AuthenticationServices.framework; sourceTree = SDKROOT; };
@@ -280,6 +284,7 @@
 				A35A8B0D27B56B8E00216C24 /* UIButton+Extensions.swift */,
 				A3B5E32527AD9EE40061CAC6 /* UIViewController+Extensions.swift */,
 				A3FF57D327BFD6F400D41659 /* UIDocumentPickerController+Extensions.swift */,
+				A392D9CB27C79D2F00206161 /* UserDefaults+Extensions.swift */,
 			);
 			path = Common;
 			sourceTree = "<group>";
@@ -302,6 +307,7 @@
 				A3F3DA35260DC1D10057AF24 /* PassDatabaseManager.swift */,
 				A3F4959B261E22F700E4AA7E /* DatabasesProvider.swift */,
 				A318424E2721DB5F00786744 /* Constants.swift */,
+				A392D9C927C66FA500206161 /* SettingsManager.swift */,
 				A3CFA4C92795F9650020F82F /* KeychainManager.swift */,
 				A3B5E33F27B16E620061CAC6 /* LocalAuthManager.swift */,
 				A3CAA31227ABCFB000330FAC /* RecentPasswordsManager.swift */,
@@ -567,10 +573,12 @@
 				A3C9AB46261F685200170B55 /* EnterPasswordViewController.swift in Sources */,
 				A35A8B1627BC33B000216C24 /* TextFieldCell.swift in Sources */,
 				A35A8B1D27BE2C8200216C24 /* ColoredTableViewHeaderFooterView.swift in Sources */,
+				A392D9CC27C79D2F00206161 /* UserDefaults+Extensions.swift in Sources */,
 				A3F4959C261E22F700E4AA7E /* DatabasesProvider.swift in Sources */,
 				A3B5E34027B16E620061CAC6 /* LocalAuthManager.swift in Sources */,
 				A3FF57D627BFED1E00D41659 /* UnlockData.swift in Sources */,
 				A318424F2721DB5F00786744 /* Constants.swift in Sources */,
+				A392D9CA27C66FA500206161 /* SettingsManager.swift in Sources */,
 				A35A8B1827BCDE1500216C24 /* SwitchCell.swift in Sources */,
 				A35A8B0E27B56B8E00216C24 /* UIButton+Extensions.swift in Sources */,
 				A32C6549260C557300DC6653 /* AppDelegate.swift in Sources */,
@@ -790,7 +798,6 @@
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = Passs/Passs.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 3YK694S6H3;
@@ -815,7 +822,6 @@
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = Passs/Passs.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 3YK694S6H3;

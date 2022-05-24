@@ -84,7 +84,7 @@ extension PasswordsViewController: UITableViewDataSource {
         cell.textLabel?.text = item.title
         cell.detailTextLabel?.text = item.username
         cell.detailTextLabel?.textColor = .secondaryLabel
-        cell.imageView?.image = UIImage(systemName: "square.on.square")?.tinted(with: .systemBlue)
+        cell.imageView?.image = UIImage(named: "key")
         return cell
     }
 
@@ -117,7 +117,7 @@ extension PasswordsViewController: UITableViewDelegate {
             with: "Copy password"
         ) { [unowned self] in
             let item = self.items[indexPath.row]
-            self.copyPasswords(item)
+            self.copyPassword(item)
         }
     }
 
@@ -128,7 +128,7 @@ extension PasswordsViewController: UITabBarDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
         let item = items[indexPath.row]
-        copyPasswords(item)
+        copyPassword(item)
     }
 
 }
@@ -153,7 +153,7 @@ extension PasswordsViewController {
         self.recentPasswordsManager.push(item: passItem)
     }
 
-    private func copyPasswords(_ passItem: PassItem) {
+    private func copyPassword(_ passItem: PassItem) {
         guard let password = passItem.password else { return }
         self.pasteboardManager.copy(password)
         self.recentPasswordsManager.push(item: passItem)

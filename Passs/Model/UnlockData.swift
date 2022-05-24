@@ -25,5 +25,4 @@ struct UnlockData {
     }
 }
 
-extension UnlockData: Codable {
-}
+extension UnlockData: Codable {}

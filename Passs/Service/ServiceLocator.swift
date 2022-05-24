@@ -15,6 +15,7 @@ protocol ServiceLocator: AnyObject {
     func passDatabaseManager() -> PassDatabaseManager
     func recentPasswordsManager(databaseURL: URL) -> RecentPasswordsManager
     func pasteboardManager() -> PasteboardManager
+    func settingsManager() -> SettingsManager
 }
 
 final class ServiceLocatorImp: ServiceLocator {
@@ -44,5 +45,9 @@ final class ServiceLocatorImp: ServiceLocator {
 
     func pasteboardManager() -> PasteboardManager {
         _pasteboardManager
+    }
+
+    func settingsManager() -> SettingsManager {
+        SettingsManager()
     }
 }

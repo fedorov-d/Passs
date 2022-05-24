@@ -76,20 +76,16 @@ final class UnlockViewController: UIViewController {
             self.unlockData.password = newText
             self.navigationItem.rightBarButtonItem?.isEnabled = newText.count > 0
             if newText.count == 0 {
-                self.biometryCell.isOn = false
+                self.biometryCell?.isOn = false
             }
-            self.biometryCell.isEnabled = newText.count > 0
+            self.biometryCell?.isEnabled = newText.count > 0
             self.errorFoorterView.label.isHidden = true
         }
         cell.onReturn = tryUnlock
         return cell
     }()
 
-    private lazy var biometryCell: SwitchCell = {
-        let cell = tableView.dequeueReusableCell(
-            withIdentifier: biometryCellId,
-            for: IndexPath(row: 0, section: 2)
-        ) as! SwitchCell
+    private lazy var biometryCell: SwitchCell? = {
         let biometryTypeString: String
         switch localAuthManager.biomeryType {
         case .touchID:
@@ -97,8 +93,12 @@ final class UnlockViewController: UIViewController {
         case .faceID:
             biometryTypeString = "Face id"
         default:
-            fatalError()
+            return nil
         }
+        let cell = tableView.dequeueReusableCell(
+            withIdentifier: biometryCellId,
+            for: IndexPath(row: 0, section: 2)
+        ) as! SwitchCell
         cell.textLabel?.text = "Unlock with \(biometryTypeString)"
         return cell
     }()
@@ -214,7 +214,7 @@ extension UnlockViewController: UITableViewDataSource, UITableViewDelegate  {
         case 1:
             return selectKeyCell
         case 2:
-            return biometryCell
+            return biometryCell!
         default:
             fatalError()
         }
@@ -284,7 +284,7 @@ extension UnlockViewController {
                 password:unlockData.password,
                 keyFileData: unlockData.keyFileData
             )
-            if biometryCell.isOn {
+            if biometryCell?.isOn ?? false {
                 try localAuthManager.saveUnlockData(unlockData, for: database.url.lastPathComponent)
             }
             completion()
