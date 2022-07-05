@@ -17,37 +17,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         _ application: UIApplication,
         didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?
     ) -> Bool {
-
-
-        let input = """
-3
-4
-2 8 -9 1
-10
-2 1 3 4 -9 6 8 9 -100000 123132131
-4
--5 8 0 4
-"""
-
-        let arrayOfLines = input.components(separatedBy: "\n")
-        guard let firstLine = arrayOfLines.first else { fatalError() }
-        let numberOfTestCases = Int(firstLine) ?? 0
-
-        var currentLineIndex = 1
-        var output = [String]()
-
-        for _ in 0..<numberOfTestCases {
-            let numberOfItemsInLine = Int(arrayOfLines[currentLineIndex]) ?? 0
-            if isLineContainsZeroSum(arrayOfLines[currentLineIndex + 1], count: numberOfItemsInLine) {
-                output.append("yes")
-            } else {
-                output.append("false")
-            }
-            currentLineIndex += 2
-        }
-
-        print(output)
-
         if let options = launchOptions, let launchURL = options[UIApplication.LaunchOptionsKey.url] as? URL {
             do {
                 try serviceLocator.databasesProvider().addDatabase(from: launchURL)

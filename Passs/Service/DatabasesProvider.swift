@@ -14,6 +14,7 @@ protocol StoredDatabase {
 }
 
 protocol DatabasesProvider: AnyObject {
+    func loadStoredDatabases()
     func addDatabase(from url: URL) throws
     func deleteDatabase(_: StoredDatabase)
     var databases: [StoredDatabase] { get }
@@ -21,6 +22,7 @@ protocol DatabasesProvider: AnyObject {
 }
 
 protocol DatabasesProviderDelegate: AnyObject {
+    func didLoadStoredDatabases()
     func didAddDatabase(at index: Int)
 }
 
@@ -33,6 +35,31 @@ struct StoredDatabaseImp: StoredDatabase {
 final class DatabasesProviderImp: DatabasesProvider {
 
     weak var delegate: DatabasesProviderDelegate?
+
+    func loadStoredDatabases() {
+        let fileManager = FileManager.default
+        guard let fileURLs = try? fileManager.contentsOfDirectory(
+            at: documentsURL,
+            includingPropertiesForKeys: nil
+        ) else {
+            return
+        }
+        var databases: [StoredDatabase] = []
+        OperationQueue().addOperation { [weak self] in
+            guard let self = self else { return }
+            databases = fileURLs
+                .filter { $0.isFileURL && self.supportedExtensions.contains($0.pathExtension) }
+                .map { url in
+                    let attributes = try? fileManager.attributesOfItem(atPath: url.relativePath)
+                    let modificationDate = attributes?[.modificationDate] as? Date
+                    return StoredDatabaseImp(url: url, name: url.lastPathComponent, modificationDate: modificationDate)
+                }
+            OperationQueue.main.addOperation {
+                self.databases = databases
+                self.delegate?.didLoadStoredDatabases()
+            }
+        }
+    }
     
     func addDatabase(from url: URL) throws {
         guard url.startAccessingSecurityScopedResource() else {
@@ -57,19 +84,7 @@ final class DatabasesProviderImp: DatabasesProvider {
         }
     }
     
-    lazy var databases: [StoredDatabase] = {
-        let fileManager = FileManager.default
-        if let fileURLs = try? fileManager.contentsOfDirectory(at: documentsURL, includingPropertiesForKeys: nil) {
-            return fileURLs
-                .filter { $0.isFileURL && supportedExtensions.contains($0.pathExtension) }
-                .map { url in
-                    let attributes = try? fileManager.attributesOfItem(atPath: url.relativePath)
-                    let modificationDate = attributes?[.modificationDate] as? Date
-                    return StoredDatabaseImp(url: url, name: url.lastPathComponent, modificationDate: modificationDate)
-            }
-        }
-        return []
-    }()
+    private(set) var databases: [StoredDatabase] = []
     
     let supportedExtensions = ["kdb", "kdbx"]
     

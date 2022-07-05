@@ -74,6 +74,7 @@ class DatabaseListViewController: UIViewController {
             target: self,
             action: #selector(importTapped)
         )
+        databasesProvider.loadStoredDatabases()
     }
 
     private func presentEnterPassword(for database: StoredDatabase) {
@@ -171,6 +172,10 @@ extension DatabaseListViewController: UITableViewDelegate {
 }
 
 extension DatabaseListViewController: DatabasesProviderDelegate {
+
+    func didLoadStoredDatabases() {
+        tableView.reloadData()
+    }
 
     func didAddDatabase(at index: Int) {
         let indexPath = IndexPath(row: index, section: 0)
