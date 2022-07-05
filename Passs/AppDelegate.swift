@@ -17,7 +17,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         _ application: UIApplication,
         didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?
     ) -> Bool {
-        if let options = launchOptions, let launchURL = options[UIApplication.LaunchOptionsKey.url] as? URL {
+        if let options = launchOptions,
+           let launchURL = options[UIApplication.LaunchOptionsKey.url] as? URL {
             do {
                 try serviceLocator.databasesProvider().addDatabase(from: launchURL)
             } catch (let error) {
@@ -40,9 +41,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         var identifier: UIBackgroundTaskIdentifier? = nil
         identifier = application.beginBackgroundTask {
             self.serviceLocator.pasteboardManager().dropPassword {
-                if let id = identifier {
-                    application.endBackgroundTask(id)
-                }
+                guard let id = identifier else { return }
+                application.endBackgroundTask(id)
             }
         }
     }

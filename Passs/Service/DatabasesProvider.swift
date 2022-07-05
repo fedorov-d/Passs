@@ -24,6 +24,7 @@ protocol DatabasesProvider: AnyObject {
 protocol DatabasesProviderDelegate: AnyObject {
     func didLoadStoredDatabases()
     func didAddDatabase(at index: Int)
+    func didUpdateDatabase(at index: Int)
 }
 
 struct StoredDatabaseImp: StoredDatabase {
@@ -50,8 +51,7 @@ final class DatabasesProviderImp: DatabasesProvider {
             databases = fileURLs
                 .filter { $0.isFileURL && self.supportedExtensions.contains($0.pathExtension) }
                 .map { url in
-                    let attributes = try? fileManager.attributesOfItem(atPath: url.relativePath)
-                    let modificationDate = attributes?[.modificationDate] as? Date
+                    let modificationDate = self.modificationDate(forItem: url.relativePath)
                     return StoredDatabaseImp(url: url, name: url.lastPathComponent, modificationDate: modificationDate)
                 }
             OperationQueue.main.addOperation {
@@ -70,18 +70,42 @@ final class DatabasesProviderImp: DatabasesProvider {
         let filename = url.lastPathComponent
         let fURL = documentsURL.appendingPathComponent(filename)
         let fileManager = FileManager.default
-        try fileManager.copyItem(at: url, to: fURL)
-        let attributes = try? fileManager.attributesOfItem(atPath: fURL.relativePath)
-        let date = attributes?[.modificationDate] as? Date
-        databases.append(StoredDatabaseImp(url: fURL, name: filename, modificationDate: date))
-        delegate?.didAddDatabase(at: databases.count - 1)
+        if fileManager.fileExists(atPath: fURL.relativePath) {
+            let tmpURL = fURL.appendingPathExtension("tmp")
+            try? fileManager.removeItem(at: tmpURL)
+            try fileManager.copyItem(at: url, to: tmpURL)
+            guard let oldFileDate = modificationDate(forItem: fURL.relativePath),
+                  let newFileDate = modificationDate(forItem: tmpURL.relativePath) else { return }
+            if newFileDate > oldFileDate {
+                try fileManager.removeItem(at: fURL)
+                try fileManager.moveItem(at: tmpURL, to: fURL)
+                let updatedDatabase = StoredDatabaseImp(url: fURL, name: filename, modificationDate: newFileDate)
+                guard let indexOfUpdatedDatabase = self.databases.firstIndex(where: { database in
+                    database.name == fURL.lastPathComponent
+                }) else { fatalError() }
+                self.databases[indexOfUpdatedDatabase] = updatedDatabase
+                self.delegate?.didUpdateDatabase(at: indexOfUpdatedDatabase)
+            } else {
+                try? fileManager.removeItem(at: tmpURL)
+            }
+        } else {
+            try fileManager.copyItem(at: url, to: fURL)
+            let date = modificationDate(forItem: fURL.relativePath)
+            databases.append(StoredDatabaseImp(url: fURL, name: filename, modificationDate: date))
+            delegate?.didAddDatabase(at: databases.count - 1)
+        }
     }
-    
+
     func deleteDatabase(_ database: StoredDatabase) {
         if (try? FileManager.default.removeItem(at: database.url)) != nil,
            let index = databases.firstIndex(where: { $0.url == database.url }) {
             databases.remove(at: index)
         }
+    }
+
+    private func modificationDate(forItem path: String) -> Date? {
+        let attributes = try? FileManager.default.attributesOfItem(atPath: path)
+        return attributes?[.modificationDate] as? Date
     }
     
     private(set) var databases: [StoredDatabase] = []

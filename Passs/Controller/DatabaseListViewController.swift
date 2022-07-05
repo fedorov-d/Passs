@@ -184,4 +184,10 @@ extension DatabaseListViewController: DatabasesProviderDelegate {
         } completion: { _ in }
     }
 
+    func didUpdateDatabase(at index: Int) {
+        tableView.reloadRows(
+            at: [IndexPath(row: index, section: 0)],
+            with: .automatic
+        )
+    }
 }
