@@ -8,7 +8,6 @@
 import UIKit
 
 class GroupsViewController: UIViewController {
-
     private let databaseManager: PassDatabaseManager
     private let recentPasswordsManager: RecentPasswordsManager
     private let groupSelected: (PassGroup) -> Void
@@ -67,14 +66,11 @@ class GroupsViewController: UIViewController {
 }
 
 extension GroupsViewController: UISearchResultsUpdating {
-
     func updateSearchResults(for searchController: UISearchController) {
         guard let passwordsController = searchController.searchResultsController
                 as? PasswordsSeachResultsDispalyController & UIViewController,
         let groups = databaseManager.passwordGroups else { return }
-        let items = groups.flatMap { group in
-            group.items
-        }
+        let items = groups.flatMap { $0.items }
         let text = searchController.searchBar.text
         if text == nil || text!.isEmpty {
             let items = recentPasswordsManager.matchingItems(for: items)
@@ -93,7 +89,6 @@ extension GroupsViewController: UISearchResultsUpdating {
 }
 
 extension GroupsViewController: UITableViewDataSource {
-
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return databaseManager.passwordGroups?.count ?? 0
     }

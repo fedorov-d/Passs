@@ -7,7 +7,7 @@
 
 import Foundation
 
-protocol RecentPasswordsManager {
+protocol RecentPasswordsManager: AnyObject {
     func push(item: PassItem)
     func matchingItems(for items: [PassItem]) -> [PassItem]
 }

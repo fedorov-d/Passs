@@ -9,7 +9,6 @@ import UIKit
 import UniformTypeIdentifiers
 
 extension UIDocumentPickerViewController {
-
     @available(iOS 14, *)
     convenience init(supportedFilenameExtensions: [String]) {
         let types = supportedFilenameExtensions.map { filenameExtension in

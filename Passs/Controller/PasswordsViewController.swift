@@ -15,7 +15,6 @@ protocol PasswordsSeachResultsDispalyController: AnyObject {
 }
 
 class PasswordsViewController: UIViewController, PasswordsSeachResultsDispalyController {
-
     var items: [PassItem] {
         didSet {
             tableView.reloadData()
@@ -73,7 +72,6 @@ class PasswordsViewController: UIViewController, PasswordsSeachResultsDispalyCon
 }
 
 extension PasswordsViewController: UITableViewDataSource {
-
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         items.count
     }
@@ -99,7 +97,6 @@ extension PasswordsViewController: UITableViewDataSource {
 }
 
 extension PasswordsViewController: UITableViewDelegate {
-
     func tableView(
         _ tableView: UITableView,
         leadingSwipeActionsConfigurationForRowAt indexPath: IndexPath
@@ -112,7 +109,10 @@ extension PasswordsViewController: UITableViewDelegate {
         }
     }
 
-    func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
+    func tableView(
+        _ tableView: UITableView,
+        trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath
+    ) -> UISwipeActionsConfiguration? {
         swipeActionConfiguration(
             with: "Copy password"
         ) { [unowned self] in
@@ -121,20 +121,14 @@ extension PasswordsViewController: UITableViewDelegate {
         }
     }
 
-}
-
-extension PasswordsViewController: UITabBarDelegate {
-
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
         let item = items[indexPath.row]
         copyPassword(item)
     }
-
 }
 
 extension PasswordsViewController {
-
     private func swipeActionConfiguration(
         with title: String,
         completion: @escaping () -> Void

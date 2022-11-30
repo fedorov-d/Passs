@@ -74,6 +74,7 @@ final class DatabasesProviderImp: DatabasesProvider {
             let tmpURL = fURL.appendingPathExtension("tmp")
             try? fileManager.removeItem(at: tmpURL)
             try fileManager.copyItem(at: url, to: tmpURL)
+            // update older file with newer but not vice versa
             guard let oldFileDate = modificationDate(forItem: fURL.relativePath),
                   let newFileDate = modificationDate(forItem: tmpURL.relativePath) else { return }
             if newFileDate > oldFileDate {

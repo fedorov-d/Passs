@@ -8,8 +8,8 @@
 import UIKit
 
 final class RootCoordinator {
-    private let window: UIWindow
     let navigationController: UINavigationController
+    private let window: UIWindow
     private let serviceLocator: ServiceLocator
 
     init(window: UIWindow, serviceLocator: ServiceLocator) {
@@ -65,9 +65,10 @@ extension RootCoordinator {
             localAuthManager: serviceLocator.localAuthManager(),
             enterPassword: { [weak self] database in
                 self?.showUnlockViewController(for: database, passDatabaseManager: passDatabaseManager)
-            }) { [weak self] in
-                self?.showGroupsViewController(passDatabaseManager: passDatabaseManager)
             }
+        ) { [weak self] in
+            self?.showGroupsViewController(passDatabaseManager: passDatabaseManager)
+        }
     }
 
     private func unlockViewController(

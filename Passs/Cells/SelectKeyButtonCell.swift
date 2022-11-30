@@ -8,7 +8,6 @@
 import UIKit
 
 class SelectKeyButtonCell: UITableViewCell {
-
     var onButtonTap: (() -> Void)?
 
     private lazy var button: UIButton = {
@@ -39,7 +38,6 @@ class SelectKeyButtonCell: UITableViewCell {
 }
 
 extension SelectKeyButtonCell {
-
     @objc
     private func buttonTapped(_ sender: UIButton) {
         onButtonTap?()

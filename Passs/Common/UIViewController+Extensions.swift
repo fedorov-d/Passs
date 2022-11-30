@@ -9,7 +9,6 @@ import UIKit
 import Combine
 
 extension UIViewController {
-
     struct KeyboardParams {
         let frameEnd: CGRect
         let frameBegin: CGRect
@@ -52,5 +51,4 @@ extension UIViewController {
             .receive(on: RunLoop.main)
             .eraseToAnyPublisher()
     }
-
 }

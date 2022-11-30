@@ -8,7 +8,6 @@
 import UIKit
 
 class TextFieldCell: UITableViewCell {
-
     var onTextChanged: ((_: String) -> Void)?
     var onReturn: (() -> Void)?
 
@@ -52,14 +51,12 @@ class TextFieldCell: UITableViewCell {
 }
 
 extension TextFieldCell {
-
     @objc func textFieldTextDidChange(_ sender: UITextField) {
         onTextChanged?(sender.text ?? "")
     }
 }
 
 extension TextFieldCell: UITextFieldDelegate {
-
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         onReturn?()
         return true

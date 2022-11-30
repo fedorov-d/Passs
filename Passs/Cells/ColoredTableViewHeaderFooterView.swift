@@ -8,7 +8,6 @@
 import UIKit
 
 class ColoredTableViewHeaderFooterView: UITableViewHeaderFooterView {
-
     private(set) lazy var label: UILabel = {
         let label = UILabel()
         label.textColor = .secondaryLabel
@@ -35,6 +34,4 @@ class ColoredTableViewHeaderFooterView: UITableViewHeaderFooterView {
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-
-
 }

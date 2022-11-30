@@ -19,7 +19,6 @@ protocol ServiceLocator: AnyObject {
 }
 
 final class ServiceLocatorImp: ServiceLocator {
-
     private let _databasesProvider = DatabasesProviderImp()
     private let _pasteboardManager = PasteboardManagerImp()
 

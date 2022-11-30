@@ -7,9 +7,9 @@
 
 import UIKit
 
-protocol PasteboardManager {
-    func copy(_: String)
+protocol PasteboardManager: AnyObject {
     var needsDropPassword: Bool { get }
+    func copy(_: String)
     func dropPassword(completion: @escaping () -> Void)
 }
 
@@ -29,7 +29,6 @@ extension UIPasteboard: Pasteboard {
 }
 
 final class PasteboardManagerImp: PasteboardManager {
-
     private let clearInterval: TimeInterval
     private var pasteboard: Pasteboard
     private var timer: Timer?

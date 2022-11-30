@@ -99,17 +99,14 @@ class DatabaseListViewController: UIViewController {
 }
 
 extension DatabaseListViewController {
-
     @objc func importTapped() {
         let documentPickerController = UIDocumentPickerViewController.keepassDatabasesPicker()
         documentPickerController.delegate = self
         self.present(documentPickerController, animated: true, completion: nil)
     }
-
 }
 
 extension DatabaseListViewController: UIDocumentPickerDelegate {
-
     func documentPicker(_ controller: UIDocumentPickerViewController, didPickDocumentsAt urls: [URL]) {
         guard let url = urls.first else { return }
         do {
@@ -118,11 +115,9 @@ extension DatabaseListViewController: UIDocumentPickerDelegate {
             Swift.debugPrint(error)
         }
     }
-
 }
 
 extension DatabaseListViewController: UITableViewDataSource {
-
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         databasesProvider.databases.count
     }
@@ -131,21 +126,30 @@ extension DatabaseListViewController: UITableViewDataSource {
         let cell = tableView.dequeueReusableCell(withIdentifier: cellId, for: indexPath)
         let database = databasesProvider.databases[indexPath.row]
         cell.textLabel?.text = database.name
-        if let modificationDate = database.modificationDate {
-            cell.detailTextLabel?.text = "Last modified on " + dateFormatter.string(from: modificationDate)
-        } else {
-            cell.detailTextLabel?.text = ""
-        }
-        cell.detailTextLabel?.textColor = .secondaryLabel
         cell.accessoryType = .disclosureIndicator
         cell.imageView?.image = UIImage(systemName: "square.stack.3d.up")?.tinted(with: .systemBlue)
+
+        guard let modificationDate = database.modificationDate,
+              let detailTextLabel = cell.detailTextLabel else { return cell }
+
+        let detailTextLabelColor: UIColor = .secondaryLabel
+        let detailTextLabelFont = UIFont.preferredFont(forTextStyle: .caption1)
+        detailTextLabel.textColor = detailTextLabelColor
+        detailTextLabel.font = detailTextLabelFont
+        detailTextLabel.text = "";
+
+        if Date().timeIntervalSince(modificationDate) > Constants.markAsUpdatedTimeout {
+            detailTextLabel.attributedText = lastUpdateDateAttributedString(from: modificationDate,
+                                                                            font: detailTextLabelFont,
+                                                                            textColor: detailTextLabelColor)
+        } else {
+            detailTextLabel.text = "Last modified on " + dateFormatter.string(from: modificationDate)
+        }
         return cell
     }
-
 }
 
 extension DatabaseListViewController: UITableViewDelegate {
-
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
         let database = databasesProvider.databases[indexPath.row]
@@ -168,11 +172,9 @@ extension DatabaseListViewController: UITableViewDelegate {
             }
         }
     }
-
 }
 
 extension DatabaseListViewController: DatabasesProviderDelegate {
-
     func didLoadStoredDatabases() {
         tableView.reloadData()
     }
@@ -189,5 +191,26 @@ extension DatabaseListViewController: DatabasesProviderDelegate {
             at: [IndexPath(row: index, section: 0)],
             with: .automatic
         )
+    }
+}
+
+fileprivate extension DatabaseListViewController {
+    func lastUpdateDateAttributedString(from date: Date, font: UIFont, textColor: UIColor) -> NSAttributedString {
+        let attributes = [NSAttributedString.Key.font : font.italics(),
+                          NSAttributedString.Key.foregroundColor: textColor]
+        let resultString = NSMutableAttributedString(
+            string: "Last modified on ",
+            attributes: [NSAttributedString.Key.font : font,
+                         NSAttributedString.Key.foregroundColor: textColor]
+        )
+        resultString.append(NSAttributedString(string: dateFormatter.string(from: date),
+                                               attributes: attributes))
+        return resultString.copy() as! NSAttributedString
+    }
+}
+
+fileprivate extension DatabaseListViewController {
+    enum Constants {
+        static let markAsUpdatedTimeout: TimeInterval = 1800
     }
 }

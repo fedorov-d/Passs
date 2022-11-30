@@ -9,7 +9,6 @@ import UIKit
 import Combine
 
 final class UnlockViewController: UIViewController {
-
     private let passDatabaseManager: PassDatabaseManager
     private let database: StoredDatabase
     private let localAuthManager: LocalAuthManager
@@ -178,7 +177,6 @@ final class UnlockViewController: UIViewController {
 
 // MARK: - keyboard events
 extension UnlockViewController {
-
     private func setupKeyboardObserver() {
         keyboardWillChangeFrameNotificationPublisher()
             .sink { [weak self] keyboardParams in
@@ -193,14 +191,13 @@ extension UnlockViewController {
         tableView.contentInset = inset
         tableView.scrollIndicatorInsets = inset
     }
-
 }
 
 // MARK: - tableView
 extension UnlockViewController: UITableViewDataSource, UITableViewDelegate  {
-
     func numberOfSections(in tableView: UITableView) -> Int {
-        localAuthManager.biomeryType != .none ? 3 : 2
+        let localAuthType = localAuthManager.isLocalAuthAvailable() ? localAuthManager.biomeryType : .none
+        return localAuthType != .none ? 3 : 2
     }
 
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -266,7 +263,6 @@ extension UnlockViewController: UITableViewDataSource, UITableViewDelegate  {
 
 // MARK: - target/action
 extension UnlockViewController {
-
     @objc
     private func dismissViewController() {
         dismiss(animated: true, completion: nil)
@@ -302,17 +298,15 @@ extension UnlockViewController {
 }
 
 extension UnlockViewController: UIDocumentPickerDelegate {
-
     func documentPicker(_ controller: UIDocumentPickerViewController, didPickDocumentsAt urls: [URL]) {
         guard let url = urls.first else { return }
         do {
             try unlockData.setKeyfileURL(url)
             tableView.reloadSections(IndexSet(integer: 1), with: .automatic)
-        } catch let error {
+        } catch {
             // TODO: handle error
         }
     }
-
 }
 
 fileprivate extension UnlockViewController {

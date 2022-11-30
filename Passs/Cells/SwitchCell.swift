@@ -8,7 +8,6 @@
 import UIKit
 
 class SwitchCell: UITableViewCell {
-
     var onSwitchValueChanged: ((_: Bool) -> Void)?
 
     var isEnabled: Bool {
@@ -47,7 +46,6 @@ class SwitchCell: UITableViewCell {
 }
 
 extension SwitchCell {
-
     @objc func switchValueChanged(_ sender: UISwitch) {
         onSwitchValueChanged?(sender.isOn)
     }
