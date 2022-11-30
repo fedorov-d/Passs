@@ -71,7 +71,7 @@ final class UnlockViewController: UIViewController {
             for: IndexPath(row: 0, section: 0)
         ) as! TextFieldCell
         cell.onTextChanged = { [weak self] newText in
-            guard let self = self else { return }
+            guard let self else { return }
             self.unlockData.password = newText
             self.navigationItem.rightBarButtonItem?.isEnabled = newText.count > 0
             if newText.count == 0 {

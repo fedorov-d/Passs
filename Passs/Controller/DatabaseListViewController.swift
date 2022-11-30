@@ -138,7 +138,7 @@ extension DatabaseListViewController: UITableViewDataSource {
         detailTextLabel.font = detailTextLabelFont
         detailTextLabel.text = "";
 
-        if Date().timeIntervalSince(modificationDate) > Constants.markAsUpdatedTimeout {
+        if Date().timeIntervalSince(modificationDate) < Constants.markAsUpdatedTimeout {
             detailTextLabel.attributedText = lastUpdateDateAttributedString(from: modificationDate,
                                                                             font: detailTextLabelFont,
                                                                             textColor: detailTextLabelColor)
@@ -154,7 +154,7 @@ extension DatabaseListViewController: UITableViewDelegate {
         tableView.deselectRow(at: indexPath, animated: true)
         let database = databasesProvider.databases[indexPath.row]
         localAuthManager.unlockData(for: database.url.lastPathComponent) { [weak self] result in
-            guard let self = self else { return }
+            guard let self else { return }
             switch result {
             case .success(let unlockData):
                 do {

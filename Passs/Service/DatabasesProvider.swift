@@ -47,7 +47,7 @@ final class DatabasesProviderImp: DatabasesProvider {
         }
         var databases: [StoredDatabase] = []
         OperationQueue().addOperation { [weak self] in
-            guard let self = self else { return }
+            guard let self else { return }
             databases = fileURLs
                 .filter { $0.isFileURL && self.supportedExtensions.contains($0.pathExtension) }
                 .map { url in

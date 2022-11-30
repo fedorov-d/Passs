@@ -59,7 +59,7 @@ final class PasteboardManagerImp: PasteboardManager {
         timer?.invalidate()
         timer = Timer(timeInterval: dropPasswordInterval, repeats: false) { [weak self] _ in
             completion()
-            guard let self = self else { return }
+            guard let self else { return }
             self.pasteboard.value = ""
         }
         if let timer = timer {
