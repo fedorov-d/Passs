@@ -9,6 +9,7 @@ import UIKit
 import MobileCoreServices
 import UniformTypeIdentifiers
 import LocalAuthentication
+import Combine
 
 class DatabaseListViewController: UIViewController {
     private let databasesProvider: DatabasesProvider
@@ -19,6 +20,8 @@ class DatabaseListViewController: UIViewController {
 
     private let completion: () -> Void
     private let enterPassword: (_: StoredDatabase) -> Void
+
+    private var subscriptionSet = Set<AnyCancellable>()
 
     private lazy var dateFormatter: DateFormatter = {
         let formatter = DateFormatter()
@@ -75,6 +78,11 @@ class DatabaseListViewController: UIViewController {
             action: #selector(importTapped)
         )
         databasesProvider.loadStoredDatabases()
+        applicationDidBecomeActivePublisher()
+            .sink { [weak self] in
+                self?.tableView.reloadData()
+            }
+            .store(in: &subscriptionSet)
     }
 
     private func presentEnterPassword(for database: StoredDatabase) {

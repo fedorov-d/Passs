@@ -59,27 +59,4 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         }
         return true
     }
-
-    func isLineContainsZeroSum(_ line: String, count: Int) -> Bool {
-        let arrayOfChars = Array(line.components(separatedBy: " ").prefix(count))
-        var sum = 0
-        for char in arrayOfChars {
-            let intValue = Int(char) ?? 0
-            if intValue == 0 {
-                return true
-            }
-            sum += intValue
-            if sum == 0 {
-                return true
-            }
-        }
-        for char in Array(arrayOfChars.prefix(arrayOfChars.count - 1)) {
-            let intValue = Int(char) ?? 0
-            sum -= intValue
-            if sum == 0 {
-                return true
-            }
-        }
-        return false
-    }
 }

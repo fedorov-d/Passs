@@ -51,4 +51,11 @@ extension UIViewController {
             .receive(on: RunLoop.main)
             .eraseToAnyPublisher()
     }
+
+    func applicationDidBecomeActivePublisher() -> AnyPublisher<Void, Never> {
+        NotificationCenter.default.publisher(for: UIApplication.didBecomeActiveNotification)
+            .receive(on: RunLoop.main)
+            .map { _ in () }
+            .eraseToAnyPublisher()
+    }
 }
