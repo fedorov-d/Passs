@@ -14,6 +14,11 @@ target 'Passs' do
     common
 end
 
+target 'CredentialProvider' do
+  pod 'SnapKit'
+  common
+end
+
 target 'PasssTests' do
   common
 end

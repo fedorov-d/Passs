@@ -39,6 +39,11 @@ final class DatabasesProviderImp: DatabasesProvider {
 
     func loadStoredDatabases() {
         let fileManager = FileManager.default
+//        guard documentsURL.startAccessingSecurityScopedResource() else {
+//            Swift.debugPrint("Cannot access security-scoped URL: \(documentsURL)")
+//            return
+//        }
+//        defer { documentsURL.stopAccessingSecurityScopedResource() }
         guard let fileURLs = try? fileManager.contentsOfDirectory(
             at: documentsURL,
             includingPropertiesForKeys: nil
@@ -113,5 +118,7 @@ final class DatabasesProviderImp: DatabasesProvider {
     
     let supportedExtensions = ["kdb", "kdbx"]
     
-    private let documentsURL = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first!
+    private let documentsURL = FileManager.default.containerURL(
+        forSecurityApplicationGroupIdentifier: "group.password.storage"
+    )!
 }

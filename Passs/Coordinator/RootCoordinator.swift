@@ -9,16 +9,12 @@ import UIKit
 
 final class RootCoordinator {
     let navigationController: UINavigationController
-    private let window: UIWindow
     private let serviceLocator: ServiceLocator
 
-    init(window: UIWindow, serviceLocator: ServiceLocator) {
-        self.window = window
+    init(serviceLocator: ServiceLocator) {
         self.serviceLocator = serviceLocator
         self.navigationController = UINavigationController()
         navigationController.navigationBar.prefersLargeTitles = true
-        window.rootViewController = self.navigationController
-        window.makeKeyAndVisible()
     }
 
     func showDatabasesViewController() {

@@ -25,8 +25,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                 Swift.debugPrint(error)
             }
         }
+        coordinator = RootCoordinator(serviceLocator: serviceLocator)
         window = UIWindow()
-        coordinator = RootCoordinator(window: window!, serviceLocator: serviceLocator)
+        window?.rootViewController = coordinator?.navigationController
+        window?.makeKeyAndVisible()
         coordinator?.showDatabasesViewController()
         if let application = application as? Application {
             application.onLockout = { [unowned self] in
