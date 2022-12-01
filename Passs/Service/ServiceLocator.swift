@@ -9,21 +9,32 @@ import Foundation
 import UIKit
 
 protocol ServiceLocator: AnyObject {
-    func databasesProvider() -> DatabasesProvider
+    var databasesProvider: DatabasesProvider { get }
+    var pasteboardManager: PasteboardManager { get }
+    var credentialsSelectionManager: CredentialsSelectionManager { get }
+
     func keychainManager() -> KeychainManager
     func localAuthManager() -> LocalAuthManager
     func passDatabaseManager() -> PassDatabaseManager
     func recentPasswordsManager(databaseURL: URL) -> RecentPasswordsManager
-    func pasteboardManager() -> PasteboardManager
     func settingsManager() -> SettingsManager
 }
 
 final class ServiceLocatorImp: ServiceLocator {
     private let _databasesProvider = DatabasesProviderImp()
     private let _pasteboardManager = PasteboardManagerImp()
+    private let _credentialsSelectionManager = CredentialsSelectionManagerImp()
 
-    func databasesProvider() -> DatabasesProvider {
+    var databasesProvider: DatabasesProvider {
         _databasesProvider
+    }
+
+    var pasteboardManager: PasteboardManager {
+        _pasteboardManager
+    }
+
+    var credentialsSelectionManager: CredentialsSelectionManager {
+        _credentialsSelectionManager
     }
 
     func keychainManager() -> KeychainManager {
@@ -40,10 +51,6 @@ final class ServiceLocatorImp: ServiceLocator {
 
     func recentPasswordsManager(databaseURL: URL) -> RecentPasswordsManager {
         RecentPasswordsManagerImp(databaseURL: databaseURL)
-    }
-
-    func pasteboardManager() -> PasteboardManager {
-        _pasteboardManager
     }
 
     func settingsManager() -> SettingsManager {

@@ -36,6 +36,8 @@
 		0A850A0F2937F98E00754CC9 /* UnlockData.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3FF57D527BFED1E00D41659 /* UnlockData.swift */; };
 		0A850A102937F99E00754CC9 /* PassItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3F3DA27260CA5FC0057AF24 /* PassItem.swift */; };
 		0A850A112937F9EF00754CC9 /* PassItem+KeePassKit.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3F3DA29260CA8440057AF24 /* PassItem+KeePassKit.swift */; };
+		0A8D3E382938F515005D4435 /* CredentialsSelectionManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A8D3E372938F515005D4435 /* CredentialsSelectionManager.swift */; };
+		0A8D3E392938F515005D4435 /* CredentialsSelectionManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A8D3E372938F515005D4435 /* CredentialsSelectionManager.swift */; };
 		8136E27CDE0CD3DA3ABEC034 /* Pods_CredentialProvider.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BBF18EB9167ADB17B2C12082 /* Pods_CredentialProvider.framework */; };
 		A31842472721D69200786744 /* PasteboardManagerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A31842462721D69200786744 /* PasteboardManagerTests.swift */; };
 		A318424F2721DB5F00786744 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = A318424E2721DB5F00786744 /* Constants.swift */; };
@@ -123,6 +125,7 @@
 /* Begin PBXFileReference section */
 		096CD049FCD875D09982CB67 /* Pods_Passs.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Passs.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		0A1EF7ED2937A99200F9DEC3 /* UIFont+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIFont+Extensions.swift"; sourceTree = "<group>"; };
+		0A8D3E372938F515005D4435 /* CredentialsSelectionManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CredentialsSelectionManager.swift; sourceTree = "<group>"; };
 		3DBED3956B7666EBE5677B9B /* Pods-PasssTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PasssTests.release.xcconfig"; path = "Target Support Files/Pods-PasssTests/Pods-PasssTests.release.xcconfig"; sourceTree = "<group>"; };
 		61C958F420CCDECE8DEC67FD /* Pods_PasssTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_PasssTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		69039581FF5D2E799B3EA7B8 /* Pods-CredentialProvider.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-CredentialProvider.debug.xcconfig"; path = "Target Support Files/Pods-CredentialProvider/Pods-CredentialProvider.debug.xcconfig"; sourceTree = "<group>"; };
@@ -348,6 +351,7 @@
 				A3CFA4C92795F9650020F82F /* KeychainManager.swift */,
 				A3B5E33F27B16E620061CAC6 /* LocalAuthManager.swift */,
 				A3CAA31227ABCFB000330FAC /* RecentPasswordsManager.swift */,
+				0A8D3E372938F515005D4435 /* CredentialsSelectionManager.swift */,
 			);
 			path = Service;
 			sourceTree = "<group>";
@@ -611,6 +615,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				A35A8B1227BC2F1500216C24 /* UnlockViewController.swift in Sources */,
+				0A8D3E382938F515005D4435 /* CredentialsSelectionManager.swift in Sources */,
 				A3CAA30D27AB060300330FAC /* Application.swift in Sources */,
 				A3F3DA28260CA5FC0057AF24 /* PassItem.swift in Sources */,
 				A3CAA30F27AB06CF00330FAC /* main.swift in Sources */,
@@ -665,6 +670,7 @@
 				0A1EF80D2937D57D00F9DEC3 /* SettingsManager.swift in Sources */,
 				0A1EF8082937D57D00F9DEC3 /* DatabasesProvider.swift in Sources */,
 				0A1EF7FD2937D57400F9DEC3 /* UIImage+Extensions.swift in Sources */,
+				0A8D3E392938F515005D4435 /* CredentialsSelectionManager.swift in Sources */,
 				0A1EF80C2937D57D00F9DEC3 /* ServiceLocator.swift in Sources */,
 				0A1EF8002937D57400F9DEC3 /* UIFont+Extensions.swift in Sources */,
 				0A1EF8042937D57700F9DEC3 /* GroupsViewController.swift in Sources */,
@@ -883,7 +889,6 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = EBA44A656624B8CD1C05172E /* Pods-Passs.debug.xcconfig */;
 			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = Passs/Passs.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
@@ -909,7 +914,6 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = A1BE885742778874F9F7BB11 /* Pods-Passs.release.xcconfig */;
 			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = Passs/Passs.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";

@@ -9,16 +9,33 @@ import AuthenticationServices
 import SnapKit
 
 class CredentialProviderViewController: ASCredentialProviderViewController {
-    private let coordinator = RootCoordinator(serviceLocator: ServiceLocatorImp())
+    private let serviceLocator = ServiceLocatorImp()
+    private lazy var coordinator = RootCoordinator(serviceLocator: serviceLocator)
+
+    override func loadView() {
+        view = UIView()
+    }
+
+    override func viewDidLoad() {
+        serviceLocator.credentialsSelectionManager.onCredentialsSelected = { [weak self] credentials in
+            guard let self,
+                  let user = credentials.username,
+                  let password = credentials.password else { return }
+            let passwordCredential = ASPasswordCredential(user: user, password: password)
+            self.extensionContext.completeRequest(withSelectedCredential: passwordCredential, completionHandler: nil)
+        }
+    }
     /*
      Prepare your UI to list available credentials for the user to choose from. The items in
      'serviceIdentifiers' describe the service the user is logging in to, so your extension can
      prioritize the most relevant credentials in the list.
     */
     override func prepareCredentialList(for serviceIdentifiers: [ASCredentialServiceIdentifier]) {
-        view.subviews.forEach { $0.removeFromSuperview() }
         let childViewController = coordinator.navigationController
-        coordinator.showDatabasesViewController()
+        coordinator.showDatabasesViewController { [weak self] in
+            self?.extensionContext.cancelRequest(withError: NSError(domain: ASExtensionErrorDomain,
+                                                                    code: ASExtensionError.userCanceled.rawValue))
+        }
         childViewController.willMove(toParent: self)
         self.addChild(childViewController)
         view.addSubview(childViewController.view)

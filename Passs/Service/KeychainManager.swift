@@ -21,12 +21,13 @@ protocol KeychainManager: AnyObject {
 }
 
 final class KeychainManagerImp: KeychainManager {
-
     func setItem(_ item: String, for key: String) throws {
-
-        var query: [AnyHashable: Any] = [kSecClass: kSecClassInternetPassword,
-                                        kSecAttrServer: "",
-                                        kSecAttrAccount: key]
+        var query: [AnyHashable: Any] = [
+            kSecClass: kSecClassInternetPassword,
+            kSecAttrServer: "",
+            kSecAttrAccessGroup: accessGroup,
+            kSecAttrAccount: key
+        ]
         let status: OSStatus
         if let _ = try? self.item(for: key) {
             let updateQuery = [kSecValueData: item.data(using: .utf8)]
@@ -68,11 +69,15 @@ final class KeychainManagerImp: KeychainManager {
     }
 
     private func query(for key: String) -> [AnyHashable: Any] {
-        [kSecClass: kSecClassInternetPassword,
-        kSecAttrServer: "",
-        kSecAttrAccount: key,
-        kSecMatchLimit: kSecMatchLimitOne,
-        kSecReturnData: true]
+        [
+            kSecClass: kSecClassInternetPassword,
+            kSecAttrAccessGroup: accessGroup,
+            kSecAttrServer: "",
+            kSecAttrAccount: key,
+            kSecMatchLimit: kSecMatchLimitOne,
+            kSecReturnData: true
+        ]
     }
 
+    let accessGroup = "3YK694S6H3.com.sw1.dftest.shared"
 }

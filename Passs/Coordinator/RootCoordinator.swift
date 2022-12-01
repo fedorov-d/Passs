@@ -17,8 +17,8 @@ final class RootCoordinator {
         navigationController.navigationBar.prefersLargeTitles = true
     }
 
-    func showDatabasesViewController() {
-        navigationController.viewControllers = [databaseListViewController()]
+    func showDatabasesViewController(onCancel: (() -> Void)? = nil) {
+        navigationController.viewControllers = [databaseListViewController(onCancel: onCancel)]
     }
 
     private func showUnlockViewController(for database: StoredDatabase, passDatabaseManager: PassDatabaseManager) {
@@ -53,18 +53,20 @@ final class RootCoordinator {
 }
 
 extension RootCoordinator {
-    private func databaseListViewController() -> DatabaseListViewController {
+    private func databaseListViewController(onCancel: (() -> Void)? = nil) -> DatabaseListViewController {
         let passDatabaseManager = serviceLocator.passDatabaseManager()
         return DatabaseListViewController(
-            databasesProvider: serviceLocator.databasesProvider(),
+            databasesProvider: serviceLocator.databasesProvider,
             passDatabaseManager: passDatabaseManager,
             localAuthManager: serviceLocator.localAuthManager(),
-            enterPassword: { [weak self] database in
+            onAskForPassword: { [weak self] database in
                 self?.showUnlockViewController(for: database, passDatabaseManager: passDatabaseManager)
-            }
-        ) { [weak self] in
-            self?.showGroupsViewController(passDatabaseManager: passDatabaseManager)
-        }
+            },
+            onDatabaseOpened: { [weak self] in
+                self?.showGroupsViewController(passDatabaseManager: passDatabaseManager)
+            },
+            onCancel: onCancel
+        )
     }
 
     private func unlockViewController(
@@ -91,8 +93,9 @@ extension RootCoordinator {
             recentPasswordsManager: recentPasswordsManager,
             searchResultsControllerProvider: {
                 PasswordsViewController(
-                    pasteboardManager: self.serviceLocator.pasteboardManager(),
-                    recentPasswordsManager: recentPasswordsManager
+                    pasteboardManager: self.serviceLocator.pasteboardManager,
+                    recentPasswordsManager: recentPasswordsManager,
+                    credentialsSelectionManager: self.serviceLocator.credentialsSelectionManager
                 )
             }) { [unowned self] group in
                 self.showPasswordsViewController(for: group, recentPasswordsManager: recentPasswordsManager)
@@ -106,8 +109,9 @@ extension RootCoordinator {
         PasswordsViewController(
             title: group?.title,
             items: group?.items.sortedByName() ?? [],
-            pasteboardManager: serviceLocator.pasteboardManager(),
-            recentPasswordsManager: recentPasswordsManager
+            pasteboardManager: serviceLocator.pasteboardManager,
+            recentPasswordsManager: recentPasswordsManager,
+            credentialsSelectionManager: serviceLocator.credentialsSelectionManager
         )
     }
 }

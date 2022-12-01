@@ -20,7 +20,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         if let options = launchOptions,
            let launchURL = options[UIApplication.LaunchOptionsKey.url] as? URL {
             do {
-                try serviceLocator.databasesProvider().addDatabase(from: launchURL)
+                try serviceLocator.databasesProvider.addDatabase(from: launchURL)
             } catch (let error) {
                 Swift.debugPrint(error)
             }
@@ -39,10 +39,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
 
     func applicationDidEnterBackground(_ application: UIApplication) {
-        guard serviceLocator.pasteboardManager().needsDropPassword else { return }
+        guard serviceLocator.pasteboardManager.needsDropPassword else { return }
         var identifier: UIBackgroundTaskIdentifier? = nil
         identifier = application.beginBackgroundTask {
-            self.serviceLocator.pasteboardManager().dropPassword {
+            self.serviceLocator.pasteboardManager.dropPassword {
                 guard let id = identifier else { return }
                 application.endBackgroundTask(id)
             }
@@ -55,7 +55,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         options: [UIApplication.OpenURLOptionsKey : Any] = [:]
     ) -> Bool {
         do {
-            try self.serviceLocator.databasesProvider().addDatabase(from: url)
+            try self.serviceLocator.databasesProvider.addDatabase(from: url)
         } catch (let error) {
             Swift.debugPrint(error)
         }

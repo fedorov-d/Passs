@@ -18,8 +18,9 @@ class DatabaseListViewController: UIViewController {
     
     private let cellId = "database.cell.id"
 
-    private let completion: () -> Void
-    private let enterPassword: (_: StoredDatabase) -> Void
+    private let onDatabaseOpened: () -> Void
+    private let onAskForPassword: (_: StoredDatabase) -> Void
+    private let onCancel: (() -> Void)?
 
     private var subscriptionSet = Set<AnyCancellable>()
 
@@ -42,14 +43,16 @@ class DatabaseListViewController: UIViewController {
         databasesProvider: DatabasesProvider,
         passDatabaseManager: PassDatabaseManager,
         localAuthManager: LocalAuthManager,
-        enterPassword: @escaping (_: StoredDatabase) -> Void,
-        completion: @escaping () -> Void
+        onAskForPassword: @escaping (_: StoredDatabase) -> Void,
+        onDatabaseOpened: @escaping () -> Void,
+        onCancel: (() -> Void)? = nil
     ) {
         self.databasesProvider = databasesProvider
         self.passDatabaseManager = passDatabaseManager
         self.localAuthManager = localAuthManager
-        self.enterPassword = enterPassword
-        self.completion = completion
+        self.onAskForPassword = onAskForPassword
+        self.onDatabaseOpened = onDatabaseOpened
+        self.onCancel = onCancel
         super.init(nibName: nil, bundle: nil)
         self.databasesProvider.delegate = self
     }
@@ -72,21 +75,31 @@ class DatabaseListViewController: UIViewController {
         super.viewDidLoad()
         self.navigationItem.title = "Databases"
         self.navigationItem.backButtonTitle = ""
-        self.navigationItem.rightBarButtonItem = UIBarButtonItem(
-            barButtonSystemItem: .add,
-            target: self,
-            action: #selector(importTapped)
-        )
+        if onCancel == nil {
+            self.navigationItem.rightBarButtonItem = UIBarButtonItem(
+                barButtonSystemItem: .add,
+                target: self,
+                action: #selector(importTapped)
+            )
+        } else {
+            self.navigationItem.leftBarButtonItem = UIBarButtonItem(
+                barButtonSystemItem: .cancel,
+                target: self,
+                action: #selector(cancelTapped)
+            )
+        }
         databasesProvider.loadStoredDatabases()
         applicationDidBecomeActivePublisher()
             .sink { [weak self] in
-                self?.tableView.reloadData()
+                guard let self else { return }
+                self.tableView.reloadData()
+                self.unlockDatabaseIfNeeded()
             }
             .store(in: &subscriptionSet)
     }
 
     private func presentEnterPassword(for database: StoredDatabase) {
-        self.enterPassword(database)
+        self.onAskForPassword(database)
     }
 
     private func handlePasswordError(_ error: Error, for database: StoredDatabase) {
@@ -107,10 +120,16 @@ class DatabaseListViewController: UIViewController {
 }
 
 extension DatabaseListViewController {
-    @objc func importTapped() {
+    @objc
+    func importTapped() {
         let documentPickerController = UIDocumentPickerViewController.keepassDatabasesPicker()
         documentPickerController.delegate = self
         self.present(documentPickerController, animated: true, completion: nil)
+    }
+
+    @objc
+    func cancelTapped() {
+        onCancel?()
     }
 }
 
@@ -161,30 +180,14 @@ extension DatabaseListViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
         let database = databasesProvider.databases[indexPath.row]
-        localAuthManager.unlockData(for: database.url.lastPathComponent) { [weak self] result in
-            guard let self else { return }
-            switch result {
-            case .success(let unlockData):
-                do {
-                    try self.passDatabaseManager.load(
-                        databaseURL: database.url,
-                        password: unlockData.password,
-                        keyFileData: unlockData.keyFileData
-                    )
-                    self.completion()
-                } catch (let error) {
-                    self.handlePasswordError(error, for: database)
-                }
-            case .failure(let error):
-                self.handlePasswordError(error, for: database)
-            }
-        }
+        unlockDatabase(database)
     }
 }
 
 extension DatabaseListViewController: DatabasesProviderDelegate {
     func didLoadStoredDatabases() {
         tableView.reloadData()
+        unlockDatabaseIfNeeded()
     }
 
     func didAddDatabase(at index: Int) {
@@ -214,6 +217,36 @@ fileprivate extension DatabaseListViewController {
         resultString.append(NSAttributedString(string: dateFormatter.string(from: date),
                                                attributes: attributes))
         return resultString.copy() as! NSAttributedString
+    }
+}
+
+fileprivate extension DatabaseListViewController {
+    func unlockDatabaseIfNeeded() {
+        guard databasesProvider.databases.count == 1,
+              navigationController?.topViewController == self,
+              let databaseToUnlock = databasesProvider.databases.first else { return }
+        unlockDatabase(databaseToUnlock)
+    }
+
+    func unlockDatabase(_ database: StoredDatabase) {
+        localAuthManager.unlockData(for: database.url.lastPathComponent) { [weak self] result in
+            guard let self else { return }
+            switch result {
+            case .success(let unlockData):
+                do {
+                    try self.passDatabaseManager.load(
+                        databaseURL: database.url,
+                        password: unlockData.password,
+                        keyFileData: unlockData.keyFileData
+                    )
+                    self.onDatabaseOpened()
+                } catch (let error) {
+                    self.handlePasswordError(error, for: database)
+                }
+            case .failure(let error):
+                self.handlePasswordError(error, for: database)
+            }
+        }
     }
 }
 

@@ -34,16 +34,10 @@ struct StoredDatabaseImp: StoredDatabase {
 }
 
 final class DatabasesProviderImp: DatabasesProvider {
-
     weak var delegate: DatabasesProviderDelegate?
 
     func loadStoredDatabases() {
         let fileManager = FileManager.default
-//        guard documentsURL.startAccessingSecurityScopedResource() else {
-//            Swift.debugPrint("Cannot access security-scoped URL: \(documentsURL)")
-//            return
-//        }
-//        defer { documentsURL.stopAccessingSecurityScopedResource() }
         guard let fileURLs = try? fileManager.contentsOfDirectory(
             at: documentsURL,
             includingPropertiesForKeys: nil

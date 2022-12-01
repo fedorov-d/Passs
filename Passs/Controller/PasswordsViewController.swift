@@ -25,16 +25,19 @@ class PasswordsViewController: UIViewController, PasswordsSeachResultsDispalyCon
 
     private let pasteboardManager: PasteboardManager
     private let recentPasswordsManager: RecentPasswordsManager
+    private let credentialsSelectionManager: CredentialsSelectionManager
 
     init(
         title: String? = nil,
         items: [PassItem] = [],
         pasteboardManager: PasteboardManager,
-        recentPasswordsManager: RecentPasswordsManager
+        recentPasswordsManager: RecentPasswordsManager,
+        credentialsSelectionManager: CredentialsSelectionManager
     ) {
         self.items = items
         self.pasteboardManager = pasteboardManager
         self.recentPasswordsManager = recentPasswordsManager
+        self.credentialsSelectionManager = credentialsSelectionManager
         super.init(nibName: nil, bundle: nil)
         self.title = title
     }
@@ -124,7 +127,7 @@ extension PasswordsViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
         let item = items[indexPath.row]
-        copyPassword(item)
+        credentialsSelectionManager.onCredentialsSelected?(item)
     }
 }
 
