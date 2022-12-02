@@ -8,6 +8,7 @@
 import UIKit
 import KeePassKit
 import SnapKit
+import Combine
 
 protocol PasswordsSeachResultsDispalyController: AnyObject {
     var items: [PassItem] { get set }
@@ -27,6 +28,8 @@ class PasswordsViewController: UIViewController, PasswordsSeachResultsDispalyCon
     private let pasteboardManager: PasteboardManager
     private let recentPasswordsManager: RecentPasswordsManager
     private let credentialsSelectionManager: CredentialsSelectionManager
+
+    private var subscriptionSet = Set<AnyCancellable>()
 
     init(
         title: String? = nil,
@@ -86,6 +89,7 @@ class PasswordsViewController: UIViewController, PasswordsSeachResultsDispalyCon
         self.navigationItem.title = title
         self.navigationItem.largeTitleDisplayMode = .never
         tableView.reloadData()
+        setupKeyboardAvoidance(for: tableView, subscriptionSet: &subscriptionSet)
     }
 
 }

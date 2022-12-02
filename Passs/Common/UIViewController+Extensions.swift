@@ -58,4 +58,25 @@ extension UIViewController {
             .map { _ in () }
             .eraseToAnyPublisher()
     }
+
+    func setupKeyboardAvoidance(for scrollView: UIScrollView, subscriptionSet: inout Set<AnyCancellable>) {
+        keyboardWillShowPublisher()
+            .sink { [weak self] params in
+                guard let self else { return }
+                var currentInset = scrollView.contentInset
+                currentInset.bottom = params.frameEnd.height - self.view.safeAreaInsets.bottom
+                scrollView.contentInset = currentInset
+                scrollView.scrollIndicatorInsets = currentInset
+            }
+            .store(in: &subscriptionSet)
+
+        keyboardWillHidePublisher()
+            .sink { params in
+                var currentInset = scrollView.contentInset
+                currentInset.bottom = 0
+                scrollView.contentInset = currentInset
+                scrollView.scrollIndicatorInsets = currentInset
+            }
+            .store(in: &subscriptionSet)
+    }
 }

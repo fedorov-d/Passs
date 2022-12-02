@@ -72,25 +72,7 @@ class GroupsViewController: UIViewController {
         navigationItem.hidesSearchBarWhenScrolling = false
         definesPresentationContext = false
 
-        keyboardWillShowPublisher()
-            .sink { [weak self] params in
-                guard let self else { return }
-                var currentInset = self.tableView.contentInset
-                currentInset.bottom = params.frameEnd.height - self.view.safeAreaInsets.bottom
-                self.tableView.contentInset = currentInset
-                self.tableView.separatorInset = currentInset
-            }
-            .store(in: &subscriptionSet)
-
-        keyboardWillHidePublisher()
-            .sink { [weak self] params in
-                guard let self else { return }
-                var currentInset = self.tableView.contentInset
-                currentInset.bottom = 0
-                self.tableView.contentInset = currentInset
-                self.tableView.separatorInset = currentInset
-            }
-            .store(in: &subscriptionSet)
+        setupKeyboardAvoidance(for: tableView, subscriptionSet: &subscriptionSet)
     }
 }
 
