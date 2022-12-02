@@ -6,12 +6,15 @@
 //
 
 import UIKit
+import Combine
 
 class GroupsViewController: UIViewController {
     private let databaseManager: PassDatabaseManager
     private let recentPasswordsManager: RecentPasswordsManager
     private let groupSelected: (PassGroup) -> Void
     private let searchResultsControllerProvider: () -> PasswordsSeachResultsDispalyController & UIViewController
+
+    private var subscriptionSet = Set<AnyCancellable>()
 
     init(
         databaseManager: PassDatabaseManager,
@@ -32,12 +35,18 @@ class GroupsViewController: UIViewController {
         fatalError("init(coder:) has not been implemented")
     }
 
+    private let cellId = "groups.cell.id"
+
     private lazy var tableView: UITableView = {
-        let tableView = UITableView(frame: .zero, style: .grouped)
+        let tableView = UITableView(frame: .zero, style: .insetGrouped)
         tableView.rowHeight = 48
         tableView.dataSource = self
         tableView.delegate = self
-        tableView.register(UITableViewCell.self, forCellReuseIdentifier: "cell.id")
+        tableView.register(UITableViewCell.self, forCellReuseIdentifier: cellId)
+        tableView.tableHeaderView = UIView(frame: CGRect(x: 0, y: 0, width: 0, height: 0.01))
+        if #available(iOS 15, *) {
+            tableView.sectionHeaderTopPadding = 10
+        }
         return tableView
     }()
 
@@ -52,7 +61,7 @@ class GroupsViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.navigationItem.largeTitleDisplayMode = .always
+        self.navigationItem.largeTitleDisplayMode = .never
         self.navigationItem.title = self.databaseManager.databaseName
 
         tableView.reloadData()
@@ -60,8 +69,28 @@ class GroupsViewController: UIViewController {
         navigationItem.searchController = UISearchController(searchResultsController: searchResultsControllerProvider())
         navigationItem.searchController?.searchResultsUpdater = self
         navigationItem.searchController?.obscuresBackgroundDuringPresentation = false
-        navigationItem.hidesSearchBarWhenScrolling = true
+        navigationItem.hidesSearchBarWhenScrolling = false
         definesPresentationContext = false
+
+        keyboardWillShowPublisher()
+            .sink { [weak self] params in
+                guard let self else { return }
+                var currentInset = self.tableView.contentInset
+                currentInset.bottom = params.frameEnd.height - self.view.safeAreaInsets.bottom
+                self.tableView.contentInset = currentInset
+                self.tableView.separatorInset = currentInset
+            }
+            .store(in: &subscriptionSet)
+
+        keyboardWillHidePublisher()
+            .sink { [weak self] params in
+                guard let self else { return }
+                var currentInset = self.tableView.contentInset
+                currentInset.bottom = 0
+                self.tableView.contentInset = currentInset
+                self.tableView.separatorInset = currentInset
+            }
+            .store(in: &subscriptionSet)
     }
 }
 
@@ -80,10 +109,11 @@ extension GroupsViewController: UISearchResultsUpdating {
             passwordsController.items = items
             return
         }
-        passwordsController.sectionTitle = "Matching items"
-        passwordsController.items = items.filter { item in
+        let matchingItems = items.filter { item in
             item.title?.lowercased().contains(searchController.searchBar.text?.lowercased() ?? "") ?? false
         }
+        passwordsController.sectionTitle = matchingItems.isEmpty ? "No matching items" : "Matching items"
+        passwordsController.items = matchingItems
     }
 
 }
@@ -94,7 +124,7 @@ extension GroupsViewController: UITableViewDataSource {
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "cell.id", for: indexPath)
+        let cell = tableView.dequeueReusableCell(withIdentifier: cellId, for: indexPath)
         guard let group = databaseManager.passwordGroups?[indexPath.row] else { fatalError() }
         cell.textLabel?.text = group.title
         cell.accessoryType = .disclosureIndicator

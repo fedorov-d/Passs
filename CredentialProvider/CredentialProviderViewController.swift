@@ -24,18 +24,8 @@ class CredentialProviderViewController: ASCredentialProviderViewController {
             let passwordCredential = ASPasswordCredential(user: user, password: password)
             self.extensionContext.completeRequest(withSelectedCredential: passwordCredential, completionHandler: nil)
         }
-    }
-    /*
-     Prepare your UI to list available credentials for the user to choose from. The items in
-     'serviceIdentifiers' describe the service the user is logging in to, so your extension can
-     prioritize the most relevant credentials in the list.
-    */
-    override func prepareCredentialList(for serviceIdentifiers: [ASCredentialServiceIdentifier]) {
+
         let childViewController = coordinator.navigationController
-        coordinator.showDatabasesViewController { [weak self] in
-            self?.extensionContext.cancelRequest(withError: NSError(domain: ASExtensionErrorDomain,
-                                                                    code: ASExtensionError.userCanceled.rawValue))
-        }
         childViewController.willMove(toParent: self)
         self.addChild(childViewController)
         view.addSubview(childViewController.view)
@@ -43,6 +33,17 @@ class CredentialProviderViewController: ASCredentialProviderViewController {
             make.edges.equalToSuperview()
         }
         childViewController.didMove(toParent: self)
+    }
+    /*
+     Prepare your UI to list available credentials for the user to choose from. The items in
+     'serviceIdentifiers' describe the service the user is logging in to, so your extension can
+     prioritize the most relevant credentials in the list.
+    */
+    override func prepareCredentialList(for serviceIdentifiers: [ASCredentialServiceIdentifier]) {
+        coordinator.showDatabasesViewController { [weak self] in
+            self?.extensionContext.cancelRequest(withError: NSError(domain: ASExtensionErrorDomain,
+                                                                    code: ASExtensionError.userCanceled.rawValue))
+        }
     }
 
     /*

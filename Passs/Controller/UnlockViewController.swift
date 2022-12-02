@@ -275,8 +275,8 @@ extension UnlockViewController {
 
     private func tryUnlock() {
         do {
-            try passDatabaseManager.load(
-                databaseURL: self.database.url,
+            try passDatabaseManager.unlockDatabase(
+                with: self.database.url,
                 password:unlockData.password,
                 keyFileData: unlockData.keyFileData
             )

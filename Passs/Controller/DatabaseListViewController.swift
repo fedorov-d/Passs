@@ -98,6 +98,11 @@ class DatabaseListViewController: UIViewController {
             .store(in: &subscriptionSet)
     }
 
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        passDatabaseManager.lockDatabase()
+    }
+
     private func presentEnterPassword(for database: StoredDatabase) {
         self.onAskForPassword(database)
     }
@@ -187,7 +192,6 @@ extension DatabaseListViewController: UITableViewDelegate {
 extension DatabaseListViewController: DatabasesProviderDelegate {
     func didLoadStoredDatabases() {
         tableView.reloadData()
-        unlockDatabaseIfNeeded()
     }
 
     func didAddDatabase(at index: Int) {
@@ -223,9 +227,11 @@ fileprivate extension DatabaseListViewController {
 fileprivate extension DatabaseListViewController {
     func unlockDatabaseIfNeeded() {
         guard databasesProvider.databases.count == 1,
-              navigationController?.topViewController == self,
-              let databaseToUnlock = databasesProvider.databases.first else { return }
-        unlockDatabase(databaseToUnlock)
+              let databaseToUnlock = databasesProvider.databases.first,
+              !passDatabaseManager.isDatabaseUnlocked else { return }
+        DispatchQueue.main.asyncAfter(deadline: .now() + .milliseconds(100)) {
+            self.unlockDatabase(databaseToUnlock)
+        }
     }
 
     func unlockDatabase(_ database: StoredDatabase) {
@@ -234,8 +240,8 @@ fileprivate extension DatabaseListViewController {
             switch result {
             case .success(let unlockData):
                 do {
-                    try self.passDatabaseManager.load(
-                        databaseURL: database.url,
+                    try self.passDatabaseManager.unlockDatabase(
+                        with: database.url,
                         password: unlockData.password,
                         keyFileData: unlockData.keyFileData
                     )

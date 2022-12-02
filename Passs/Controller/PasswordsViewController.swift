@@ -17,6 +17,7 @@ protocol PasswordsSeachResultsDispalyController: AnyObject {
 class PasswordsViewController: UIViewController, PasswordsSeachResultsDispalyController {
     var items: [PassItem] {
         didSet {
+//            noItemsLabel.isHidden = !items.isEmpty
             tableView.reloadData()
         }
     }
@@ -46,12 +47,27 @@ class PasswordsViewController: UIViewController, PasswordsSeachResultsDispalyCon
         fatalError("init(coder:) has not been implemented")
     }
 
+    private let cellId = "passwords.cell.id"
+
     private lazy var tableView: UITableView = {
-        let tableView = UITableView(frame: .zero, style: .grouped)
+        let tableView = UITableView(frame: .zero, style: .insetGrouped)
         tableView.dataSource = self
         tableView.delegate = self
-        tableView.register(SubtitleTableViewCell.self, forCellReuseIdentifier: "cell.id")
+        tableView.register(SubtitleTableViewCell.self, forCellReuseIdentifier: cellId)
+        tableView.tableHeaderView = UIView(frame: CGRect(x: 0, y: 0, width: 0, height: 0.01))
+        if #available(iOS 15, *) {
+            tableView.sectionHeaderTopPadding = 10
+        }
+//        tableView.backgroundView = noItemsLabel
         return tableView
+    }()
+
+    private lazy var noItemsLabel: UILabel = {
+        let label = UILabel()
+        label.textAlignment = .center
+        label.font = .preferredFont(forTextStyle: .largeTitle)
+        label.text = "No items"
+        return label
     }()
 
     // MARK: - UIViewController lifecycle
@@ -80,7 +96,7 @@ extension PasswordsViewController: UITableViewDataSource {
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "cell.id", for: indexPath)
+        let cell = tableView.dequeueReusableCell(withIdentifier: cellId, for: indexPath)
         let item = items[indexPath.row]
         cell.textLabel?.text = item.title
         cell.detailTextLabel?.text = item.username
