@@ -88,7 +88,6 @@ class DatabaseListViewController: UIViewController {
                 action: #selector(cancelTapped)
             )
         }
-        databasesProvider.loadStoredDatabases()
         applicationDidBecomeActivePublisher()
             .sink { [weak self] in
                 guard let self else { return }
@@ -192,6 +191,7 @@ extension DatabaseListViewController: UITableViewDelegate {
 extension DatabaseListViewController: DatabasesProviderDelegate {
     func didLoadStoredDatabases() {
         tableView.reloadData()
+        unlockDatabaseIfNeeded()
     }
 
     func didAddDatabase(at index: Int) {
@@ -228,6 +228,7 @@ fileprivate extension DatabaseListViewController {
     func unlockDatabaseIfNeeded() {
         guard databasesProvider.databases.count == 1,
               let databaseToUnlock = databasesProvider.databases.first,
+              !localAuthManager.isFetchingUnlockData,
               !passDatabaseManager.isDatabaseUnlocked else { return }
         DispatchQueue.main.asyncAfter(deadline: .now() + .milliseconds(100)) {
             self.unlockDatabase(databaseToUnlock)

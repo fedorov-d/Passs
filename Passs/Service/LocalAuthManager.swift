@@ -13,11 +13,12 @@ protocol LocalAuthManager: AnyObject {
     func isLocalAuthAvailable() -> Bool
     func saveUnlockData(_ unlockData: UnlockData, for database: String) throws
     func unlockData(for database: String, completion: @escaping (Result<UnlockData, Error>) -> Void)
+    var isFetchingUnlockData: Bool { get }
 }
 
 final class LocalAuthManagerImp: LocalAuthManager {
-
     private let keychainManager: KeychainManager
+    private(set) var isFetchingUnlockData = false
 
     init(keychainManager: KeychainManager) {
         self.keychainManager = keychainManager
@@ -39,14 +40,19 @@ final class LocalAuthManagerImp: LocalAuthManager {
     }
 
     func unlockData(for database: String, completion: @escaping (Result<UnlockData, Error>) -> Void) {
+        guard !isFetchingUnlockData else { return }
+        isFetchingUnlockData = true
         do {
             guard let string = try keychainManager.item(for: database),
                   let data = string.data(using: .utf8),
                   let unlockData = try? JSONDecoder().decode(UnlockData.self, from: data) else {
+                isFetchingUnlockData = false
                 completion(.failure(KeychainError.itemNotFound))
                 return
             }
-            evaluatePolicy { success, error in
+            evaluatePolicy { [weak self] success, error in
+                guard let self else { return }
+                self.isFetchingUnlockData = false
                 if success {
                     completion(.success(unlockData))
                 } else if let error = error {
@@ -54,6 +60,7 @@ final class LocalAuthManagerImp: LocalAuthManager {
                 }
             }
         } catch let error {
+            isFetchingUnlockData = false
             completion(.failure(error))
         }
     }
