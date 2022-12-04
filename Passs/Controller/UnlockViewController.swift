@@ -10,7 +10,7 @@ import Combine
 
 final class UnlockViewController: UIViewController {
     private let passDatabaseManager: PassDatabaseManager
-    private let database: StoredDatabase
+    private let databaseURL: URL
     private let localAuthManager: LocalAuthManager
     private let completion: () -> Void
 
@@ -38,12 +38,12 @@ final class UnlockViewController: UIViewController {
     init(
         passDatabaseManager: PassDatabaseManager,
         localAuthManager: LocalAuthManager,
-        database: StoredDatabase,
+        forDatabaseAt url: URL,
         completion: @escaping () -> Void
     ) {
         self.passDatabaseManager = passDatabaseManager
         self.localAuthManager = localAuthManager
-        self.database = database
+        self.databaseURL = url
         self.completion = completion
         super.init(nibName: nil, bundle: nil)
     }
@@ -276,12 +276,12 @@ extension UnlockViewController {
     private func tryUnlock() {
         do {
             try passDatabaseManager.unlockDatabase(
-                with: self.database.url,
+                with: databaseURL,
                 password:unlockData.password,
                 keyFileData: unlockData.keyFileData
             )
             if biometryCell?.isOn ?? false {
-                try localAuthManager.saveUnlockData(unlockData, for: database.url.lastPathComponent)
+                try localAuthManager.saveUnlockData(unlockData, for: databaseURL.lastPathComponent)
             }
             completion()
         } catch _ {

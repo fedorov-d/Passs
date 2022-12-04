@@ -117,7 +117,6 @@ extension GroupsViewController: UITableViewDataSource {
 }
 
 extension GroupsViewController: UITableViewDelegate {
-
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
         guard let group = databaseManager.passwordGroups?[indexPath.row] else { return }

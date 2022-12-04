@@ -21,9 +21,9 @@ final class RootCoordinator {
         navigationController.viewControllers = [databaseListViewController(onCancel: onCancel)]
     }
 
-    private func showUnlockViewController(for database: StoredDatabase, passDatabaseManager: PassDatabaseManager) {
+    private func showUnlockViewController(forDatabaseAt url: URL, passDatabaseManager: PassDatabaseManager) {
         let controller = self.unlockViewController(
-            for: database,
+            forDatabaseAt: url,
             passDatabaseManager: passDatabaseManager,
             localAuthManager: self.serviceLocator.localAuthManager()
         )
@@ -59,8 +59,8 @@ extension RootCoordinator {
             databasesProvider: serviceLocator.databasesProvider,
             passDatabaseManager: passDatabaseManager,
             localAuthManager: serviceLocator.localAuthManager(),
-            onAskForPassword: { [weak self] database in
-                self?.showUnlockViewController(for: database, passDatabaseManager: passDatabaseManager)
+            onAskForPassword: { [weak self] url in
+                self?.showUnlockViewController(forDatabaseAt: url, passDatabaseManager: passDatabaseManager)
             },
             onDatabaseOpened: { [weak self] in
                 self?.showGroupsViewController(passDatabaseManager: passDatabaseManager)
@@ -70,14 +70,14 @@ extension RootCoordinator {
     }
 
     private func unlockViewController(
-        for database: StoredDatabase,
+        forDatabaseAt url: URL,
         passDatabaseManager: PassDatabaseManager,
         localAuthManager: LocalAuthManager
     ) -> UnlockViewController {
         let enterPasswordController = UnlockViewController(
             passDatabaseManager: passDatabaseManager,
             localAuthManager: localAuthManager,
-            database: database
+            forDatabaseAt: url
         ) { [unowned self] in
             self.navigationController.dismiss(animated: true)
             self.showGroupsViewController(passDatabaseManager: passDatabaseManager)

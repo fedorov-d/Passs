@@ -19,7 +19,7 @@ class DatabaseListViewController: UIViewController {
     private let cellId = "database.cell.id"
 
     private let onDatabaseOpened: () -> Void
-    private let onAskForPassword: (_: StoredDatabase) -> Void
+    private let onAskForPassword: (_: URL) -> Void
     private let onCancel: (() -> Void)?
 
     private var subscriptionSet = Set<AnyCancellable>()
@@ -43,7 +43,7 @@ class DatabaseListViewController: UIViewController {
         databasesProvider: DatabasesProvider,
         passDatabaseManager: PassDatabaseManager,
         localAuthManager: LocalAuthManager,
-        onAskForPassword: @escaping (_: StoredDatabase) -> Void,
+        onAskForPassword: @escaping (_: URL) -> Void,
         onDatabaseOpened: @escaping () -> Void,
         onCancel: (() -> Void)? = nil
     ) {
@@ -102,21 +102,21 @@ class DatabaseListViewController: UIViewController {
         passDatabaseManager.lockDatabase()
     }
 
-    private func presentEnterPassword(for database: StoredDatabase) {
-        self.onAskForPassword(database)
+    private func presentEnterPassword(forDatabaseAt url: URL) {
+        self.onAskForPassword(url)
     }
 
-    private func handlePasswordError(_ error: Error, for database: StoredDatabase) {
+    private func handlePasswordError(_ error: Error, forDatabaseAt url: URL) {
         switch error {
         case is LAError:
             let error = error as! LAError
             if error.code == .userFallback || error.code == .biometryLockout {
-                self.presentEnterPassword(for: database)
+                self.presentEnterPassword(forDatabaseAt: url)
             }
         case is KeychainError:
             let error = error as! KeychainError
             if error == .itemNotFound {
-                self.presentEnterPassword(for: database)
+                self.presentEnterPassword(forDatabaseAt: url)
             }
         default: break
         }
@@ -155,27 +155,12 @@ extension DatabaseListViewController: UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: cellId, for: indexPath)
-        let database = databasesProvider.databases[indexPath.row]
-        cell.textLabel?.text = database.name
+        let database =  databasesProvider.databases[indexPath.row]
+        cell.textLabel?.text = database.lastPathComponent
         cell.accessoryType = .disclosureIndicator
         cell.imageView?.image = UIImage(systemName: "square.stack.3d.up")?.tinted(with: .systemBlue)
-
-        guard let modificationDate = database.modificationDate,
-              let detailTextLabel = cell.detailTextLabel else { return cell }
-
-        let detailTextLabelColor: UIColor = .secondaryLabel
-        let detailTextLabelFont = UIFont.preferredFont(forTextStyle: .caption1)
-        detailTextLabel.textColor = detailTextLabelColor
-        detailTextLabel.font = detailTextLabelFont
-        detailTextLabel.text = "";
-
-        if Date().timeIntervalSince(modificationDate) < Constants.markAsUpdatedTimeout {
-            detailTextLabel.attributedText = lastUpdateDateAttributedString(from: modificationDate,
-                                                                            font: detailTextLabelFont,
-                                                                            textColor: detailTextLabelColor)
-        } else {
-            detailTextLabel.text = "Last modified on " + dateFormatter.string(from: modificationDate)
-        }
+        cell.detailTextLabel?.textColor = .secondaryLabel
+        cell.detailTextLabel?.text = database.path
         return cell
     }
 }
@@ -184,7 +169,7 @@ extension DatabaseListViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
         let database = databasesProvider.databases[indexPath.row]
-        unlockDatabase(database)
+        unlockDatabase(at: database)
     }
 }
 
@@ -231,27 +216,27 @@ fileprivate extension DatabaseListViewController {
               !localAuthManager.isFetchingUnlockData,
               !passDatabaseManager.isDatabaseUnlocked else { return }
         DispatchQueue.main.asyncAfter(deadline: .now() + .milliseconds(100)) {
-            self.unlockDatabase(databaseToUnlock)
+            self.unlockDatabase(at: databaseToUnlock)
         }
     }
 
-    func unlockDatabase(_ database: StoredDatabase) {
-        localAuthManager.unlockData(for: database.url.lastPathComponent) { [weak self] result in
+    func unlockDatabase(at url: URL) {
+        localAuthManager.unlockData(for: url.lastPathComponent) { [weak self] result in
             guard let self else { return }
             switch result {
             case .success(let unlockData):
                 do {
                     try self.passDatabaseManager.unlockDatabase(
-                        with: database.url,
+                        with: url,
                         password: unlockData.password,
                         keyFileData: unlockData.keyFileData
                     )
                     self.onDatabaseOpened()
                 } catch (let error) {
-                    self.handlePasswordError(error, for: database)
+                    self.handlePasswordError(error, forDatabaseAt: url)
                 }
             case .failure(let error):
-                self.handlePasswordError(error, for: database)
+                self.handlePasswordError(error, forDatabaseAt: url)
             }
         }
     }

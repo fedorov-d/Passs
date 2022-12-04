@@ -35,10 +35,6 @@ class CredentialProviderViewController: ASCredentialProviderViewController {
         childViewController.didMove(toParent: self)
     }
 
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-        serviceLocator.databasesProvider.loadStoredDatabases()
-    }
     /*
      Prepare your UI to list available credentials for the user to choose from. The items in
      'serviceIdentifiers' describe the service the user is logging in to, so your extension can

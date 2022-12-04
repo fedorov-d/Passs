@@ -30,7 +30,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         window?.rootViewController = coordinator?.navigationController
         window?.makeKeyAndVisible()
         coordinator?.showDatabasesViewController()
-        serviceLocator.databasesProvider.loadStoredDatabases()
         if let application = application as? Application {
             application.onLockout = { [unowned self] in
                 coordinator?.showDatabasesViewController()

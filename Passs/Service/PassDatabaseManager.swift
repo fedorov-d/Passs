@@ -8,6 +8,10 @@
 import Foundation
 import KeePassKit
 
+enum PassDatabaseManagerError: Error {
+    case cantAccessURL
+}
+
 protocol PassDatabaseManager: AnyObject {
     var passwordGroups: [PassGroup]? { get }
     var databaseName: String? { get }
@@ -24,20 +28,48 @@ final class PassDatabaseManagerImp: PassDatabaseManager {
     private(set) var databaseURL: URL?
     
     func unlockDatabase(with url: URL, password: String? = nil, keyFileData: Data? = nil) throws {
-        var keys = [KPKKey]()
-        if let password = password {
-            keys.append(KPKPasswordKey(password: password)!)
+        guard url.startAccessingSecurityScopedResource() else {
+            throw PassDatabaseManagerError.cantAccessURL
         }
-        if let keyFileData = keyFileData {
-            keys.append(KPKKey(keyFileData: keyFileData))
+        defer {
+            url.stopAccessingSecurityScopedResource()
         }
-        let compositeKey = KPKCompositeKey(keys: keys)
-        let tree = try KPKTree(contentsOf: url, key: compositeKey)
-        databaseName = tree.root?.title
-        self.databaseURL = url
-        self.passwordGroups = tree.root?.groups.sorted {
-            $0.title?.localizedCaseInsensitiveCompare($1.title ?? "") == .orderedAscending
+        let coordinator = NSFileCoordinator()
+        var error: NSError? = nil
+        coordinator.coordinate(readingItemAt: url, options: [.withoutChanges], error: &error) { (url) -> Void in
+            do {
+                var keys = [KPKKey]()
+                if let password = password {
+                    keys.append(KPKPasswordKey(password: password)!)
+                }
+                if let keyFileData = keyFileData {
+                    keys.append(KPKKey(keyFileData: keyFileData))
+                }
+                let compositeKey = KPKCompositeKey(keys: keys)
+                let tree = try KPKTree(contentsOf: url, key: compositeKey)
+                databaseName = tree.root?.title
+                self.databaseURL = url
+                self.passwordGroups = tree.root?.groups.sorted {
+                    $0.title?.localizedCaseInsensitiveCompare($1.title ?? "") == .orderedAscending
+                }
+            } catch (let errro) {
+                print(errro)
+            }
         }
+//        var keys = [KPKKey]()
+//        if let password = password {
+//            keys.append(KPKPasswordKey(password: password)!)
+//        }
+//        if let keyFileData = keyFileData {
+//            keys.append(KPKKey(keyFileData: keyFileData))
+//        }
+//        let compositeKey = KPKCompositeKey(keys: keys)
+//        let tree = try KPKTree(contentsOf: url, key: compositeKey)
+//        databaseName = tree.root?.title
+//        self.databaseURL = url
+//        self.passwordGroups = tree.root?.groups.sorted {
+//            $0.title?.localizedCaseInsensitiveCompare($1.title ?? "") == .orderedAscending
+//        }
     }
 
     func lockDatabase() {

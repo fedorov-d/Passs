@@ -7,56 +7,35 @@
 
 import Foundation
 
-protocol StoredDatabase {
-    var url: URL { get }
-    var name: String { get }
-    var modificationDate: Date? { get }
-}
-
 protocol DatabasesProvider: AnyObject {
-    func loadStoredDatabases()
     func addDatabase(from url: URL) throws
-    func deleteDatabase(_: StoredDatabase)
-    var databases: [StoredDatabase] { get }
+    func deleteDatabase(at url: URL)
+    var databases: [URL] { get }
     var delegate: DatabasesProviderDelegate? { get set }
 }
 
 protocol DatabasesProviderDelegate: AnyObject {
-    func didLoadStoredDatabases()
     func didAddDatabase(at index: Int)
-    func didUpdateDatabase(at index: Int)
-}
-
-struct StoredDatabaseImp: StoredDatabase {
-    let url: URL
-    let name: String
-    let modificationDate: Date?
 }
 
 final class DatabasesProviderImp: DatabasesProvider {
     weak var delegate: DatabasesProviderDelegate?
 
-    func loadStoredDatabases() {
-        let fileManager = FileManager.default
-        guard let fileURLs = try? fileManager.contentsOfDirectory(
-            at: documentsURL,
-            includingPropertiesForKeys: nil
-        ) else {
-            return
-        }
-        var databases: [StoredDatabase] = []
-        OperationQueue().addOperation { [weak self] in
-            guard let self else { return }
-            databases = fileURLs
-                .filter { $0.isFileURL && self.supportedExtensions.contains($0.pathExtension) }
-                .map { url in
-                    let modificationDate = self.modificationDate(forItem: url.relativePath)
-                    return StoredDatabaseImp(url: url, name: url.lastPathComponent, modificationDate: modificationDate)
-                }
-            OperationQueue.main.addOperation {
-                self.databases = databases
-                self.delegate?.didLoadStoredDatabases()
+    private let storage = UserDefaults(suiteName: "group.password.storage")
+
+    private(set) lazy var databases: [URL] = {
+        let bookmarks = storage?.value(forKey: "storage") as? [Data] ?? []
+        return bookmarks.compactMap {
+            var isStale = false
+            if let url = try? URL(resolvingBookmarkData: $0, bookmarkDataIsStale:&isStale), isStale == false {
+                return url
             }
+            return nil
+        }
+    }() {
+        didSet {
+            let bookmarksArray = databases.compactMap { try? $0.bookmarkData() }
+            storage?.setValue(bookmarksArray, forKey: "storage")
         }
     }
     
@@ -66,49 +45,22 @@ final class DatabasesProviderImp: DatabasesProvider {
             return
         }
         defer { url.stopAccessingSecurityScopedResource() }
-        let filename = url.lastPathComponent
-        let fURL = documentsURL.appendingPathComponent(filename)
-        let fileManager = FileManager.default
-        if fileManager.fileExists(atPath: fURL.relativePath) {
-            let tmpURL = fURL.appendingPathExtension("tmp")
-            try? fileManager.removeItem(at: tmpURL)
-            try fileManager.copyItem(at: url, to: tmpURL)
-            // update older file with newer but not vice versa
-            guard let oldFileDate = modificationDate(forItem: fURL.relativePath),
-                  let newFileDate = modificationDate(forItem: tmpURL.relativePath) else { return }
-            if newFileDate > oldFileDate {
-                try fileManager.removeItem(at: fURL)
-                try fileManager.moveItem(at: tmpURL, to: fURL)
-                let updatedDatabase = StoredDatabaseImp(url: fURL, name: filename, modificationDate: newFileDate)
-                guard let indexOfUpdatedDatabase = self.databases.firstIndex(where: { database in
-                    database.name == fURL.lastPathComponent
-                }) else { fatalError() }
-                self.databases[indexOfUpdatedDatabase] = updatedDatabase
-                self.delegate?.didUpdateDatabase(at: indexOfUpdatedDatabase)
-            } else {
-                try? fileManager.removeItem(at: tmpURL)
-            }
-        } else {
-            try fileManager.copyItem(at: url, to: fURL)
-            let date = modificationDate(forItem: fURL.relativePath)
-            databases.append(StoredDatabaseImp(url: fURL, name: filename, modificationDate: date))
+        if !databases.contains(url) {
+            databases.append(url)
             delegate?.didAddDatabase(at: databases.count - 1)
         }
     }
 
-    func deleteDatabase(_ database: StoredDatabase) {
-        if (try? FileManager.default.removeItem(at: database.url)) != nil,
-           let index = databases.firstIndex(where: { $0.url == database.url }) {
+    func deleteDatabase(at url: URL) {
+        if let index = databases.firstIndex(of: url) {
             databases.remove(at: index)
         }
     }
 
-    private func modificationDate(forItem path: String) -> Date? {
+    private func modificationDate(forFileAtPath path: String) -> Date? {
         let attributes = try? FileManager.default.attributesOfItem(atPath: path)
         return attributes?[.modificationDate] as? Date
     }
-    
-    private(set) var databases: [StoredDatabase] = []
     
     let supportedExtensions = ["kdb", "kdbx"]
     
