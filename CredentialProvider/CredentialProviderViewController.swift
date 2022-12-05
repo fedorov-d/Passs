@@ -26,13 +26,8 @@ class CredentialProviderViewController: ASCredentialProviderViewController {
         }
 
         let childViewController = coordinator.navigationController
-        childViewController.willMove(toParent: self)
-        self.addChild(childViewController)
-        view.addSubview(childViewController.view)
-        childViewController.view.snp.makeConstraints { make in
-            make.edges.equalToSuperview()
-        }
-        childViewController.didMove(toParent: self)
+        childViewController.embed(in: self)
+        childViewController.view.snp.makeConstraints { $0.edges.equalToSuperview() }
     }
 
     override func viewWillAppear(_ animated: Bool) {

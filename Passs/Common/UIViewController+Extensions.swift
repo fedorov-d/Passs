@@ -80,3 +80,12 @@ extension UIViewController {
             .store(in: &subscriptionSet)
     }
 }
+
+extension UIViewController {
+    func embed(in parentViewController: UIViewController) {
+        willMove(toParent: parentViewController)
+        parentViewController.addChild(self)
+        parentViewController.view.addSubview(view)
+        didMove(toParent: parentViewController)
+    }
+}
