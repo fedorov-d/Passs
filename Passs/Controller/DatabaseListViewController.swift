@@ -11,6 +11,10 @@ import UniformTypeIdentifiers
 import LocalAuthentication
 import Combine
 
+protocol DefaultDatabaseUnlock: AnyObject {
+    func unlockDatabaseIfNeeded()
+}
+
 class DatabaseListViewController: UIViewController {
     private let databasesProvider: DatabasesProvider
     private let localAuthManager: LocalAuthManager
@@ -174,11 +178,6 @@ extension DatabaseListViewController: UITableViewDelegate {
 }
 
 extension DatabaseListViewController: DatabasesProviderDelegate {
-    func didLoadStoredDatabases() {
-        tableView.reloadData()
-        unlockDatabaseIfNeeded()
-    }
-
     func didAddDatabase(at index: Int) {
         let indexPath = IndexPath(row: index, section: 0)
         tableView.performBatchUpdates {
@@ -209,7 +208,7 @@ fileprivate extension DatabaseListViewController {
     }
 }
 
-fileprivate extension DatabaseListViewController {
+extension DatabaseListViewController: DefaultDatabaseUnlock {
     func unlockDatabaseIfNeeded() {
         guard databasesProvider.databases.count == 1,
               let databaseToUnlock = databasesProvider.databases.first,

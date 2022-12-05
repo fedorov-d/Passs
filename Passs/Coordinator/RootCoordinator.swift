@@ -115,3 +115,12 @@ extension RootCoordinator {
         )
     }
 }
+
+extension RootCoordinator: DefaultDatabaseUnlock {
+    func unlockDatabaseIfNeeded() {
+        guard let actualUnlock = navigationController.viewControllers.first(where: {
+            $0 as? DefaultDatabaseUnlock != nil }
+        ) as? DefaultDatabaseUnlock else { return }
+        actualUnlock.unlockDatabaseIfNeeded()
+    }
+}

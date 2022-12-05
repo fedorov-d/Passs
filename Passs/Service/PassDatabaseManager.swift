@@ -34,42 +34,20 @@ final class PassDatabaseManagerImp: PassDatabaseManager {
         defer {
             url.stopAccessingSecurityScopedResource()
         }
-        let coordinator = NSFileCoordinator()
-        var error: NSError? = nil
-        coordinator.coordinate(readingItemAt: url, options: [.withoutChanges], error: &error) { (url) -> Void in
-            do {
-                var keys = [KPKKey]()
-                if let password = password {
-                    keys.append(KPKPasswordKey(password: password)!)
-                }
-                if let keyFileData = keyFileData {
-                    keys.append(KPKKey(keyFileData: keyFileData))
-                }
-                let compositeKey = KPKCompositeKey(keys: keys)
-                let tree = try KPKTree(contentsOf: url, key: compositeKey)
-                databaseName = tree.root?.title
-                self.databaseURL = url
-                self.passwordGroups = tree.root?.groups.sorted {
-                    $0.title?.localizedCaseInsensitiveCompare($1.title ?? "") == .orderedAscending
-                }
-            } catch (let errro) {
-                print(errro)
-            }
+        var keys = [KPKKey]()
+        if let password = password {
+            keys.append(KPKPasswordKey(password: password)!)
         }
-//        var keys = [KPKKey]()
-//        if let password = password {
-//            keys.append(KPKPasswordKey(password: password)!)
-//        }
-//        if let keyFileData = keyFileData {
-//            keys.append(KPKKey(keyFileData: keyFileData))
-//        }
-//        let compositeKey = KPKCompositeKey(keys: keys)
-//        let tree = try KPKTree(contentsOf: url, key: compositeKey)
-//        databaseName = tree.root?.title
-//        self.databaseURL = url
-//        self.passwordGroups = tree.root?.groups.sorted {
-//            $0.title?.localizedCaseInsensitiveCompare($1.title ?? "") == .orderedAscending
-//        }
+        if let keyFileData = keyFileData {
+            keys.append(KPKKey(keyFileData: keyFileData))
+        }
+        let compositeKey = KPKCompositeKey(keys: keys)
+        let tree = try KPKTree(contentsOf: url, key: compositeKey)
+        databaseName = tree.root?.title
+        self.databaseURL = url
+        self.passwordGroups = tree.root?.groups.sorted {
+            $0.title?.localizedCaseInsensitiveCompare($1.title ?? "") == .orderedAscending
+        }
     }
 
     func lockDatabase() {
