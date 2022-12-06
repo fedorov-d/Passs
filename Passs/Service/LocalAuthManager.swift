@@ -12,6 +12,7 @@ protocol LocalAuthManager: AnyObject {
     var biomeryType: LABiometryType { get }
     func isLocalAuthAvailable() -> Bool
     func saveUnlockData(_ unlockData: UnlockData, for database: String) throws
+    func clearUnlockData(for database: String) throws
     func unlockData(for database: String, completion: @escaping (Result<UnlockData, Error>) -> Void)
     var isFetchingUnlockData: Bool { get }
 }
@@ -37,6 +38,10 @@ final class LocalAuthManagerImp: LocalAuthManager {
         if let string = String(data: data, encoding: .utf8) {
             try keychainManager.setItem(string, for: database)
         }
+    }
+
+    func clearUnlockData(for database: String) throws {
+        try keychainManager.deleteItem(for: database)
     }
 
     func unlockData(for database: String, completion: @escaping (Result<UnlockData, Error>) -> Void) {

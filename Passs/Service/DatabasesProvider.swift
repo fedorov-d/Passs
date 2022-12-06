@@ -16,7 +16,7 @@ protocol DatabasesProvider: AnyObject {
 
 protocol DatabasesProviderDelegate: AnyObject {
     func didAddDatabase(at index: Int)
-    func didDeleteDatabase(at index: Int)
+    func didDeleteDatabase(at index: Int, name: String)
 }
 
 final class DatabasesProviderImp: DatabasesProvider {
@@ -53,8 +53,8 @@ final class DatabasesProviderImp: DatabasesProvider {
     }
 
     func deleteDatabase(at index: Int) {
-        databaseURLs.remove(at: index)
-        delegate?.didDeleteDatabase(at: index)
+        let removedURL = databaseURLs.remove(at: index)
+        delegate?.didDeleteDatabase(at: index, name: removedURL.lastPathComponent)
     }
     
     let supportedExtensions = ["kdb", "kdbx"]

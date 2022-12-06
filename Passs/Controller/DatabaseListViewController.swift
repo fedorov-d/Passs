@@ -198,7 +198,8 @@ extension DatabaseListViewController: DatabasesProviderDelegate {
         } completion: { _ in }
     }
 
-    func didDeleteDatabase(at index: Int) {
+    func didDeleteDatabase(at index: Int, name: String) {
+        try? localAuthManager.clearUnlockData(for: name)
         tableView.deleteRows(
             at: [IndexPath(row: index, section: 0)],
             with: .automatic
