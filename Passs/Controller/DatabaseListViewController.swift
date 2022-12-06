@@ -19,12 +19,12 @@ class DatabaseListViewController: UIViewController {
     private let databasesProvider: DatabasesProvider
     private let localAuthManager: LocalAuthManager
     private let passDatabaseManager: PassDatabaseManager
+    private let credentialsSelectionManager: CredentialsSelectionManager?
     
     private let cellId = "database.cell.id"
 
     private let onDatabaseOpened: () -> Void
     private let onAskForPassword: (_: URL) -> Void
-    private let onCancel: (() -> Void)?
 
     private var subscriptionSet = Set<AnyCancellable>()
 
@@ -47,16 +47,16 @@ class DatabaseListViewController: UIViewController {
         databasesProvider: DatabasesProvider,
         passDatabaseManager: PassDatabaseManager,
         localAuthManager: LocalAuthManager,
+        credentialsSelectionManager: CredentialsSelectionManager?,
         onAskForPassword: @escaping (_: URL) -> Void,
-        onDatabaseOpened: @escaping () -> Void,
-        onCancel: (() -> Void)? = nil
+        onDatabaseOpened: @escaping () -> Void
     ) {
         self.databasesProvider = databasesProvider
         self.passDatabaseManager = passDatabaseManager
         self.localAuthManager = localAuthManager
+        self.credentialsSelectionManager = credentialsSelectionManager
         self.onAskForPassword = onAskForPassword
         self.onDatabaseOpened = onDatabaseOpened
-        self.onCancel = onCancel
         super.init(nibName: nil, bundle: nil)
         self.databasesProvider.delegate = self
     }
@@ -79,18 +79,14 @@ class DatabaseListViewController: UIViewController {
         super.viewDidLoad()
         self.navigationItem.title = "Databases"
         self.navigationItem.backButtonTitle = ""
-        if onCancel == nil {
+        if credentialsSelectionManager == nil {
             self.navigationItem.rightBarButtonItem = UIBarButtonItem(
                 barButtonSystemItem: .add,
                 target: self,
                 action: #selector(importTapped)
             )
         } else {
-            self.navigationItem.leftBarButtonItem = UIBarButtonItem(
-                barButtonSystemItem: .cancel,
-                target: self,
-                action: #selector(cancelTapped)
-            )
+            setCancelNavigationItemIfNeeded(with: credentialsSelectionManager)
         }
         applicationDidBecomeActivePublisher()
             .sink { [weak self] in
@@ -137,7 +133,7 @@ extension DatabaseListViewController {
 
     @objc
     func cancelTapped() {
-        onCancel?()
+        credentialsSelectionManager?.onCancel()
     }
 }
 
@@ -154,17 +150,24 @@ extension DatabaseListViewController: UIDocumentPickerDelegate {
 
 extension DatabaseListViewController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        databasesProvider.databases.count
+        databasesProvider.databaseURLs.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: cellId, for: indexPath)
-        let database =  databasesProvider.databases[indexPath.row]
-        cell.textLabel?.text = database.lastPathComponent
+        let databaseURL =  databasesProvider.databaseURLs[indexPath.row]
+        cell.textLabel?.text = databaseURL.lastPathComponent
         cell.accessoryType = .disclosureIndicator
         cell.imageView?.image = UIImage(systemName: "square.stack.3d.up")?.tinted(with: .systemBlue)
         cell.detailTextLabel?.textColor = .secondaryLabel
-        cell.detailTextLabel?.text = database.path
+        if let date = modificationDate(forFileAtPath: databaseURL.path),
+           let detailTextLabel = cell.detailTextLabel {
+            let font = Date().timeIntervalSince(date) < 1800 ? detailTextLabel.font.italics() : detailTextLabel.font
+            let lastModifiedText = lastUpdateDateAttributedString(from: date,
+                                                                  font: font!,
+                                                                  textColor: detailTextLabel.textColor)
+            detailTextLabel.attributedText = lastModifiedText
+        }
         return cell
     }
 }
@@ -172,7 +175,7 @@ extension DatabaseListViewController: UITableViewDataSource {
 extension DatabaseListViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
-        let database = databasesProvider.databases[indexPath.row]
+        let database = databasesProvider.databaseURLs[indexPath.row]
         unlockDatabase(at: database)
     }
 }
@@ -194,12 +197,17 @@ extension DatabaseListViewController: DatabasesProviderDelegate {
 }
 
 fileprivate extension DatabaseListViewController {
+    func modificationDate(forFileAtPath path: String) -> Date? {
+        let attributes = try? FileManager.default.attributesOfItem(atPath: path)
+        return attributes?[.modificationDate] as? Date
+    }
+
     func lastUpdateDateAttributedString(from date: Date, font: UIFont, textColor: UIColor) -> NSAttributedString {
-        let attributes = [NSAttributedString.Key.font : font.italics(),
+        let attributes = [NSAttributedString.Key.font : font,
                           NSAttributedString.Key.foregroundColor: textColor]
         let resultString = NSMutableAttributedString(
             string: "Last modified on ",
-            attributes: [NSAttributedString.Key.font : font,
+            attributes: [NSAttributedString.Key.font : font.noTraits(),
                          NSAttributedString.Key.foregroundColor: textColor]
         )
         resultString.append(NSAttributedString(string: dateFormatter.string(from: date),
@@ -210,8 +218,8 @@ fileprivate extension DatabaseListViewController {
 
 extension DatabaseListViewController: DefaultDatabaseUnlock {
     func unlockDatabaseIfNeeded() {
-        guard databasesProvider.databases.count == 1,
-              let databaseToUnlock = databasesProvider.databases.first,
+        guard databasesProvider.databaseURLs.count == 1,
+              let databaseToUnlock = databasesProvider.databaseURLs.first,
               !localAuthManager.isFetchingUnlockData,
               !passDatabaseManager.isDatabaseUnlocked else { return }
         DispatchQueue.main.asyncAfter(deadline: .now() + .milliseconds(100)) {

@@ -11,6 +11,7 @@ import Combine
 class GroupsViewController: UIViewController {
     private let databaseManager: PassDatabaseManager
     private let recentPasswordsManager: RecentPasswordsManager
+    private let credentialsSelectionManager: CredentialsSelectionManager?
     private let groupSelected: (PassGroup) -> Void
     private let searchResultsControllerProvider: () -> PasswordsSeachResultsDispalyController & UIViewController
 
@@ -19,12 +20,14 @@ class GroupsViewController: UIViewController {
     init(
         databaseManager: PassDatabaseManager,
         recentPasswordsManager: RecentPasswordsManager,
+        credentialsSelectionManager: CredentialsSelectionManager?,
         searchResultsControllerProvider: @escaping () -> PasswordsSeachResultsDispalyController & UIViewController,
         groupSelected: @escaping (PassGroup) -> Void
     ) {
         precondition(databaseManager.passwordGroups?.count ?? 0 > 0)
         self.databaseManager = databaseManager
         self.recentPasswordsManager = recentPasswordsManager
+        self.credentialsSelectionManager = credentialsSelectionManager
         self.groupSelected = groupSelected
         self.searchResultsControllerProvider = searchResultsControllerProvider
         super.init(nibName: nil, bundle: nil)
@@ -63,6 +66,8 @@ class GroupsViewController: UIViewController {
         super.viewDidLoad()
         self.navigationItem.largeTitleDisplayMode = .never
         self.navigationItem.title = self.databaseManager.databaseName
+
+        setCancelNavigationItemIfNeeded(with: credentialsSelectionManager)
 
         tableView.reloadData()
 

@@ -19,6 +19,10 @@ extension UIFont {
         return UIFont(descriptor: fd, size: pointSize)
     }
 
+    func noTraits() -> UIFont {
+        return withTraits([])
+    }
+
     func italics() -> UIFont {
         return withTraits(.traitItalic)
     }

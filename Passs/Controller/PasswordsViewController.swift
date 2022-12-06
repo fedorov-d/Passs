@@ -27,7 +27,7 @@ class PasswordsViewController: UIViewController, PasswordsSeachResultsDispalyCon
 
     private let pasteboardManager: PasteboardManager
     private let recentPasswordsManager: RecentPasswordsManager
-    private let credentialsSelectionManager: CredentialsSelectionManager
+    private let credentialsSelectionManager: CredentialsSelectionManager?
 
     private var subscriptionSet = Set<AnyCancellable>()
 
@@ -36,7 +36,7 @@ class PasswordsViewController: UIViewController, PasswordsSeachResultsDispalyCon
         items: [PassItem] = [],
         pasteboardManager: PasteboardManager,
         recentPasswordsManager: RecentPasswordsManager,
-        credentialsSelectionManager: CredentialsSelectionManager
+        credentialsSelectionManager: CredentialsSelectionManager?
     ) {
         self.items = items
         self.pasteboardManager = pasteboardManager
@@ -88,6 +88,9 @@ class PasswordsViewController: UIViewController, PasswordsSeachResultsDispalyCon
         super.viewDidLoad()
         self.navigationItem.title = title
         self.navigationItem.largeTitleDisplayMode = .never
+
+        setCancelNavigationItemIfNeeded(with: credentialsSelectionManager)
+
         tableView.reloadData()
         setupKeyboardAvoidance(for: tableView, subscriptionSet: &subscriptionSet)
     }
@@ -147,7 +150,7 @@ extension PasswordsViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
         let item = items[indexPath.row]
-        credentialsSelectionManager.onCredentialsSelected?(item)
+        credentialsSelectionManager?.onCredentialsSelected(item)
     }
 }
 

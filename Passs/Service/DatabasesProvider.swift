@@ -10,7 +10,7 @@ import Foundation
 protocol DatabasesProvider: AnyObject {
     func addDatabase(from url: URL) throws
     func deleteDatabase(at url: URL)
-    var databases: [URL] { get }
+    var databaseURLs: [URL] { get }
     var delegate: DatabasesProviderDelegate? { get set }
 }
 
@@ -23,7 +23,7 @@ final class DatabasesProviderImp: DatabasesProvider {
 
     private let storage = UserDefaults(suiteName: "group.password.storage")
 
-    private(set) lazy var databases: [URL] = {
+    private(set) lazy var databaseURLs: [URL] = {
         let bookmarks = storage?.value(forKey: "storage") as? [Data] ?? []
         return bookmarks.compactMap {
             var isStale = false
@@ -34,7 +34,7 @@ final class DatabasesProviderImp: DatabasesProvider {
         }
     }() {
         didSet {
-            let bookmarksArray = databases.compactMap { try? $0.bookmarkData() }
+            let bookmarksArray = databaseURLs.compactMap { try? $0.bookmarkData() }
             storage?.setValue(bookmarksArray, forKey: "storage")
         }
     }
@@ -45,21 +45,16 @@ final class DatabasesProviderImp: DatabasesProvider {
             return
         }
         defer { url.stopAccessingSecurityScopedResource() }
-        if !databases.contains(url) {
-            databases.append(url)
-            delegate?.didAddDatabase(at: databases.count - 1)
+        if !databaseURLs.contains(url) {
+            databaseURLs.append(url)
+            delegate?.didAddDatabase(at: databaseURLs.count - 1)
         }
     }
 
     func deleteDatabase(at url: URL) {
-        if let index = databases.firstIndex(of: url) {
-            databases.remove(at: index)
+        if let index = databaseURLs.firstIndex(of: url) {
+            databaseURLs.remove(at: index)
         }
-    }
-
-    private func modificationDate(forFileAtPath path: String) -> Date? {
-        let attributes = try? FileManager.default.attributesOfItem(atPath: path)
-        return attributes?[.modificationDate] as? Date
     }
     
     let supportedExtensions = ["kdb", "kdbx"]

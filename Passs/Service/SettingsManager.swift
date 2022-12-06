@@ -7,9 +7,8 @@
 
 import Foundation
 
-class SettingsManager {
-
-    @UserDefaultsBacked<TimeInterval>(key: "clearPasteboardTimeIntervaln")
+final class SettingsManager {
+    @UserDefaultsBacked<TimeInterval>(key: "clearPasteboardTimeInterval")
     var clearPasteboardTimeInterval
 
     @UserDefaultsBacked<TimeInterval>(key: "closeDatabaseTimeInterval")

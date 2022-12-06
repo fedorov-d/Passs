@@ -17,8 +17,8 @@ final class RootCoordinator {
         navigationController.navigationBar.prefersLargeTitles = true
     }
 
-    func showDatabasesViewController(onCancel: (() -> Void)? = nil) {
-        navigationController.viewControllers = [databaseListViewController(onCancel: onCancel)]
+    func showDatabasesViewController() {
+        navigationController.viewControllers = [databaseListViewController()]
     }
 
     private func showUnlockViewController(forDatabaseAt url: URL, passDatabaseManager: PassDatabaseManager) {
@@ -53,19 +53,19 @@ final class RootCoordinator {
 }
 
 extension RootCoordinator {
-    private func databaseListViewController(onCancel: (() -> Void)? = nil) -> DatabaseListViewController {
+    private func databaseListViewController() -> DatabaseListViewController {
         let passDatabaseManager = serviceLocator.passDatabaseManager()
         return DatabaseListViewController(
             databasesProvider: serviceLocator.databasesProvider,
             passDatabaseManager: passDatabaseManager,
             localAuthManager: serviceLocator.localAuthManager(),
+            credentialsSelectionManager: serviceLocator.credentialsSelectionManager,
             onAskForPassword: { [weak self] url in
                 self?.showUnlockViewController(forDatabaseAt: url, passDatabaseManager: passDatabaseManager)
             },
             onDatabaseOpened: { [weak self] in
                 self?.showGroupsViewController(passDatabaseManager: passDatabaseManager)
-            },
-            onCancel: onCancel
+            }
         )
     }
 
@@ -91,6 +91,7 @@ extension RootCoordinator {
         GroupsViewController(
             databaseManager: passDatabaseManager,
             recentPasswordsManager: recentPasswordsManager,
+            credentialsSelectionManager: self.serviceLocator.credentialsSelectionManager,
             searchResultsControllerProvider: {
                 PasswordsViewController(
                     pasteboardManager: self.serviceLocator.pasteboardManager,

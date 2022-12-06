@@ -17,12 +17,14 @@ class CredentialProviderViewController: ASCredentialProviderViewController {
     }
 
     override func viewDidLoad() {
-        serviceLocator.credentialsSelectionManager.onCredentialsSelected = { [weak self] credentials in
+        serviceLocator.makeCredentialsSelectionManager { [weak self] credentials in
             guard let self,
                   let user = credentials.username,
                   let password = credentials.password else { return }
             let passwordCredential = ASPasswordCredential(user: user, password: password)
             self.extensionContext.completeRequest(withSelectedCredential: passwordCredential, completionHandler: nil)
+        } onCancel: { [weak self] in
+            self?.extensionContext.cancelRequest(withError: NSError(domain: ASExtensionErrorDomain, code: ASExtensionError.userCanceled.rawValue))
         }
 
         let childViewController = coordinator.navigationController
@@ -40,10 +42,7 @@ class CredentialProviderViewController: ASCredentialProviderViewController {
      prioritize the most relevant credentials in the list.
     */
     override func prepareCredentialList(for serviceIdentifiers: [ASCredentialServiceIdentifier]) {
-        coordinator.showDatabasesViewController { [weak self] in
-            self?.extensionContext.cancelRequest(withError: NSError(domain: ASExtensionErrorDomain,
-                                                                    code: ASExtensionError.userCanceled.rawValue))
-        }
+        coordinator.showDatabasesViewController()
     }
 
     /*

@@ -8,9 +8,17 @@
 import Foundation
 
 protocol CredentialsSelectionManager: AnyObject {
-    var onCredentialsSelected: ((PassItem) -> Void)? { get set }
+    var onCredentialsSelected: ((PassItem) -> Void) { get }
+    var onCancel: (() -> Void) { get }
 }
 
 final class CredentialsSelectionManagerImp: CredentialsSelectionManager {
-    var onCredentialsSelected: ((PassItem) -> Void)?
+    let onCredentialsSelected: (PassItem) -> Void
+    let onCancel: () -> Void
+
+    init(onCredentialsSelected: @escaping (PassItem) -> Void,
+         onCancel: @escaping () -> Void) {
+        self.onCredentialsSelected = onCredentialsSelected
+        self.onCancel = onCancel
+    }
 }

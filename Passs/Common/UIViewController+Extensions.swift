@@ -89,3 +89,18 @@ extension UIViewController {
         didMove(toParent: parentViewController)
     }
 }
+
+extension UIViewController {
+    func setCancelNavigationItemIfNeeded(with credentialSelectionManager: CredentialsSelectionManager?) {
+        guard let credentialSelectionManager else { return }
+        setCancelNavigationItem {
+            credentialSelectionManager.onCancel()
+        }
+    }
+
+    fileprivate func setCancelNavigationItem(with action: @escaping () -> Void) {
+        let barButtonItem = BarButtonItem(barButtonSystemItem: .cancel, target: nil, action: nil)
+        barButtonItem.configure(with: action)
+        self.navigationItem.rightBarButtonItem = barButtonItem
+    }
+}

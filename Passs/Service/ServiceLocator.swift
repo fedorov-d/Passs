@@ -11,7 +11,7 @@ import UIKit
 protocol ServiceLocator: AnyObject {
     var databasesProvider: DatabasesProvider { get }
     var pasteboardManager: PasteboardManager { get }
-    var credentialsSelectionManager: CredentialsSelectionManager { get }
+    var credentialsSelectionManager: CredentialsSelectionManager? { get }
 
     func keychainManager() -> KeychainManager
     func localAuthManager() -> LocalAuthManager
@@ -23,7 +23,7 @@ protocol ServiceLocator: AnyObject {
 final class ServiceLocatorImp: ServiceLocator {
     private let _databasesProvider = DatabasesProviderImp()
     private let _pasteboardManager = PasteboardManagerImp()
-    private let _credentialsSelectionManager = CredentialsSelectionManagerImp()
+    private(set) var _credentialsSelectionManager: CredentialsSelectionManagerImp?
 
     var databasesProvider: DatabasesProvider {
         _databasesProvider
@@ -33,7 +33,7 @@ final class ServiceLocatorImp: ServiceLocator {
         _pasteboardManager
     }
 
-    var credentialsSelectionManager: CredentialsSelectionManager {
+    var credentialsSelectionManager: CredentialsSelectionManager? {
         _credentialsSelectionManager
     }
 
@@ -55,5 +55,11 @@ final class ServiceLocatorImp: ServiceLocator {
 
     func settingsManager() -> SettingsManager {
         SettingsManager()
+    }
+
+    func makeCredentialsSelectionManager(onCredentialsSelected: @escaping (PassItem) -> Void,
+                                         onCancel: @escaping () -> Void) {
+        _credentialsSelectionManager = CredentialsSelectionManagerImp(onCredentialsSelected: onCredentialsSelected,
+                                                                      onCancel: onCancel)
     }
 }
