@@ -16,3 +16,12 @@ import Foundation
         set { storage.setValue(newValue, forKey: key) }
     }
 }
+
+extension UserDefaults {
+    enum Keys: String, RawRepresentable {
+        case storage
+        case enterBackgroundTimestamp
+    }
+
+    static let shared = UserDefaults(suiteName: "group.password.storage")
+}

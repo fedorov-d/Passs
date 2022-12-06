@@ -39,6 +39,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
 
     func applicationDidEnterBackground(_ application: UIApplication) {
+        saveTimestamp()
         guard serviceLocator.pasteboardManager.needsDropPassword else { return }
         var identifier: UIBackgroundTaskIdentifier? = nil
         identifier = application.beginBackgroundTask {
@@ -47,6 +48,21 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                 application.endBackgroundTask(id)
             }
         }
+    }
+
+    func applicationDidBecomeActive(_ application: UIApplication) {
+        guard let enterBackgroundTimestamp = UserDefaults.standard.value(
+            forKey: UserDefaults.Keys.enterBackgroundTimestamp.rawValue
+        ) as? TimeInterval else { return }
+        deleteTimestamp()
+        let currentTimestamp = Date().timeIntervalSince1970
+        if (currentTimestamp - enterBackgroundTimestamp) > Constants.clearPasteboardTimeInterval {
+            coordinator?.showDatabasesViewController()
+        }
+    }
+
+    func applicationWillTerminate(_ application: UIApplication) {
+        deleteTimestamp()
     }
 
     func application(
@@ -60,5 +76,14 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             Swift.debugPrint(error)
         }
         return true
+    }
+
+    private func saveTimestamp() {
+        UserDefaults.standard.setValue(Date().timeIntervalSince1970,
+                                       forKey: UserDefaults.Keys.enterBackgroundTimestamp.rawValue)
+    }
+
+    private func deleteTimestamp() {
+        UserDefaults.standard.removeObject(forKey: UserDefaults.Keys.enterBackgroundTimestamp.rawValue)
     }
 }

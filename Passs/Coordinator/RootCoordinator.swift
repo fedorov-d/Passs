@@ -18,7 +18,13 @@ final class RootCoordinator {
     }
 
     func showDatabasesViewController() {
-        navigationController.viewControllers = [databaseListViewController()]
+        switch self.navigationController.viewControllers.count {
+        case 0:
+            navigationController.viewControllers = [databaseListViewController()]
+        case 1..<Int.max:
+            navigationController.popToRootViewController(animated: true)
+        default: break
+        }
     }
 
     private func showUnlockViewController(forDatabaseAt url: URL, passDatabaseManager: PassDatabaseManager) {

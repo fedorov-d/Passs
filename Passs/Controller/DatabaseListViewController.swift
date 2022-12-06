@@ -178,6 +178,16 @@ extension DatabaseListViewController: UITableViewDelegate {
         let database = databasesProvider.databaseURLs[indexPath.row]
         unlockDatabase(at: database)
     }
+
+    func tableView(_ tableView: UITableView,
+                   trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
+        let action = UIContextualAction(style: .normal, title: "Delete") { [weak self] action, view, closure in
+            self?.databasesProvider.deleteDatabase(at: indexPath.row)
+            closure(true)
+        }
+        action.backgroundColor = .systemRed
+        return UISwipeActionsConfiguration(actions: [action])
+    }
 }
 
 extension DatabaseListViewController: DatabasesProviderDelegate {
@@ -188,8 +198,8 @@ extension DatabaseListViewController: DatabasesProviderDelegate {
         } completion: { _ in }
     }
 
-    func didUpdateDatabase(at index: Int) {
-        tableView.reloadRows(
+    func didDeleteDatabase(at index: Int) {
+        tableView.deleteRows(
             at: [IndexPath(row: index, section: 0)],
             with: .automatic
         )
