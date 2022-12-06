@@ -48,10 +48,14 @@ final class KeychainManagerImp: KeychainManager {
     }
 
     func deleteItem(for key: String) throws {
-        let query = [kSecClass: kSecClassGenericPassword,
-                     kSecAttrAccount: key
+        let query = [
+            kSecClass: kSecClassInternetPassword,
+            kSecAttrServer: "",
+            kSecAttrAccessGroup: accessGroup,
+            kSecAttrAccount: key
         ] as [String: Any]
-        let _ = SecItemDelete(query as CFDictionary)
+        let status = SecItemDelete(query as CFDictionary)
+        print("\(status)")
     }
 
     private func item(for query: [AnyHashable: Any]) throws -> String? {
