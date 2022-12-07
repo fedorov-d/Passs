@@ -59,6 +59,20 @@ extension UIViewController {
             .eraseToAnyPublisher()
     }
 
+    func applicationDidEnterBackground() -> AnyPublisher<Void, Never> {
+        NotificationCenter.default.publisher(for: UIApplication.didEnterBackgroundNotification)
+            .receive(on: RunLoop.main)
+            .map { _ in () }
+            .eraseToAnyPublisher()
+    }
+
+    func applicationWillResignActivePublisher() -> AnyPublisher<Void, Never> {
+        NotificationCenter.default.publisher(for: UIApplication.willResignActiveNotification)
+            .receive(on: RunLoop.main)
+            .map { _ in () }
+            .eraseToAnyPublisher()
+    }
+
     func setupKeyboardAvoidance(for scrollView: UIScrollView, subscriptionSet: inout Set<AnyCancellable>) {
         keyboardWillShowPublisher()
             .sink { [weak self] params in

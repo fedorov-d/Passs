@@ -74,6 +74,8 @@ class DatabaseListViewController: UIViewController {
             make.edges.equalToSuperview()
         }
     }
+
+    private var ignoreApplicationDidBecomeActive = false
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -88,7 +90,24 @@ class DatabaseListViewController: UIViewController {
         } else {
             setCancelNavigationItemIfNeeded(with: credentialsSelectionManager)
         }
+
+        applicationWillResignActivePublisher()
+            .sink { [weak self] _ in
+                self?.ignoreApplicationDidBecomeActive = true
+            }
+            .store(in: &subscriptionSet)
+
+        applicationDidEnterBackground()
+            .sink { [weak self] in
+                self?.ignoreApplicationDidBecomeActive = false
+            }
+            .store(in: &subscriptionSet)
+
         applicationDidBecomeActivePublisher()
+            .filter { [weak self] _ in
+                guard let self else { return true }
+                return !self.ignoreApplicationDidBecomeActive
+            }
             .sink { [weak self] in
                 guard let self else { return }
                 self.tableView.reloadData()
