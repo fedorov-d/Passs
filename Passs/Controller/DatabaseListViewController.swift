@@ -42,15 +42,26 @@ class DatabaseListViewController: UIViewController {
         tableView.register(SubtitleTableViewCell.self, forCellReuseIdentifier: cellId)
         return tableView
     }()
+
+    private lazy var noDatabasesView: UIView = {
+        let label = UILabel()
+        label.textColor = .secondaryLabel
+        label.font = .preferredFont(forTextStyle: .largeTitle)
+        label.numberOfLines = 0
+        label.textAlignment = .center
+        label.text = "No databases"
+        label.setContentCompressionResistancePriority(.defaultLow, for: .horizontal)
+        label.setContentCompressionResistancePriority(.required, for: .vertical)
+        label.setContentHuggingPriority(.required, for: .vertical)
+        return label
+    }()
     
-    init(
-        databasesProvider: DatabasesProvider,
-        passDatabaseManager: PassDatabaseManager,
-        localAuthManager: LocalAuthManager,
-        credentialsSelectionManager: CredentialsSelectionManager?,
-        onAskForPassword: @escaping (_: URL) -> Void,
-        onDatabaseOpened: @escaping () -> Void
-    ) {
+    init(databasesProvider: DatabasesProvider,
+         passDatabaseManager: PassDatabaseManager,
+         localAuthManager: LocalAuthManager,
+         credentialsSelectionManager: CredentialsSelectionManager?,
+         onAskForPassword: @escaping (_: URL) -> Void,
+         onDatabaseOpened: @escaping () -> Void) {
         self.databasesProvider = databasesProvider
         self.passDatabaseManager = passDatabaseManager
         self.localAuthManager = localAuthManager
@@ -73,13 +84,14 @@ class DatabaseListViewController: UIViewController {
         tableView.snp.makeConstraints { make in
             make.edges.equalToSuperview()
         }
+
+        tableView.backgroundView = noDatabasesView
     }
 
     private var ignoreApplicationDidBecomeActive = false
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.navigationItem.title = "Databases"
         self.navigationItem.backButtonTitle = ""
         if credentialsSelectionManager == nil {
             self.navigationItem.rightBarButtonItem = UIBarButtonItem(
@@ -90,6 +102,8 @@ class DatabaseListViewController: UIViewController {
         } else {
             setCancelNavigationItemIfNeeded(with: credentialsSelectionManager)
         }
+
+        updateNoDatabasesLabelVisibility()
 
         applicationWillResignActivePublisher()
             .sink { [weak self] _ in
@@ -179,7 +193,7 @@ extension DatabaseListViewController: UITableViewDataSource {
         cell.accessoryType = .disclosureIndicator
         cell.imageView?.image = UIImage(systemName: "square.stack.3d.up")?.tinted(with: .systemBlue)
         cell.detailTextLabel?.textColor = .secondaryLabel
-        if let date = modificationDate(forFileAtPath: databaseURL.path),
+        if let date = modificationDate(forFileAtURL: databaseURL),
            let detailTextLabel = cell.detailTextLabel {
             let font = Date().timeIntervalSince(date) < 1800 ? detailTextLabel.font.italics() : detailTextLabel.font
             let lastModifiedText = lastUpdateDateAttributedString(from: date,
@@ -215,6 +229,7 @@ extension DatabaseListViewController: DatabasesProviderDelegate {
         tableView.performBatchUpdates {
             tableView.insertRows(at: [indexPath], with: .top)
         } completion: { _ in }
+        updateNoDatabasesLabelVisibility()
     }
 
     func didDeleteDatabase(at index: Int, name: String) {
@@ -223,13 +238,30 @@ extension DatabaseListViewController: DatabasesProviderDelegate {
             at: [IndexPath(row: index, section: 0)],
             with: .automatic
         )
+        updateNoDatabasesLabelVisibility()
+    }
+
+    private func updateNoDatabasesLabelVisibility() {
+        noDatabasesView.isHidden = !databasesProvider.databaseURLs.isEmpty
+        title = databasesProvider.databaseURLs.isEmpty ? "" : "Databases"
     }
 }
 
 fileprivate extension DatabaseListViewController {
-    func modificationDate(forFileAtPath path: String) -> Date? {
-        let attributes = try? FileManager.default.attributesOfItem(atPath: path)
-        return attributes?[.modificationDate] as? Date
+    func modificationDate(forFileAtURL url: URL) -> Date? {
+        guard url.startAccessingSecurityScopedResource() else {
+            return nil
+        }
+        defer {
+            url.stopAccessingSecurityScopedResource()
+        }
+        do {
+            let attributes = try FileManager.default.attributesOfItem(atPath: url.path)
+            return attributes[.modificationDate] as? Date
+        } catch let error {
+            print(error)
+            return nil
+        }
     }
 
     func lastUpdateDateAttributedString(from date: Date, font: UIFont, textColor: UIColor) -> NSAttributedString {
