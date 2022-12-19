@@ -123,25 +123,17 @@ extension PasswordsViewController: UITableViewDataSource {
 }
 
 extension PasswordsViewController: UITableViewDelegate {
-    func tableView(
-        _ tableView: UITableView,
-        leadingSwipeActionsConfigurationForRowAt indexPath: IndexPath
-    ) -> UISwipeActionsConfiguration? {
-        swipeActionConfiguration(
-            with: "Copy username"
-        ) { [unowned self] in
+    func tableView(_ tableView: UITableView,
+                   leadingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
+        swipeActionConfiguration(with: "Copy username") { [unowned self] in
             let item = self.items[indexPath.row]
             self.copyUsername(item)
         }
     }
 
-    func tableView(
-        _ tableView: UITableView,
-        trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath
-    ) -> UISwipeActionsConfiguration? {
-        swipeActionConfiguration(
-            with: "Copy password"
-        ) { [unowned self] in
+    func tableView(_ tableView: UITableView,
+                   trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
+        swipeActionConfiguration(with: "Copy password") { [unowned self] in
             let item = self.items[indexPath.row]
             self.copyPassword(item)
         }
@@ -151,6 +143,28 @@ extension PasswordsViewController: UITableViewDelegate {
         tableView.deselectRow(at: indexPath, animated: true)
         let item = items[indexPath.row]
         credentialsSelectionManager?.onCredentialsSelected(item)
+    }
+
+    func tableView(_ tableView: UITableView,
+                   contextMenuConfigurationForRowAt indexPath: IndexPath,
+                   point: CGPoint) -> UIContextMenuConfiguration? {
+        return UIContextMenuConfiguration(actionProvider: { [weak self] menuElements in
+            guard let item = self?.items[indexPath.row] else { return nil }
+            let copyUsernameAction = UIAction(title: "Copy username",
+                                   image: UIImage(systemName: "doc.on.doc.fill")) { action in
+                self?.copyUsername(item)
+            }
+            let copyPasswordAction = UIAction(title: "Copy password",
+                                   image: UIImage(systemName: "doc.on.doc")) { action in
+                self?.copyPassword(item)
+            }
+            let generateQRAction = UIAction(title: "Show QR code",
+                                            image: UIImage(systemName: "qrcode")) { action in
+
+            }
+            return UIMenu(title: item.username ?? "",
+                          children: [copyUsernameAction, copyPasswordAction, generateQRAction])
+        })
     }
 }
 
@@ -167,12 +181,14 @@ extension PasswordsViewController {
         return UISwipeActionsConfiguration(actions: [action])
     }
 
+    @objc
     private func copyUsername(_ passItem: PassItem) {
         guard let username = passItem.username else { return }
         self.pasteboardManager.copy(username)
         self.recentPasswordsManager.push(item: passItem)
     }
 
+    @objc
     private func copyPassword(_ passItem: PassItem) {
         guard let password = passItem.password else { return }
         self.pasteboardManager.copy(password)
