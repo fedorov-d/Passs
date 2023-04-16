@@ -140,7 +140,7 @@ final class UnlockViewController: UIViewController {
         return button
     }()
 
-    // MARK: - viewController lifecycle
+    // MARK: - UIViewController lifecycle
 
     override func loadView() {
         view = UIView()

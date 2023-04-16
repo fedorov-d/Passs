@@ -18,6 +18,7 @@ protocol ServiceLocator: AnyObject {
     func passDatabaseManager() -> PassDatabaseManager
     func recentPasswordsManager(databaseURL: URL) -> RecentPasswordsManager
     func settingsManager() -> SettingsManager
+    func qrCodeManager() -> QRCodeManager
 }
 
 final class ServiceLocatorImp: ServiceLocator {
@@ -55,6 +56,10 @@ final class ServiceLocatorImp: ServiceLocator {
 
     func settingsManager() -> SettingsManager {
         SettingsManager()
+    }
+
+    func qrCodeManager() -> QRCodeManager {
+        QRCodeManager()
     }
 
     func makeCredentialsSelectionManager(onCredentialsSelected: @escaping (PassItem) -> Void,

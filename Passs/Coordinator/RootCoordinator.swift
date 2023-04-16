@@ -23,6 +23,7 @@ final class RootCoordinator {
             navigationController.viewControllers = [databaseListViewController()]
         case 1..<Int.max:
             navigationController.popToRootViewController(animated: true)
+            navigationController.presentedViewController?.dismiss(animated: true)
         default: break
         }
     }

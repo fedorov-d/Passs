@@ -40,6 +40,10 @@
 		0A8D3E392938F515005D4435 /* CredentialsSelectionManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A8D3E372938F515005D4435 /* CredentialsSelectionManager.swift */; };
 		0AD29C50293FCE55007A9061 /* BarButtonItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AD29C4F293FCE55007A9061 /* BarButtonItem.swift */; };
 		0AD29C51293FCF38007A9061 /* BarButtonItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AD29C4F293FCE55007A9061 /* BarButtonItem.swift */; };
+		0AD616CC29EA46AD00BCE3AD /* QRCodeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AD616CB29EA46AD00BCE3AD /* QRCodeViewController.swift */; };
+		0AD616CE29EA4C8500BCE3AD /* QRCodeManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AD616CD29EA4C8500BCE3AD /* QRCodeManager.swift */; };
+		0AD616CF29EA4DB600BCE3AD /* QRCodeManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AD616CD29EA4C8500BCE3AD /* QRCodeManager.swift */; };
+		0AD616D029EA4ED000BCE3AD /* QRCodeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AD616CB29EA46AD00BCE3AD /* QRCodeViewController.swift */; };
 		8136E27CDE0CD3DA3ABEC034 /* Pods_CredentialProvider.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BBF18EB9167ADB17B2C12082 /* Pods_CredentialProvider.framework */; };
 		A31842472721D69200786744 /* PasteboardManagerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A31842462721D69200786744 /* PasteboardManagerTests.swift */; };
 		A318424F2721DB5F00786744 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = A318424E2721DB5F00786744 /* Constants.swift */; };
@@ -129,6 +133,8 @@
 		0A1EF7ED2937A99200F9DEC3 /* UIFont+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIFont+Extensions.swift"; sourceTree = "<group>"; };
 		0A8D3E372938F515005D4435 /* CredentialsSelectionManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CredentialsSelectionManager.swift; sourceTree = "<group>"; };
 		0AD29C4F293FCE55007A9061 /* BarButtonItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BarButtonItem.swift; sourceTree = "<group>"; };
+		0AD616CB29EA46AD00BCE3AD /* QRCodeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QRCodeViewController.swift; sourceTree = "<group>"; };
+		0AD616CD29EA4C8500BCE3AD /* QRCodeManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QRCodeManager.swift; sourceTree = "<group>"; };
 		3DBED3956B7666EBE5677B9B /* Pods-PasssTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PasssTests.release.xcconfig"; path = "Target Support Files/Pods-PasssTests/Pods-PasssTests.release.xcconfig"; sourceTree = "<group>"; };
 		61C958F420CCDECE8DEC67FD /* Pods_PasssTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_PasssTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		69039581FF5D2E799B3EA7B8 /* Pods-CredentialProvider.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-CredentialProvider.debug.xcconfig"; path = "Target Support Files/Pods-CredentialProvider/Pods-CredentialProvider.debug.xcconfig"; sourceTree = "<group>"; };
@@ -356,6 +362,7 @@
 				A3B5E33F27B16E620061CAC6 /* LocalAuthManager.swift */,
 				A3CAA31227ABCFB000330FAC /* RecentPasswordsManager.swift */,
 				0A8D3E372938F515005D4435 /* CredentialsSelectionManager.swift */,
+				0AD616CD29EA4C8500BCE3AD /* QRCodeManager.swift */,
 			);
 			path = Service;
 			sourceTree = "<group>";
@@ -367,6 +374,7 @@
 				A3F4959E261E242700E4AA7E /* DatabaseListViewController.swift */,
 				A3CFA4C7279349370020F82F /* GroupsViewController.swift */,
 				A35A8B1127BC2F1500216C24 /* UnlockViewController.swift */,
+				0AD616CB29EA46AD00BCE3AD /* QRCodeViewController.swift */,
 			);
 			path = Controller;
 			sourceTree = "<group>";
@@ -638,6 +646,7 @@
 				A365CAB127B4F0F2009877D1 /* RootCoordinator.swift in Sources */,
 				A3FF57D427BFD6F400D41659 /* UIDocumentPickerController+Extensions.swift in Sources */,
 				A365CAB327B4FAE9009877D1 /* ServiceLocator.swift in Sources */,
+				0AD616CC29EA46AD00BCE3AD /* QRCodeViewController.swift in Sources */,
 				A3CFA4CA2795F9650020F82F /* KeychainManager.swift in Sources */,
 				A35A8B1627BC33B000216C24 /* TextFieldCell.swift in Sources */,
 				A35A8B1D27BE2C8200216C24 /* ColoredTableViewHeaderFooterView.swift in Sources */,
@@ -645,6 +654,7 @@
 				A3F4959C261E22F700E4AA7E /* DatabasesProvider.swift in Sources */,
 				A3B5E34027B16E620061CAC6 /* LocalAuthManager.swift in Sources */,
 				A3FF57D627BFED1E00D41659 /* UnlockData.swift in Sources */,
+				0AD616CE29EA4C8500BCE3AD /* QRCodeManager.swift in Sources */,
 				A318424F2721DB5F00786744 /* Constants.swift in Sources */,
 				A392D9CA27C66FA500206161 /* SettingsManager.swift in Sources */,
 				A35A8B1827BCDE1500216C24 /* SwitchCell.swift in Sources */,
@@ -665,6 +675,7 @@
 				0A1EF8022937D57700F9DEC3 /* DatabaseListViewController.swift in Sources */,
 				0A1EF7F52937D55700F9DEC3 /* RootCoordinator.swift in Sources */,
 				0A1EF7FC2937D57400F9DEC3 /* UserDefaults+Extensions.swift in Sources */,
+				0AD616CF29EA4DB600BCE3AD /* QRCodeManager.swift in Sources */,
 				0A1EF7FB2937D57400F9DEC3 /* UIButton+Extensions.swift in Sources */,
 				A3B5E33027AEA7340061CAC6 /* CredentialProviderViewController.swift in Sources */,
 				0A1EF7F62937D56F00F9DEC3 /* SwitchCell.swift in Sources */,
@@ -681,6 +692,7 @@
 				0A1EF8002937D57400F9DEC3 /* UIFont+Extensions.swift in Sources */,
 				0A1EF8042937D57700F9DEC3 /* GroupsViewController.swift in Sources */,
 				0A1EF80A2937D57D00F9DEC3 /* KeychainManager.swift in Sources */,
+				0AD616D029EA4ED000BCE3AD /* QRCodeViewController.swift in Sources */,
 				0A1EF8072937D57D00F9DEC3 /* Constants.swift in Sources */,
 				0A1EF8012937D57700F9DEC3 /* PasswordsViewController.swift in Sources */,
 				0A850A0F2937F98E00754CC9 /* UnlockData.swift in Sources */,

@@ -14,7 +14,7 @@ protocol RecentPasswordsManager: AnyObject {
 
 final class RecentPasswordsManagerImp: RecentPasswordsManager {
     private(set) var items: [String] = []
-    private let userDefaults = UserDefaults.standard
+    private let userDefaults = UserDefaults.shared!
 
     private var storageKey: String {
         return databaseURL.lastPathComponent + " " + "recentPasswordItems"
@@ -38,13 +38,13 @@ final class RecentPasswordsManagerImp: RecentPasswordsManager {
 
     func matchingItems(for items: [PassItem]) -> [PassItem] {
         self.items.compactMap { key -> PassItem? in
-            items.first { pItem in
-                self.key(for: pItem) == key
+            items.first { passwordItem in
+                self.key(for: passwordItem) == key
             }
         }
     }
 
-    private func key(for item: PassItem) -> String {
-        return (item.title ?? "") + (item.username ?? "")
+    private func key(for passwordItem: PassItem) -> String {
+        return (passwordItem.title ?? "") + (passwordItem.username ?? "")
     }
 }

@@ -154,13 +154,17 @@ extension PasswordsViewController: UITableViewDelegate {
                                    image: UIImage(systemName: "doc.on.doc.fill")) { action in
                 self?.copyUsername(item)
             }
+            guard let password = item.password else {
+                return UIMenu(title: item.username ?? "",
+                              children: [copyUsernameAction])
+            }
             let copyPasswordAction = UIAction(title: "Copy password",
                                    image: UIImage(systemName: "doc.on.doc")) { action in
                 self?.copyPassword(item)
             }
-            let generateQRAction = UIAction(title: "Show QR code",
+            let generateQRAction = UIAction(title: "Generate QR code",
                                             image: UIImage(systemName: "qrcode")) { action in
-
+                self?.presentQRCode(for: password)
             }
             return UIMenu(title: item.username ?? "",
                           children: [copyUsernameAction, copyPasswordAction, generateQRAction])
@@ -195,6 +199,14 @@ extension PasswordsViewController {
         self.recentPasswordsManager.push(item: passItem)
     }
 
+}
+
+extension PasswordsViewController {
+    func presentQRCode(for password: String) {
+        let qrCodeController = QRCodeViewController(string: password,
+                                                    qrCodeManager: QRCodeManager())
+        self.present(qrCodeController, animated: true)
+    }
 }
 
 extension Array where Element == PassItem {

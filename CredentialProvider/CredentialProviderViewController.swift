@@ -24,12 +24,9 @@ class CredentialProviderViewController: ASCredentialProviderViewController {
             let passwordCredential = ASPasswordCredential(user: user, password: password)
             self.extensionContext.completeRequest(withSelectedCredential: passwordCredential, completionHandler: nil)
         } onCancel: { [weak self] in
-            self?.extensionContext.cancelRequest(withError: NSError(domain: ASExtensionErrorDomain, code: ASExtensionError.userCanceled.rawValue))
+            self?.extensionContext.cancelRequest(withError: NSError(domain: ASExtensionErrorDomain,
+                                                                    code: ASExtensionError.userCanceled.rawValue))
         }
-
-        let childViewController = coordinator.navigationController
-        childViewController.embed(in: self)
-        childViewController.view.snp.makeConstraints { $0.edges.equalToSuperview() }
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -42,6 +39,9 @@ class CredentialProviderViewController: ASCredentialProviderViewController {
      prioritize the most relevant credentials in the list.
     */
     override func prepareCredentialList(for serviceIdentifiers: [ASCredentialServiceIdentifier]) {
+        let childViewController = coordinator.navigationController
+        childViewController.embed(in: self)
+        childViewController.view.snp.makeConstraints { $0.edges.equalToSuperview() }
         coordinator.showDatabasesViewController()
     }
 

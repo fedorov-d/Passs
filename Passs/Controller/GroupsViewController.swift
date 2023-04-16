@@ -17,13 +17,11 @@ class GroupsViewController: UIViewController {
 
     private var subscriptionSet = Set<AnyCancellable>()
 
-    init(
-        databaseManager: PassDatabaseManager,
-        recentPasswordsManager: RecentPasswordsManager,
-        credentialsSelectionManager: CredentialsSelectionManager?,
-        searchResultsControllerProvider: @escaping () -> PasswordsSeachResultsDispalyController & UIViewController,
-        groupSelected: @escaping (PassGroup) -> Void
-    ) {
+    init(databaseManager: PassDatabaseManager,
+         recentPasswordsManager: RecentPasswordsManager,
+         credentialsSelectionManager: CredentialsSelectionManager?,
+         searchResultsControllerProvider: @escaping () -> PasswordsSeachResultsDispalyController & UIViewController,
+         groupSelected: @escaping (PassGroup) -> Void) {
         precondition(databaseManager.passwordGroups?.count ?? 0 > 0)
         self.databaseManager = databaseManager
         self.recentPasswordsManager = recentPasswordsManager
