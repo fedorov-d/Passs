@@ -11,7 +11,8 @@ final class QRCodeViewController: UIViewController {
     private lazy var backgroundView: UIView = {
         let view = UIView()
         view.backgroundColor = .white
-        view.layer.cornerRadius = 30
+        view.layer.cornerRadius = 40
+        view.layer.cornerCurve = .continuous
         view.layer.masksToBounds = true
         return view
     }()
@@ -48,7 +49,7 @@ final class QRCodeViewController: UIViewController {
         }
         backgroundView.addSubview(qrCodeImageView)
         qrCodeImageView.snp.makeConstraints { make in
-            make.edges.equalToSuperview().inset(20)
+            make.edges.equalToSuperview().inset(30)
         }
     }
 

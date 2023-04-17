@@ -93,6 +93,18 @@ class DatabaseListViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         self.navigationItem.backButtonTitle = ""
+
+        let appearance = UINavigationBarAppearance()
+        appearance.configureWithDefaultBackground()
+        navigationController?.navigationBar.standardAppearance = appearance
+        navigationController?.navigationBar.compactAppearance = appearance
+        appearance.shadowColor = .clear
+        appearance.backgroundColor = .systemBackground
+        navigationController?.navigationBar.scrollEdgeAppearance = appearance
+        if #available(iOS 15.0, *) {
+            navigationController?.navigationBar.compactScrollEdgeAppearance = appearance
+        }
+
         if credentialsSelectionManager == nil {
             self.navigationItem.rightBarButtonItem = UIBarButtonItem(
                 barButtonSystemItem: .add,

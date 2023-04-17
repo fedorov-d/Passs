@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 51;
+	objectVersion = 53;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -65,7 +65,7 @@
 		A3B5E32D27AEA7340061CAC6 /* AuthenticationServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A3B5E32C27AEA7340061CAC6 /* AuthenticationServices.framework */; };
 		A3B5E33027AEA7340061CAC6 /* CredentialProviderViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3B5E32F27AEA7340061CAC6 /* CredentialProviderViewController.swift */; };
 		A3B5E33327AEA7340061CAC6 /* MainInterface.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A3B5E33127AEA7340061CAC6 /* MainInterface.storyboard */; };
-		A3B5E33827AEA7340061CAC6 /* CredentialProvider.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = A3B5E32B27AEA7330061CAC6 /* CredentialProvider.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		A3B5E33827AEA7340061CAC6 /* CredentialProvider.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = A3B5E32B27AEA7330061CAC6 /* CredentialProvider.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		A3B5E33E27AEACEF0061CAC6 /* AuthenticationServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A3B5E32C27AEA7340061CAC6 /* AuthenticationServices.framework */; };
 		A3B5E34027B16E620061CAC6 /* LocalAuthManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3B5E33F27B16E620061CAC6 /* LocalAuthManager.swift */; };
 		A3CAA30B27A9B93D00330FAC /* SubtitleTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3CAA30A27A9B93D00330FAC /* SubtitleTableViewCell.swift */; };
@@ -115,15 +115,15 @@
 			name = "Embed Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		A3B5E33C27AEA7340061CAC6 /* Embed App Extensions */ = {
+		A3B5E33C27AEA7340061CAC6 /* Embed Foundation Extensions */ = {
 			isa = PBXCopyFilesBuildPhase;
 			buildActionMask = 2147483647;
 			dstPath = "";
 			dstSubfolderSpec = 13;
 			files = (
-				A3B5E33827AEA7340061CAC6 /* CredentialProvider.appex in Embed App Extensions */,
+				A3B5E33827AEA7340061CAC6 /* CredentialProvider.appex in Embed Foundation Extensions */,
 			);
-			name = "Embed App Extensions";
+			name = "Embed Foundation Extensions";
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXCopyFilesBuildPhase section */
@@ -412,7 +412,7 @@
 				A32C6543260C557200DC6653 /* Resources */,
 				A32C6577260C650700DC6653 /* Embed Frameworks */,
 				85D5035C9DA10D480DC005E9 /* [CP] Embed Pods Frameworks */,
-				A3B5E33C27AEA7340061CAC6 /* Embed App Extensions */,
+				A3B5E33C27AEA7340061CAC6 /* Embed Foundation Extensions */,
 			);
 			buildRules = (
 			);
@@ -448,8 +448,9 @@
 		A32C653D260C557200DC6653 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
+				BuildIndependentTargetsInParallel = YES;
 				LastSwiftUpdateCheck = 1320;
-				LastUpgradeCheck = 1230;
+				LastUpgradeCheck = 1430;
 				TargetAttributes = {
 					A31842432721D69200786744 = {
 						CreatedOnToolsVersion = 12.5;

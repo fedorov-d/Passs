@@ -35,12 +35,10 @@ final class UnlockViewController: UIViewController {
         fatalError("init(coder:) has not been implemented")
     }
 
-    init(
-        passDatabaseManager: PassDatabaseManager,
-        localAuthManager: LocalAuthManager,
-        forDatabaseAt url: URL,
-        completion: @escaping () -> Void
-    ) {
+    init(passDatabaseManager: PassDatabaseManager,
+         localAuthManager: LocalAuthManager,
+         forDatabaseAt url: URL,
+         completion: @escaping () -> Void) {
         self.passDatabaseManager = passDatabaseManager
         self.localAuthManager = localAuthManager
         self.databaseURL = url

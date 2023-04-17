@@ -18,7 +18,6 @@ protocol PasswordsSeachResultsDispalyController: AnyObject {
 class PasswordsViewController: UIViewController, PasswordsSeachResultsDispalyController {
     var items: [PassItem] {
         didSet {
-//            noItemsLabel.isHidden = !items.isEmpty
             tableView.reloadData()
         }
     }
@@ -61,7 +60,6 @@ class PasswordsViewController: UIViewController, PasswordsSeachResultsDispalyCon
         if #available(iOS 15, *) {
             tableView.sectionHeaderTopPadding = 10
         }
-//        tableView.backgroundView = noItemsLabel
         return tableView
     }()
 
