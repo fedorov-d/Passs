@@ -85,7 +85,8 @@ extension RootCoordinator {
             passDatabaseManager: passDatabaseManager,
             localAuthManager: localAuthManager,
             forDatabaseAt: url
-        ) { [unowned self] in
+        ) { [weak self] in
+            guard let self else { return }
             self.navigationController.dismiss(animated: true)
             self.showGroupsViewController(passDatabaseManager: passDatabaseManager)
         }
@@ -105,8 +106,8 @@ extension RootCoordinator {
                     recentPasswordsManager: recentPasswordsManager,
                     credentialsSelectionManager: self.serviceLocator.credentialsSelectionManager
                 )
-            }) { [unowned self] group in
-                self.showPasswordsViewController(for: group, recentPasswordsManager: recentPasswordsManager)
+            }) { [weak self] group in
+                self?.showPasswordsViewController(for: group, recentPasswordsManager: recentPasswordsManager)
             }
     }
 

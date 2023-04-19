@@ -107,12 +107,12 @@ extension UIViewController {
 extension UIViewController {
     func setCancelNavigationItemIfNeeded(with credentialSelectionManager: CredentialsSelectionManager?) {
         guard let credentialSelectionManager else { return }
-        setCancelNavigationItem {
+        setCancelNavigationItemAction {
             credentialSelectionManager.onCancel()
         }
     }
 
-    fileprivate func setCancelNavigationItem(with action: @escaping () -> Void) {
+    fileprivate func setCancelNavigationItemAction(_ action: @escaping () -> Void) {
         let barButtonItem = BarButtonItem(barButtonSystemItem: .cancel, target: nil, action: nil)
         barButtonItem.configure(with: action)
         self.navigationItem.rightBarButtonItem = barButtonItem

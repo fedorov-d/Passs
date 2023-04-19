@@ -30,13 +30,11 @@ class PasswordsViewController: UIViewController, PasswordsSeachResultsDispalyCon
 
     private var subscriptionSet = Set<AnyCancellable>()
 
-    init(
-        title: String? = nil,
-        items: [PassItem] = [],
-        pasteboardManager: PasteboardManager,
-        recentPasswordsManager: RecentPasswordsManager,
-        credentialsSelectionManager: CredentialsSelectionManager?
-    ) {
+    init(title: String? = nil,
+         items: [PassItem] = [],
+         pasteboardManager: PasteboardManager,
+         recentPasswordsManager: RecentPasswordsManager,
+         credentialsSelectionManager: CredentialsSelectionManager?) {
         self.items = items
         self.pasteboardManager = pasteboardManager
         self.recentPasswordsManager = recentPasswordsManager
@@ -106,7 +104,7 @@ extension PasswordsViewController: UITableViewDataSource {
         cell.textLabel?.text = item.title
         cell.detailTextLabel?.text = item.username
         cell.detailTextLabel?.textColor = .secondaryLabel
-        cell.imageView?.image = UIImage(named: "key")
+        cell.imageView?.image = UIImage(systemName: item.iconSymbol)
         return cell
     }
 

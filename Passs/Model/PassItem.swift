@@ -7,13 +7,16 @@
 
 import Foundation
 
-@objc protocol PassItem {
+@objc
+protocol PassItem {
     var title: String? { get }
     var username: String? { get }
     var password: String? { get }
+    var iconId: Int { get }
 }
 
-@objc protocol PassGroup {
+@objc
+protocol PassGroup {
     var title: String? { get }
     var items: [PassItem] { get }
 }
