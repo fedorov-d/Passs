@@ -85,8 +85,7 @@ extension GroupsViewController: UISearchResultsUpdating {
                 as? PasswordsSeachResultsDispalyController & UIViewController,
         let groups = databaseManager.passwordGroups else { return }
         let items = groups.flatMap { $0.items }
-        let text = searchController.searchBar.text
-        if text == nil || text!.isEmpty {
+        guard let text = searchController.searchBar.text?.lowercased(), !text.isEmpty else {
             let items = recentPasswordsManager.matchingItems(for: items)
             guard items.count > 0 else { return }
             passwordsController.view.isHidden = false
@@ -95,7 +94,13 @@ extension GroupsViewController: UISearchResultsUpdating {
             return
         }
         let matchingItems = items.filter { item in
-            item.title?.lowercased().contains(searchController.searchBar.text?.lowercased() ?? "") ?? false
+            item.title?.lowercased().contains(text) ?? false
+        }.sorted { item1, item2 in
+            guard let range1 = item1.title?.lowercased().range(of: text),
+                  let range2 = item2.title?.lowercased().range(of: text) else {
+                return true                
+            }
+            return range1.lowerBound < range2.lowerBound
         }
         passwordsController.sectionTitle = matchingItems.isEmpty ? "No matching items" : "Matching items"
         passwordsController.items = matchingItems
