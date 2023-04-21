@@ -17,5 +17,11 @@ final class SettingsManager {
     @UserDefaultsBacked<Int>(key: "maxRecentItems")
     var maxRecentItems
 
+    @UserDefaultsBacked<String>(key: "defaultDatabaseURLString")
+    var defaultDatabaseURLString
 
+    var defaultDatabaseURL: URL? {
+        get { defaultDatabaseURLString.flatMap { URL(string: $0) }}
+        set { defaultDatabaseURLString = newValue?.absoluteString }
+    }
 }

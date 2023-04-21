@@ -67,6 +67,7 @@ extension RootCoordinator {
             passDatabaseManager: passDatabaseManager,
             localAuthManager: serviceLocator.localAuthManager(),
             credentialsSelectionManager: serviceLocator.credentialsSelectionManager,
+            settingsManager: serviceLocator.settingsManager(),
             onAskForPassword: { [weak self] url in
                 self?.showUnlockViewController(forDatabaseAt: url, passDatabaseManager: passDatabaseManager)
             },

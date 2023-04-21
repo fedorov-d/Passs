@@ -20,6 +20,7 @@ class DatabaseListViewController: UIViewController {
     private let localAuthManager: LocalAuthManager
     private let passDatabaseManager: PassDatabaseManager
     private let credentialsSelectionManager: CredentialsSelectionManager?
+    private let settingsManager: SettingsManager
     
     private let cellId = "database.cell.id"
 
@@ -60,12 +61,14 @@ class DatabaseListViewController: UIViewController {
          passDatabaseManager: PassDatabaseManager,
          localAuthManager: LocalAuthManager,
          credentialsSelectionManager: CredentialsSelectionManager?,
+         settingsManager: SettingsManager,
          onAskForPassword: @escaping (_: URL) -> Void,
          onDatabaseOpened: @escaping () -> Void) {
         self.databasesProvider = databasesProvider
         self.passDatabaseManager = passDatabaseManager
         self.localAuthManager = localAuthManager
         self.credentialsSelectionManager = credentialsSelectionManager
+        self.settingsManager = settingsManager
         self.onAskForPassword = onAskForPassword
         self.onDatabaseOpened = onDatabaseOpened
         super.init(nibName: nil, bundle: nil)
@@ -194,13 +197,28 @@ extension DatabaseListViewController: UIDocumentPickerDelegate {
 }
 
 extension DatabaseListViewController: UITableViewDataSource {
+    func numberOfSections(in tableView: UITableView) -> Int {
+        if settingsManager.defaultDatabaseURL != nil {
+            return 2
+        }
+        return 1
+    }
+
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        databasesProvider.databaseURLs.count
+        if settingsManager.defaultDatabaseURL != nil {
+            if section == 1 {
+                return 1
+            } else {
+                return databasesProvider.databaseURLs.count - 1
+            }
+        } else {
+            return databasesProvider.databaseURLs.count
+        }
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: cellId, for: indexPath)
-        let databaseURL =  databasesProvider.databaseURLs[indexPath.row]
+        let databaseURL = databaseURL(at: indexPath)
         cell.textLabel?.text = databaseURL.lastPathComponent
         cell.accessoryType = .disclosureIndicator
         cell.imageView?.image = UIImage(systemName: "square.stack.3d.up")?.tinted(with: .systemBlue)
@@ -215,12 +233,37 @@ extension DatabaseListViewController: UITableViewDataSource {
         }
         return cell
     }
+
+    func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+        guard settingsManager.defaultDatabaseURL != nil else { return nil }
+        if section == 0 {
+            return "Default"
+        } else {
+            return "Others"
+        }
+    }
+
+    fileprivate func databaseURL(at indexPath: IndexPath) -> URL {
+        guard let defaultDatabaseURL = self.settingsManager.defaultDatabaseURL else {
+            return databasesProvider.databaseURLs[indexPath.row]
+        }
+        if indexPath.section == 0 {
+            return defaultDatabaseURL
+        } else {
+            var urls = databasesProvider.databaseURLs
+            guard let indexOfDefaultDatabase = urls.firstIndex(of: defaultDatabaseURL) else {
+                return databasesProvider.databaseURLs[indexPath.row]
+            }
+            urls.remove(at: indexOfDefaultDatabase)
+            return urls[indexPath.row]
+        }
+    }
 }
 
 extension DatabaseListViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
-        let database = databasesProvider.databaseURLs[indexPath.row]
+        let database = databaseURL(at: indexPath)
         unlockDatabase(at: database)
     }
 
@@ -232,6 +275,41 @@ extension DatabaseListViewController: UITableViewDelegate {
         }
         action.backgroundColor = .systemRed
         return UISwipeActionsConfiguration(actions: [action])
+    }
+
+    func tableView(_ tableView: UITableView,
+                   contextMenuConfigurationForRowAt indexPath: IndexPath,
+                   point: CGPoint) -> UIContextMenuConfiguration? {
+        return UIContextMenuConfiguration(actionProvider: { [weak self] menuElements in
+            guard let self else { fatalError() }
+            let unlockAction = UIAction(title: "Unlock",
+                                              image: UIImage(systemName: "lock.open")) { [weak self] action in
+                guard let self else { return }
+                let database = self.databaseURL(at: indexPath)
+                self.unlockDatabase(at: database)
+            }
+            let databaseURL = self.databaseURL(at: indexPath)
+            let previousDefaultDatabaseURL = self.settingsManager.defaultDatabaseURL
+            let makeDefaultAction = UIAction(title: "Make default",
+                                              image: UIImage(systemName: "checkmark")) { [weak self] action in
+                guard let self else { return }
+                self.settingsManager.defaultDatabaseURL = databaseURL
+                self.tableView.performBatchUpdates {
+                    if previousDefaultDatabaseURL != nil {
+                        tableView.moveRow(at: IndexPath(row: 0, section: 0), to: IndexPath(row: 0, section: 1))
+                    } else {
+                        tableView.insertSections(IndexSet(integer: 0), with: .automatic)
+                    }
+                    if let indexOfDefaultDatabase = self.databasesProvider.databaseURLs.firstIndex(of: databaseURL) {
+                        tableView.moveRow(at: IndexPath(row: 0,
+                                                        section: previousDefaultDatabaseURL == nil ? 0 : 1),
+                                          to: IndexPath(row: 0, section: 0))
+                    }
+                }
+            }
+            return UIMenu(title: "",
+                          children: [unlockAction, makeDefaultAction])
+        })
     }
 }
 

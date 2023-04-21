@@ -9,7 +9,7 @@ import Foundation
 
 @propertyWrapper struct UserDefaultsBacked<Value> {
     let key: String
-    var storage: UserDefaults = .standard
+    var storage: UserDefaults = .shared!
 
     var wrappedValue: Value? {
         get { storage.value(forKey: key) as? Value }
