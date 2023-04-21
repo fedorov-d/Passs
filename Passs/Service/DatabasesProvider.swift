@@ -9,14 +9,14 @@ import Foundation
 
 protocol DatabasesProvider: AnyObject {
     func addDatabase(from url: URL) throws
-    func deleteDatabase(at index: Int)
+    func deleteDatabase(at databaseURL: URL)
     var databaseURLs: [URL] { get }
     var delegate: DatabasesProviderDelegate? { get set }
 }
 
 protocol DatabasesProviderDelegate: AnyObject {
     func didAddDatabase(at index: Int)
-    func didDeleteDatabase(at index: Int, name: String)
+    func didDeleteDatabase(at databaseURL: URL, name: String)
 }
 
 final class DatabasesProviderImp: DatabasesProvider {
@@ -52,9 +52,10 @@ final class DatabasesProviderImp: DatabasesProvider {
         delegate?.didAddDatabase(at: databaseURLs.count - 1)
     }
 
-    func deleteDatabase(at index: Int) {
+    func deleteDatabase(at databaseURL: URL) {
+        guard let index = databaseURLs.firstIndex(of: databaseURL) else { return }
         let removedURL = databaseURLs.remove(at: index)
-        delegate?.didDeleteDatabase(at: index, name: removedURL.lastPathComponent)
+        delegate?.didDeleteDatabase(at: removedURL, name: removedURL.lastPathComponent)
     }
     
     let supportedExtensions = ["kdb", "kdbx"]

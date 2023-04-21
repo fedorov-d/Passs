@@ -20,7 +20,7 @@ class DatabaseListViewController: UIViewController {
     private let localAuthManager: LocalAuthManager
     private let passDatabaseManager: PassDatabaseManager
     private let credentialsSelectionManager: CredentialsSelectionManager?
-    private let settingsManager: SettingsManager
+    fileprivate let settingsManager: SettingsManager
     
     private let cellId = "database.cell.id"
 
@@ -28,6 +28,8 @@ class DatabaseListViewController: UIViewController {
     private let onAskForPassword: (_: URL) -> Void
 
     private var subscriptionSet = Set<AnyCancellable>()
+
+    private lazy var dataSource = makeDataSource()
 
     private lazy var dateFormatter: DateFormatter = {
         let formatter = DateFormatter()
@@ -38,7 +40,6 @@ class DatabaseListViewController: UIViewController {
     
     private lazy var tableView: UITableView = {
         let tableView = UITableView(frame: .zero, style: .grouped)
-        tableView.dataSource = self
         tableView.delegate = self
         tableView.register(SubtitleTableViewCell.self, forCellReuseIdentifier: cellId)
         return tableView
@@ -95,6 +96,9 @@ class DatabaseListViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        tableView.dataSource = dataSource
+        updateDataSource()
+
         self.navigationItem.backButtonTitle = ""
 
         let appearance = UINavigationBarAppearance()
@@ -197,80 +201,54 @@ extension DatabaseListViewController: UIDocumentPickerDelegate {
 }
 
 extension DatabaseListViewController: UITableViewDataSource {
-    func numberOfSections(in tableView: UITableView) -> Int {
-        if settingsManager.defaultDatabaseURL != nil {
-            return 2
-        }
-        return 1
-    }
-
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        if settingsManager.defaultDatabaseURL != nil {
-            if section == 1 {
-                return 1
-            } else {
-                return databasesProvider.databaseURLs.count - 1
-            }
-        } else {
-            return databasesProvider.databaseURLs.count
-        }
+        databasesProvider.databaseURLs.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: cellId, for: indexPath)
-        let databaseURL = databaseURL(at: indexPath)
+        let databaseURL =  databasesProvider.databaseURLs[indexPath.row]
         cell.textLabel?.text = databaseURL.lastPathComponent
         cell.accessoryType = .disclosureIndicator
         cell.imageView?.image = UIImage(systemName: "square.stack.3d.up")?.tinted(with: .systemBlue)
-        cell.detailTextLabel?.textColor = .secondaryLabel
-        if let date = modificationDate(forFileAtURL: databaseURL),
-           let detailTextLabel = cell.detailTextLabel {
+        let isDefault = self.settingsManager.defaultDatabaseURL == databaseURL
+        guard let detailTextLabel = cell.detailTextLabel else { return cell }
+        let secondaryLabel: UIColor = .secondaryLabel
+        detailTextLabel.textColor = secondaryLabel
+        if let date = modificationDate(forFileAtURL: databaseURL) {
             let font = Date().timeIntervalSince(date) < 1800 ? detailTextLabel.font.italics() : detailTextLabel.font
             let lastModifiedText = lastUpdateDateAttributedString(from: date,
                                                                   font: font!,
-                                                                  textColor: detailTextLabel.textColor)
-            detailTextLabel.attributedText = lastModifiedText
+                                                                  textColor: secondaryLabel)
+            let isDefaultText = NSMutableAttributedString(string: isDefault ? "Default · " : "",
+                                                          attributes: [.font: detailTextLabel.font!,
+                                                                       .foregroundColor: UIColor.systemGray])
+            isDefaultText.append(lastModifiedText)
+            detailTextLabel.attributedText = isDefaultText
+        } else if isDefault {
+            detailTextLabel.attributedText = NSMutableAttributedString(string: "Default",
+                                                                       attributes: [.font: detailTextLabel.font!,
+                                                                                    .foregroundColor: UIColor.label])
         }
         return cell
-    }
-
-    func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
-        guard settingsManager.defaultDatabaseURL != nil else { return nil }
-        if section == 0 {
-            return "Default"
-        } else {
-            return "Others"
-        }
-    }
-
-    fileprivate func databaseURL(at indexPath: IndexPath) -> URL {
-        guard let defaultDatabaseURL = self.settingsManager.defaultDatabaseURL else {
-            return databasesProvider.databaseURLs[indexPath.row]
-        }
-        if indexPath.section == 0 {
-            return defaultDatabaseURL
-        } else {
-            var urls = databasesProvider.databaseURLs
-            guard let indexOfDefaultDatabase = urls.firstIndex(of: defaultDatabaseURL) else {
-                return databasesProvider.databaseURLs[indexPath.row]
-            }
-            urls.remove(at: indexOfDefaultDatabase)
-            return urls[indexPath.row]
-        }
     }
 }
 
 extension DatabaseListViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
-        let database = databaseURL(at: indexPath)
-        unlockDatabase(at: database)
+        let sectionID = self.dataSource.snapshot().sectionIdentifiers[indexPath.section]
+        let databaseURL = self.dataSource.snapshot().itemIdentifiers(inSection: sectionID)[indexPath.row]
+        unlockDatabase(at: databaseURL)
     }
 
     func tableView(_ tableView: UITableView,
                    trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
         let action = UIContextualAction(style: .normal, title: "Delete") { [weak self] action, view, closure in
-            self?.databasesProvider.deleteDatabase(at: indexPath.row)
+            guard let self else { return }
+            let sectionID = self.dataSource.snapshot().sectionIdentifiers[indexPath.section]
+            let databaseURL = self.dataSource.snapshot().itemIdentifiers(inSection: sectionID)[indexPath.row]
+            self.deleteDatabase(at: databaseURL)
             closure(true)
         }
         action.backgroundColor = .systemRed
@@ -282,52 +260,44 @@ extension DatabaseListViewController: UITableViewDelegate {
                    point: CGPoint) -> UIContextMenuConfiguration? {
         return UIContextMenuConfiguration(actionProvider: { [weak self] menuElements in
             guard let self else { fatalError() }
+            let sectionID = dataSource.snapshot().sectionIdentifiers[indexPath.section]
+            let databaseURL = dataSource.snapshot().itemIdentifiers(inSection: sectionID)[indexPath.row]
             let unlockAction = UIAction(title: "Unlock",
                                               image: UIImage(systemName: "lock.open")) { [weak self] action in
                 guard let self else { return }
-                let database = self.databaseURL(at: indexPath)
-                self.unlockDatabase(at: database)
+                self.unlockDatabase(at: databaseURL)
             }
-            let databaseURL = self.databaseURL(at: indexPath)
-            let previousDefaultDatabaseURL = self.settingsManager.defaultDatabaseURL
-            let makeDefaultAction = UIAction(title: "Make default",
-                                              image: UIImage(systemName: "checkmark")) { [weak self] action in
+            let deleteAction = UIAction(title: "Delete",
+                                        image: UIImage(systemName: "trash"),
+                                        attributes: .destructive) { [weak self] action in
+                guard let self else { return }
+                self.deleteDatabase(at: databaseURL)
+            }
+            guard databasesProvider.databaseURLs.count > 1 else {
+                return UIMenu(title: "", children: [unlockAction, deleteAction])
+            }
+            let makeDefaultAction = UIAction(
+                title: "Make default",
+                image: UIImage(systemName: "externaldrive.badge.checkmark")
+            ) { [weak self] action in
                 guard let self else { return }
                 self.settingsManager.defaultDatabaseURL = databaseURL
-                self.tableView.performBatchUpdates {
-                    if previousDefaultDatabaseURL != nil {
-                        tableView.moveRow(at: IndexPath(row: 0, section: 0), to: IndexPath(row: 0, section: 1))
-                    } else {
-                        tableView.insertSections(IndexSet(integer: 0), with: .automatic)
-                    }
-                    if let indexOfDefaultDatabase = self.databasesProvider.databaseURLs.firstIndex(of: databaseURL) {
-                        tableView.moveRow(at: IndexPath(row: 0,
-                                                        section: previousDefaultDatabaseURL == nil ? 0 : 1),
-                                          to: IndexPath(row: 0, section: 0))
-                    }
-                }
+                self.updateDataSource()
             }
-            return UIMenu(title: "",
-                          children: [unlockAction, makeDefaultAction])
+            return UIMenu(title: "", children: [unlockAction, makeDefaultAction, deleteAction])
         })
     }
 }
 
 extension DatabaseListViewController: DatabasesProviderDelegate {
     func didAddDatabase(at index: Int) {
-        let indexPath = IndexPath(row: index, section: 0)
-        tableView.performBatchUpdates {
-            tableView.insertRows(at: [indexPath], with: .top)
-        } completion: { _ in }
+        updateDataSource()
         updateNoDatabasesLabelVisibility()
     }
 
-    func didDeleteDatabase(at index: Int, name: String) {
+    func didDeleteDatabase(at databaseURL: URL, name: String) {
         try? localAuthManager.clearUnlockData(for: name)
-        tableView.deleteRows(
-            at: [IndexPath(row: index, section: 0)],
-            with: .automatic
-        )
+        updateDataSource()
         updateNoDatabasesLabelVisibility()
     }
 
@@ -366,20 +336,50 @@ fileprivate extension DatabaseListViewController {
                                                attributes: attributes))
         return resultString.copy() as! NSAttributedString
     }
+
+    func deleteDatabase(at databaseURL: URL) {
+        databasesProvider.deleteDatabase(at: databaseURL)
+        if settingsManager.defaultDatabaseURL == databaseURL {
+            settingsManager.defaultDatabaseURL = nil
+        }
+    }
+
+    func updateDataSource() {
+        var snapshot = NSDiffableDataSourceSnapshot<Section, URL>()
+        var urls = databasesProvider.databaseURLs
+        guard !urls.isEmpty else { return }
+        if let defaultDatabaseURL = settingsManager.defaultDatabaseURL ?? (urls.count == 1 ? urls.first : nil)  {
+            if let index = urls.firstIndex(of: defaultDatabaseURL) {
+                urls.remove(at: index)
+            }
+            snapshot.appendSections([.default])
+            snapshot.appendItems([defaultDatabaseURL], toSection: .default)
+        }
+        if !urls.isEmpty {
+            snapshot.appendSections([.other])
+            snapshot.appendItems(urls, toSection: .other)
+        }
+        dataSource.apply(snapshot, animatingDifferences: true)
+    }
 }
 
 extension DatabaseListViewController: DefaultDatabaseUnlock {
     func unlockDatabaseIfNeeded() {
-        guard databasesProvider.databaseURLs.count == 1,
-              let databaseToUnlock = databasesProvider.databaseURLs.first,
+        guard let defaultDatabase = settingsManager.defaultDatabaseURL,
               !localAuthManager.isFetchingUnlockData,
               !passDatabaseManager.isDatabaseUnlocked else { return }
         DispatchQueue.main.asyncAfter(deadline: .now() + .milliseconds(100)) {
-            self.unlockDatabase(at: databaseToUnlock)
+            self.unlockDatabase(at: defaultDatabase)
         }
     }
 
     func unlockDatabase(at url: URL) {
+        guard let url = databasesProvider.databaseURLs.first(where: {
+            $0.lastPathComponent == url.lastPathComponent
+        }) else {
+            Swift.debugPrint("database doesn't contain default URL")
+            return
+        }
         localAuthManager.unlockData(for: url.lastPathComponent) { [weak self] result in
             guard let self else { return }
             switch result {
@@ -398,6 +398,47 @@ extension DatabaseListViewController: DefaultDatabaseUnlock {
                 self.handlePasswordError(error, forDatabaseAt: url)
             }
         }
+    }
+}
+
+private extension DatabaseListViewController {
+    enum Section: String {
+        case `default`
+        case other
+    }
+
+    final class DiffableDataSource: UITableViewDiffableDataSource<Section, URL> {
+        override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+            snapshot().sectionIdentifiers[section].rawValue.capitalized
+        }
+    }
+
+    func makeDataSource() -> UITableViewDiffableDataSource<Section, URL> {
+        let reuseIdentifier = cellId
+        return DiffableDataSource(
+            tableView: tableView,
+            cellProvider: { [weak self]  tableView, indexPath, databaseURL in
+                guard let self else { return UITableViewCell() }
+                let cell = tableView.dequeueReusableCell(
+                    withIdentifier: reuseIdentifier,
+                    for: indexPath
+                )
+
+                cell.textLabel?.text = databaseURL.lastPathComponent
+                cell.accessoryType = .disclosureIndicator
+                cell.imageView?.image = UIImage(systemName: "square.stack.3d.up")?.tinted(with: .systemBlue)
+                guard let detailTextLabel = cell.detailTextLabel,
+                      let date = self.modificationDate(forFileAtURL: databaseURL) else { return cell }
+                let secondaryLabel: UIColor = .secondaryLabel
+                detailTextLabel.textColor = secondaryLabel
+                let font = Date().timeIntervalSince(date) < 1800 ? detailTextLabel.font.italics() : detailTextLabel.font
+                let lastModifiedText = self.lastUpdateDateAttributedString(from: date,
+                                                                           font: font!,
+                                                                           textColor: secondaryLabel)
+                detailTextLabel.attributedText = lastModifiedText
+                return cell
+            }
+        )
     }
 }
 
