@@ -1,5 +1,5 @@
 source 'https://github.com/CocoaPods/Specs.git'
-source 'https://github.com/MacPass/KeePassKit.git'
+source 'https://github.com/fedorov-d/KeePassKit.git'
 platform :ios, '13.0'
 inhibit_all_warnings!
 use_frameworks!
