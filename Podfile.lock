@@ -10,7 +10,7 @@ PODS:
     - KissXML (= 5.2.3)
   - KeePassKit/TwoFish (1.12)
   - KissXML (5.2.3)
-  - SnapKit (5.0.1)
+  - SnapKit (5.6.0)
 
 DEPENDENCIES:
   - KeePassKit (from `https://github.com/fedorov-d/KeePassKit.git`)
@@ -28,14 +28,14 @@ EXTERNAL SOURCES:
 
 CHECKOUT OPTIONS:
   KeePassKit:
-    :commit: 66dc5db40a90764a2c17625e49be1bb4e46432bc
+    :commit: 3ecb2b716cf161519fee877b8110bf3d0500856a
     :git: https://github.com/fedorov-d/KeePassKit.git
     :submodules: true
 
 SPEC CHECKSUMS:
-  KeePassKit: fc2691f05e0eded15240d4ca5140ccf1f6c64828
+  KeePassKit: b427619a56f625c42ca462ff394004b6d851d80a
   KissXML: 09f88ff8161fd058d67b70740b8b516687b52823
-  SnapKit: 97b92857e3df3a0c71833cce143274bf6ef8e5eb
+  SnapKit: e01d52ebb8ddbc333eefe2132acf85c8227d9c25
 
 PODFILE CHECKSUM: 652d3993c1d65ff0dc15b1ad5bef3ae1d63bea4e
 
