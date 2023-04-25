@@ -14,7 +14,7 @@ protocol RecentPasswordsManager: AnyObject {
 
 final class RecentPasswordsManagerImp: RecentPasswordsManager {
     private(set) var items: [String] = []
-    private let userDefaults = UserDefaults.shared!
+    private let userDefaults = UserDefaults.shared
 
     private var storageKey: String {
         return databaseURL.lastPathComponent + " " + "recentPasswordItems"

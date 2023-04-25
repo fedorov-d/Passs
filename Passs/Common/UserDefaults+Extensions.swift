@@ -9,7 +9,7 @@ import Foundation
 
 @propertyWrapper struct UserDefaultsBacked<Value> {
     let key: String
-    var storage: UserDefaults = .shared!
+    var storage: UserDefaults = .shared
 
     var wrappedValue: Value? {
         get { storage.value(forKey: key) as? Value }
@@ -21,7 +21,8 @@ extension UserDefaults {
     enum Keys: String, RawRepresentable {
         case storage
         case enterBackgroundTimestamp
+        case openedDatabaseURL
     }
 
-    static let shared = UserDefaults(suiteName: "group.password.storage")
+    static let shared = UserDefaults(suiteName: "group.password.storage")!
 }

@@ -12,6 +12,15 @@ class CredentialProviderViewController: ASCredentialProviderViewController {
     private let serviceLocator = ServiceLocatorImp()
     private lazy var coordinator = RootCoordinator(serviceLocator: serviceLocator)
 
+    override func prepareInterfaceForExtensionConfiguration() {
+        let store = ASCredentialIdentityStore.shared
+        store.getState { state in
+            if state.isEnabled {
+                // Add, remove, or update identities.
+            }
+        }
+    }
+
     override func loadView() {
         view = UIView()
     }
@@ -39,6 +48,7 @@ class CredentialProviderViewController: ASCredentialProviderViewController {
      prioritize the most relevant credentials in the list.
     */
     override func prepareCredentialList(for serviceIdentifiers: [ASCredentialServiceIdentifier]) {
+        serviceLocator.credentialsSelectionManager?.serviceIdentifiers = serviceIdentifiers
         let childViewController = coordinator.navigationController
         childViewController.embed(in: self)
         childViewController.view.snp.makeConstraints { $0.edges.equalToSuperview() }
@@ -53,24 +63,70 @@ class CredentialProviderViewController: ASCredentialProviderViewController {
      If using the credential would require showing custom UI for authenticating the user, cancel
      the request with error code ASExtensionError.userInteractionRequired.
 
+
     override func provideCredentialWithoutUserInteraction(for credentialIdentity: ASPasswordCredentialIdentity) {
-        let databaseIsUnlocked = true
-        if (databaseIsUnlocked) {
-            let passwordCredential = ASPasswordCredential(user: "j_appleseed", password: "apple1234")
-            self.extensionContext.completeRequest(withSelectedCredential: passwordCredential, completionHandler: nil)
-        } else {
-            self.extensionContext.cancelRequest(withError: NSError(domain: ASExtensionErrorDomain, code:ASExtensionError.userInteractionRequired.rawValue))
+        let userInteractionRequiredFallback = {
+            self.extensionContext.cancelRequest(
+                withError: NSError(domain: ASExtensionErrorDomain,
+                                   code:ASExtensionError.userInteractionRequired.rawValue)
+            )
+        }
+        let currentTimestamp = Date().timeIntervalSince1970
+
+        guard let openedDatabaseURL = UserDefaults.shared.object(
+            forKey: UserDefaults.Keys.openedDatabaseURL.rawValue
+        ).flatMap({ urlString -> URL? in
+            guard let urlString = urlString as? String else { return nil }
+            return URL(string: urlString)
+        }),
+            let enterBackgroundTimestamp = UserDefaults.standard.value(
+            forKey: UserDefaults.Keys.enterBackgroundTimestamp.rawValue
+        ) as? TimeInterval, (currentTimestamp - enterBackgroundTimestamp) < Constants.closeDatabaseTimeInterval else {
+            userInteractionRequiredFallback()
+            return
+        }
+        let localAuthManager = serviceLocator.localAuthManager()
+        let passDatabaseManager = serviceLocator.passDatabaseManager()
+        localAuthManager.unlockData(for: openedDatabaseURL.lastPathComponent) { result in
+            switch result {
+            case .success(let success):
+                do {
+                    try passDatabaseManager.unlockDatabase(with: openedDatabaseURL,
+                                                           password: success.password,
+                                                           keyFileData: success.keyFileData)
+                    let items = passDatabaseManager.passwordGroups?.flatMap { $0.items }
+                    if let matchingItem = items?.first(
+                        where: { $0.uuid.uuidString == credentialIdentity.recordIdentifier }
+                    ), let password = matchingItem.password {
+                        let passwordCredential = ASPasswordCredential(user: credentialIdentity.user,
+                                                                      password: password)
+
+                        self.extensionContext.completeRequest(withSelectedCredential: passwordCredential,
+                                                              completionHandler: nil)
+                    } else {
+                        userInteractionRequiredFallback()
+                    }
+                } catch {
+                    userInteractionRequiredFallback()
+                }
+            case .failure(let failure):
+                userInteractionRequiredFallback()
+            }
         }
     }
-    */
+     */
 
     /*
      Implement this method if provideCredentialWithoutUserInteraction(for:) can fail with
      ASExtensionError.userInteractionRequired. In this case, the system may present your extension's
      UI and call this method. Show appropriate UI for authenticating the user then provide the password
      by completing the extension request with the associated ASPasswordCredential.
+     */
 
     override func prepareInterfaceToProvideCredential(for credentialIdentity: ASPasswordCredentialIdentity) {
+        let childViewController = coordinator.navigationController
+        childViewController.embed(in: self)
+        childViewController.view.snp.makeConstraints { $0.edges.equalToSuperview() }
+        coordinator.showDatabasesViewController()
     }
-    */
 }

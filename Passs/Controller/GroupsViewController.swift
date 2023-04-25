@@ -77,20 +77,29 @@ class GroupsViewController: UIViewController {
 
         setupKeyboardAvoidance(for: tableView, subscriptionSet: &subscriptionSet)
     }
+
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        if credentialsSelectionManager?.serviceIdentifiers != nil {
+            DispatchQueue.main.asyncAfter(deadline: .now() + .milliseconds(100)) {
+                self.navigationItem.searchController?.searchBar.becomeFirstResponder()
+            }
+        }
+    }
 }
 
 extension GroupsViewController: UISearchResultsUpdating {
     func updateSearchResults(for searchController: UISearchController) {
         guard let passwordsController = searchController.searchResultsController
                 as? PasswordsSeachResultsDispalyController & UIViewController,
-        let groups = databaseManager.passwordGroups else { return }
+              let groups = databaseManager.passwordGroups else { return }
         let items = groups.flatMap { $0.items }
         guard let text = searchController.searchBar.text?.lowercased(), !text.isEmpty else {
-            let items = recentPasswordsManager.matchingItems(for: items)
-            guard items.count > 0 else { return }
+            let fallback = fallbackItems(for: items)
+            guard fallback.items.count > 0 else { return }
             passwordsController.view.isHidden = false
-            passwordsController.sectionTitle = "Recent items"
-            passwordsController.items = items
+            passwordsController.sectionTitle = fallback.title
+            passwordsController.items = fallback.items
             return
         }
         let matchingItems = items.filter { item in
@@ -105,7 +114,6 @@ extension GroupsViewController: UISearchResultsUpdating {
         passwordsController.sectionTitle = matchingItems.isEmpty ? "No matching items" : "Matching items"
         passwordsController.items = matchingItems
     }
-
 }
 
 extension GroupsViewController: UITableViewDataSource {
@@ -121,7 +129,6 @@ extension GroupsViewController: UITableViewDataSource {
         cell.imageView?.image = UIImage(systemName: "folder")?.tinted(with: .systemBlue)
         return cell
     }
-
 }
 
 extension GroupsViewController: UITableViewDelegate {
@@ -130,5 +137,17 @@ extension GroupsViewController: UITableViewDelegate {
         guard let group = databaseManager.passwordGroups?[indexPath.row] else { return }
         groupSelected(group)
     }
+}
 
+extension GroupsViewController {
+    private func fallbackItems(for items: [PassItem]) -> (items: [PassItem], title: String) {
+        if let credentialsSelectionManager,
+           credentialsSelectionManager.serviceIdentifiers != nil,
+           let matchingItems = credentialsSelectionManager.matchigItems(for: items),
+           !matchingItems.isEmpty {
+            return (items: matchingItems, title: "Matching items")
+        } else {
+            return (items: recentPasswordsManager.matchingItems(for: items), title: "Recent items")
+        }
+    }
 }

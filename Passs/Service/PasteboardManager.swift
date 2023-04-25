@@ -35,10 +35,8 @@ final class PasteboardManagerImp: PasteboardManager {
 
     private let dropPasswordInterval: TimeInterval = 20
 
-    init(
-        clearInterval: TimeInterval = Constants.clearPasteboardTimeInterval,
-        pasteboard: Pasteboard = UIPasteboard.general
-    ) {
+    init(clearInterval: TimeInterval = Constants.clearPasteboardTimeInterval,
+         pasteboard: Pasteboard = UIPasteboard.general) {
         self.clearInterval = clearInterval
         self.pasteboard = pasteboard
     }
@@ -46,13 +44,13 @@ final class PasteboardManagerImp: PasteboardManager {
     private(set) var needsDropPassword = false
     
     func copy(_ value: String) {
-        self.needsDropPassword = true
+        needsDropPassword = true
         pasteboard.value = value
         dropPassword()
     }
     
     func dropPassword(completion: @escaping (() -> Void) = {}) {
-        guard self.needsDropPassword else {
+        guard needsDropPassword else {
             completion()
             return
         }
@@ -62,7 +60,7 @@ final class PasteboardManagerImp: PasteboardManager {
             guard let self else { return }
             self.pasteboard.value = ""
         }
-        if let timer = timer {
+        if let timer {
             RunLoop.main.add(timer, forMode: .common)
         }
     }

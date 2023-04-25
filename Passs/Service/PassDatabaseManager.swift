@@ -7,6 +7,7 @@
 
 import Foundation
 import KeePassKit
+import AuthenticationServices
 
 enum PassDatabaseManagerError: Error {
     case cantAccessURL
@@ -17,18 +18,69 @@ protocol PassDatabaseManager: AnyObject {
     var databaseName: String? { get }
     var databaseURL: URL? { get }
 
+    var isDatabaseUnlocked: Bool { get }
     func unlockDatabase(with url: URL, password: String?, keyFileData: Data?) throws
     func lockDatabase()
-    var isDatabaseUnlocked: Bool { get }
+}
+
+extension PassItem {
+    var serviceIdentifier: ASCredentialServiceIdentifier? {
+        guard let title else { return nil }
+        if let url, let _ = URL(string: url) {
+            return ASCredentialServiceIdentifier(identifier: url,
+                                                 type: .URL)
+        } else {
+            return ASCredentialServiceIdentifier(identifier: title,
+                                                 type: .domain)
+        }
+    }
 }
 
 final class PassDatabaseManagerImp: PassDatabaseManager {
-    private(set) var passwordGroups: [PassGroup]?
+    private(set) var passwordGroups: [PassGroup]? {
+        didSet {
+            guard let passwordGroups else { return }
+            let store = ASCredentialIdentityStore.shared
+            store.getState { state in
+                guard state.isEnabled else { return }
+                let credentialIdentities = passwordGroups
+                    .compactMap { $0.items }
+                    .flatMap { $0 }
+                    .compactMap { item -> ASPasswordCredentialIdentity? in
+
+                        guard let username = item.username,
+                              let serviceIdentifier = item.serviceIdentifier else { return nil }
+                        return ASPasswordCredentialIdentity(serviceIdentifier: serviceIdentifier,
+                                                            user: username,
+                                                            recordIdentifier: item.uuid.uuidString)
+                    }
+                store.replaceCredentialIdentities(with: credentialIdentities) { success, error in
+                    Swift.debugPrint("credentials replaced \(success), \(error)")
+                }
+            }
+        }
+    }
     private(set) var databaseName: String?
-    private(set) var databaseURL: URL?
-    
+    private(set) var databaseURL: URL? {
+        didSet {
+            if let databaseURL {
+                UserDefaults.shared.set(databaseURL.absoluteURL,
+                                        forKey: UserDefaults.Keys.openedDatabaseURL.rawValue)
+            } else {
+                UserDefaults.shared.removeObject(forKey: UserDefaults.Keys.openedDatabaseURL.rawValue)
+            }
+        }
+    }
+
+    private var timer: Timer?
+
+    var isDatabaseUnlocked: Bool {
+        passwordGroups != nil
+    }
+
     func unlockDatabase(with url: URL, password: String? = nil, keyFileData: Data? = nil) throws {
         guard url.startAccessingSecurityScopedResource() else {
+            lockDatabase()
             throw PassDatabaseManagerError.cantAccessURL
         }
         defer {
@@ -44,8 +96,8 @@ final class PassDatabaseManagerImp: PassDatabaseManager {
         let compositeKey = KPKCompositeKey(keys: keys)
         let tree = try KPKTree(contentsOf: url, key: compositeKey)
         databaseName = tree.root?.title
-        self.databaseURL = url
-        self.passwordGroups = tree.root?.groups.sorted {
+        databaseURL = url
+        passwordGroups = tree.root?.groups.sorted {
             $0.title?.localizedCaseInsensitiveCompare($1.title ?? "") == .orderedAscending
         }
     }
@@ -54,9 +106,5 @@ final class PassDatabaseManagerImp: PassDatabaseManager {
         databaseName = nil
         databaseURL = nil
         passwordGroups = nil
-    }
-
-    var isDatabaseUnlocked: Bool {
-        passwordGroups != nil
     }
 }

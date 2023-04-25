@@ -25,9 +25,10 @@ class Application: UIApplication {
     }
 
     private func startTimer() {
-        timer = Timer(timeInterval: lockoutInterval, repeats: false, block: { [unowned self] _ in
-            self.onLockout?()
-        })
+        timer = Timer(timeInterval: lockoutInterval,
+                      repeats: false) { [weak self] _ in
+            self?.onLockout?()
+        }
         RunLoop.main.add(timer!, forMode: .common)
     }
 

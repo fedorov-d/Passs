@@ -24,6 +24,7 @@ protocol ServiceLocator: AnyObject {
 final class ServiceLocatorImp: ServiceLocator {
     private let _databasesProvider = DatabasesProviderImp()
     private let _pasteboardManager = PasteboardManagerImp()
+    private let _passDatabaseManager = PassDatabaseManagerImp()
     private(set) var _credentialsSelectionManager: CredentialsSelectionManagerImp?
 
     var databasesProvider: DatabasesProvider {
@@ -47,7 +48,7 @@ final class ServiceLocatorImp: ServiceLocator {
     }
 
     func passDatabaseManager() -> PassDatabaseManager {
-        PassDatabaseManagerImp()
+        _passDatabaseManager
     }
 
     func recentPasswordsManager(databaseURL: URL) -> RecentPasswordsManager {
@@ -63,7 +64,7 @@ final class ServiceLocatorImp: ServiceLocator {
     }
 
     func makeCredentialsSelectionManager(onCredentialsSelected: @escaping (PassItem) -> Void,
-                                         onCancel: @escaping () -> Void) {
+                                         onCancel: @escaping () -> Void)  {
         _credentialsSelectionManager = CredentialsSelectionManagerImp(onCredentialsSelected: onCredentialsSelected,
                                                                       onCancel: onCancel)
     }

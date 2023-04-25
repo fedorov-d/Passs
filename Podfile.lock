@@ -28,7 +28,7 @@ EXTERNAL SOURCES:
 
 CHECKOUT OPTIONS:
   KeePassKit:
-    :commit: 3ecb2b716cf161519fee877b8110bf3d0500856a
+    :commit: 22b7078cda52d4b5f8eac2d3916ec8ea2bade277
     :git: https://github.com/fedorov-d/KeePassKit.git
     :submodules: true
 

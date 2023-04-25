@@ -25,7 +25,7 @@ final class DatabasesProviderImp: DatabasesProvider {
     private let storage = UserDefaults.shared
 
     private(set) lazy var databaseURLs: [URL] = {
-        let bookmarks = storage?.value(forKey: UserDefaults.Keys.storage.rawValue) as? [Data] ?? []
+        let bookmarks = storage.value(forKey: UserDefaults.Keys.storage.rawValue) as? [Data] ?? []
         return bookmarks.compactMap {
             var isStale = false
             if let url = try? URL(resolvingBookmarkData: $0, bookmarkDataIsStale:&isStale), isStale == false {
@@ -36,7 +36,7 @@ final class DatabasesProviderImp: DatabasesProvider {
     }() {
         didSet {
             let bookmarksArray = databaseURLs.compactMap { try? $0.bookmarkData() }
-            storage?.setValue(bookmarksArray, forKey: UserDefaults.Keys.storage.rawValue)
+            storage.setValue(bookmarksArray, forKey: UserDefaults.Keys.storage.rawValue)
         }
     }
     

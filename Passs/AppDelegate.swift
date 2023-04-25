@@ -40,14 +40,20 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func applicationDidEnterBackground(_ application: UIApplication) {
         saveTimestamp()
-        guard serviceLocator.pasteboardManager.needsDropPassword else { return }
-        var identifier: UIBackgroundTaskIdentifier? = nil
-        identifier = application.beginBackgroundTask {
-            self.serviceLocator.pasteboardManager.dropPassword {
-                guard let id = identifier else { return }
-                application.endBackgroundTask(id)
+        beginClearPasteboardBackgroundTaskIfNeeded(application)
+    }
+
+    private func beginClearPasteboardBackgroundTaskIfNeeded(_ application: UIApplication) {
+        let pasteboardManager = serviceLocator.pasteboardManager
+        guard pasteboardManager.needsDropPassword else { return }
+        var clearPasteboardTaskIdentifier: UIBackgroundTaskIdentifier? = nil
+        clearPasteboardTaskIdentifier = application
+            .beginBackgroundTask(withName: "clear.pasteboard") { [pasteboardManager] in
+                pasteboardManager.dropPassword {
+                    guard let clearPasteboardTaskIdentifier else { return }
+                    application.endBackgroundTask(clearPasteboardTaskIdentifier)
+                }
             }
-        }
     }
 
     func applicationDidBecomeActive(_ application: UIApplication) {
@@ -56,7 +62,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         ) as? TimeInterval else { return }
         deleteTimestamp()
         let currentTimestamp = Date().timeIntervalSince1970
-        if (currentTimestamp - enterBackgroundTimestamp) > Constants.clearPasteboardTimeInterval {
+        if (currentTimestamp - enterBackgroundTimestamp) > Constants.closeDatabaseTimeInterval {
             coordinator?.showDatabasesViewController()
         }
     }
@@ -65,11 +71,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         deleteTimestamp()
     }
 
-    func application(
-        _ app: UIApplication,
-        open url: URL,
-        options: [UIApplication.OpenURLOptionsKey : Any] = [:]
-    ) -> Bool {
+    func application(_ app: UIApplication,
+                     open url: URL,
+                     options: [UIApplication.OpenURLOptionsKey : Any] = [:]) -> Bool {
         do {
             try self.serviceLocator.databasesProvider.addDatabase(from: url)
         } catch (let error) {
@@ -79,11 +83,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
 
     private func saveTimestamp() {
-        UserDefaults.standard.setValue(Date().timeIntervalSince1970,
-                                       forKey: UserDefaults.Keys.enterBackgroundTimestamp.rawValue)
+        UserDefaults.shared.setValue(Date().timeIntervalSince1970,
+                                     forKey: UserDefaults.Keys.enterBackgroundTimestamp.rawValue)
     }
 
     private func deleteTimestamp() {
-        UserDefaults.standard.removeObject(forKey: UserDefaults.Keys.enterBackgroundTimestamp.rawValue)
+        UserDefaults.shared.removeObject(forKey: UserDefaults.Keys.enterBackgroundTimestamp.rawValue)
     }
 }

@@ -17,13 +17,13 @@ final class RootCoordinator {
         navigationController.navigationBar.prefersLargeTitles = true
     }
 
-    func showDatabasesViewController() {
+    func showDatabasesViewController(animated: Bool = true) {
         switch self.navigationController.viewControllers.count {
         case 0:
             navigationController.viewControllers = [databaseListViewController()]
         case 1..<Int.max:
-            navigationController.popToRootViewController(animated: true)
-            navigationController.presentedViewController?.dismiss(animated: true)
+            navigationController.popToRootViewController(animated: animated)
+            navigationController.presentedViewController?.dismiss(animated: animated)
         default: break
         }
     }

@@ -9,10 +9,12 @@ import Foundation
 
 @objc
 protocol PassItem {
+    var uuid: UUID { get }
     var title: String? { get }
     var username: String? { get }
     var password: String? { get }
     var iconId: Int { get }
+    var url: String? { get }
 }
 
 @objc

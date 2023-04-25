@@ -200,40 +200,6 @@ extension DatabaseListViewController: UIDocumentPickerDelegate {
     }
 }
 
-extension DatabaseListViewController: UITableViewDataSource {
-    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        databasesProvider.databaseURLs.count
-    }
-    
-    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: cellId, for: indexPath)
-        let databaseURL =  databasesProvider.databaseURLs[indexPath.row]
-        cell.textLabel?.text = databaseURL.lastPathComponent
-        cell.accessoryType = .disclosureIndicator
-        cell.imageView?.image = UIImage(systemName: "square.stack.3d.up")?.tinted(with: .systemBlue)
-        let isDefault = self.settingsManager.defaultDatabaseURL == databaseURL
-        guard let detailTextLabel = cell.detailTextLabel else { return cell }
-        let secondaryLabel: UIColor = .secondaryLabel
-        detailTextLabel.textColor = secondaryLabel
-        if let date = modificationDate(forFileAtURL: databaseURL) {
-            let font = Date().timeIntervalSince(date) < 1800 ? detailTextLabel.font.italics() : detailTextLabel.font
-            let lastModifiedText = lastUpdateDateAttributedString(from: date,
-                                                                  font: font!,
-                                                                  textColor: secondaryLabel)
-            let isDefaultText = NSMutableAttributedString(string: isDefault ? "Default · " : "",
-                                                          attributes: [.font: detailTextLabel.font!,
-                                                                       .foregroundColor: UIColor.systemGray])
-            isDefaultText.append(lastModifiedText)
-            detailTextLabel.attributedText = isDefaultText
-        } else if isDefault {
-            detailTextLabel.attributedText = NSMutableAttributedString(string: "Default",
-                                                                       attributes: [.font: detailTextLabel.font!,
-                                                                                    .foregroundColor: UIColor.label])
-        }
-        return cell
-    }
-}
-
 extension DatabaseListViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
@@ -263,7 +229,7 @@ extension DatabaseListViewController: UITableViewDelegate {
             let sectionID = dataSource.snapshot().sectionIdentifiers[indexPath.section]
             let databaseURL = dataSource.snapshot().itemIdentifiers(inSection: sectionID)[indexPath.row]
             let unlockAction = UIAction(title: "Unlock",
-                                              image: UIImage(systemName: "lock.open")) { [weak self] action in
+                                        image: UIImage(systemName: "lock.open")) { [weak self] action in
                 guard let self else { return }
                 self.unlockDatabase(at: databaseURL)
             }
@@ -273,7 +239,7 @@ extension DatabaseListViewController: UITableViewDelegate {
                 guard let self else { return }
                 self.deleteDatabase(at: databaseURL)
             }
-            guard databasesProvider.databaseURLs.count > 1 else {
+            guard databasesProvider.databaseURLs.count > 1, sectionID != .default else {
                 return UIMenu(title: "", children: [unlockAction, deleteAction])
             }
             let makeDefaultAction = UIAction(
@@ -365,7 +331,8 @@ fileprivate extension DatabaseListViewController {
 
 extension DatabaseListViewController: DefaultDatabaseUnlock {
     func unlockDatabaseIfNeeded() {
-        guard let defaultDatabase = settingsManager.defaultDatabaseURL,
+        guard presentedViewController == nil,
+              let defaultDatabase = settingsManager.defaultDatabaseURL,
               !localAuthManager.isFetchingUnlockData,
               !passDatabaseManager.isDatabaseUnlocked else { return }
         DispatchQueue.main.asyncAfter(deadline: .now() + .milliseconds(100)) {
