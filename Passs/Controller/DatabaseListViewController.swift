@@ -226,8 +226,8 @@ extension DatabaseListViewController: UITableViewDelegate {
                    point: CGPoint) -> UIContextMenuConfiguration? {
         return UIContextMenuConfiguration(actionProvider: { [weak self] menuElements in
             guard let self else { fatalError() }
-            let sectionID = dataSource.snapshot().sectionIdentifiers[indexPath.section]
-            let databaseURL = dataSource.snapshot().itemIdentifiers(inSection: sectionID)[indexPath.row]
+            let sectionID = self.dataSource.snapshot().sectionIdentifiers[indexPath.section]
+            let databaseURL = self.dataSource.snapshot().itemIdentifiers(inSection: sectionID)[indexPath.row]
             let unlockAction = UIAction(title: "Unlock",
                                         image: UIImage(systemName: "lock.open")) { [weak self] action in
                 guard let self else { return }
