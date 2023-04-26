@@ -239,7 +239,7 @@ extension DatabaseListViewController: UITableViewDelegate {
                 guard let self else { return }
                 self.deleteDatabase(at: databaseURL)
             }
-            guard databasesProvider.databaseURLs.count > 1, sectionID != .default else {
+            guard self.databasesProvider.databaseURLs.count > 1, sectionID != .default else {
                 return UIMenu(title: "", children: [unlockAction, deleteAction])
             }
             let makeDefaultAction = UIAction(
