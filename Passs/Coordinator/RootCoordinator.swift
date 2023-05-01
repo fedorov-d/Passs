@@ -39,22 +39,20 @@ final class RootCoordinator {
     }
 
     private func showGroupsViewController(passDatabaseManager: PassDatabaseManager) {
-        guard let databaseURL = passDatabaseManager.databaseURL else {
-            fatalError()
-        }
-        let recentPasswordsManager = self.serviceLocator.recentPasswordsManager(databaseURL: databaseURL)
-        let groupsViewController = self.groupsViewController(
-            passDatabaseManager: passDatabaseManager,
-            recentPasswordsManager: recentPasswordsManager
-        )
+        let groupsViewController = self.groupsViewController(passDatabaseManager: passDatabaseManager)
         navigationController.pushViewController(groupsViewController, animated: true)
     }
 
-    private func showPasswordsViewController(for group: PassGroup, recentPasswordsManager: RecentPasswordsManager) {
-        let passwordsViewController = self.passwordsViewController(
-            for: group,
-            recentPasswordsManager: recentPasswordsManager
-        )
+    private func showPasswordsViewController(title: String? = nil,
+                                             footerViewProvider: (() -> UIView)? = nil,
+                                             sectionTitle: String? = nil,
+                                             items: [PassItem],
+                                             recentPasswordsManager: RecentPasswordsManager) {
+        let passwordsViewController = self.passwordsViewController(title: title,
+                                                                   footerViewProvider: footerViewProvider,
+                                                                   sectionTitle: sectionTitle,
+                                                                   items: items,
+                                                                   recentPasswordsManager: recentPasswordsManager)
         navigationController.pushViewController(passwordsViewController, animated: true)
     }
 }
@@ -72,16 +70,14 @@ extension RootCoordinator {
                 self?.showUnlockViewController(forDatabaseAt: url, passDatabaseManager: passDatabaseManager)
             },
             onDatabaseOpened: { [weak self] in
-                self?.showGroupsViewController(passDatabaseManager: passDatabaseManager)
+                self?.proceedToUnlocked(passDatabaseManager: passDatabaseManager)
             }
         )
     }
 
-    private func unlockViewController(
-        forDatabaseAt url: URL,
-        passDatabaseManager: PassDatabaseManager,
-        localAuthManager: LocalAuthManager
-    ) -> UnlockViewController {
+    private func unlockViewController(forDatabaseAt url: URL,
+                                      passDatabaseManager: PassDatabaseManager,
+                                      localAuthManager: LocalAuthManager) -> UnlockViewController {
         let enterPasswordController = UnlockViewController(
             passDatabaseManager: passDatabaseManager,
             localAuthManager: localAuthManager,
@@ -89,15 +85,17 @@ extension RootCoordinator {
         ) { [weak self] in
             guard let self else { return }
             self.navigationController.dismiss(animated: true)
-            self.showGroupsViewController(passDatabaseManager: passDatabaseManager)
+            self.proceedToUnlocked(passDatabaseManager: passDatabaseManager)
         }
         return enterPasswordController
     }
 
-    private func groupsViewController(
-        passDatabaseManager: PassDatabaseManager,
-        recentPasswordsManager: RecentPasswordsManager) -> GroupsViewController {
-        GroupsViewController(
+    private func groupsViewController(passDatabaseManager: PassDatabaseManager) -> GroupsViewController {
+        guard let databaseURL = passDatabaseManager.databaseURL else {
+            fatalError()
+        }
+        let recentPasswordsManager = serviceLocator.recentPasswordsManager(databaseURL: databaseURL)
+        return GroupsViewController(
             databaseManager: passDatabaseManager,
             recentPasswordsManager: recentPasswordsManager,
             credentialsSelectionManager: self.serviceLocator.credentialsSelectionManager,
@@ -108,17 +106,22 @@ extension RootCoordinator {
                     credentialsSelectionManager: self.serviceLocator.credentialsSelectionManager
                 )
             }) { [weak self] group in
-                self?.showPasswordsViewController(for: group, recentPasswordsManager: recentPasswordsManager)
+                self?.showPasswordsViewController(title: group.title,
+                                                  items: group.items,
+                                                  recentPasswordsManager: recentPasswordsManager)
             }
     }
 
-    private func passwordsViewController(
-        for group: PassGroup?,
-        recentPasswordsManager: RecentPasswordsManager
-    ) -> PasswordsViewController {
+    private func passwordsViewController(title: String? = nil,
+                                         footerViewProvider: (() -> UIView)? = nil,
+                                         sectionTitle: String? = nil,
+                                         items: [PassItem],
+                                         recentPasswordsManager: RecentPasswordsManager) -> PasswordsViewController {
         PasswordsViewController(
-            title: group?.title,
-            items: group?.items.sortedByName() ?? [],
+            title: title,
+            footerViewProvider: footerViewProvider,
+            sectionTitle: sectionTitle,
+            items: items.sortedByName(),
             pasteboardManager: serviceLocator.pasteboardManager,
             recentPasswordsManager: recentPasswordsManager,
             credentialsSelectionManager: serviceLocator.credentialsSelectionManager
@@ -132,5 +135,31 @@ extension RootCoordinator: DefaultDatabaseUnlock {
             $0 as? DefaultDatabaseUnlock != nil }
         ) as? DefaultDatabaseUnlock else { return }
         actualUnlock.unlockDatabaseIfNeeded()
+    }
+
+    func proceedToUnlocked(passDatabaseManager: PassDatabaseManager) {
+        if let credentialsSelectionManager = serviceLocator.credentialsSelectionManager,
+           let passwords = passDatabaseManager.passwordGroups?.flatMap({ $0.items }),
+           let matchingItems = credentialsSelectionManager.matchigItems(for: passwords),
+           let databaseURL = passDatabaseManager.databaseURL,
+           !matchingItems.isEmpty {
+            let recentPasswordsManager = self.serviceLocator.recentPasswordsManager(databaseURL: databaseURL)
+            let sectionTitle = (credentialsSelectionManager.serviceIdentifiersStrings?.joined(separator: ","))
+                .flatMap { "matching \($0)" }
+            self.showPasswordsViewController(
+                title: "Passwords",
+                footerViewProvider: {
+                    let browseDatabaseView = BrowseDatabaseTableHeaderView()
+                    browseDatabaseView.buttonAction = { [weak self] in
+                        self?.showGroupsViewController(passDatabaseManager: passDatabaseManager)
+                    }
+                    return browseDatabaseView
+                },
+                sectionTitle: sectionTitle,
+                items: matchingItems,
+                recentPasswordsManager: recentPasswordsManager)
+        } else {
+            self.showGroupsViewController(passDatabaseManager: passDatabaseManager)
+        }
     }
 }

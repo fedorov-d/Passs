@@ -39,6 +39,7 @@ extension PassItem {
 final class PassDatabaseManagerImp: PassDatabaseManager {
     private(set) var passwordGroups: [PassGroup]? {
         didSet {
+            // make passwords available in quick type panel
             guard let passwordGroups else { return }
             let store = ASCredentialIdentityStore.shared
             store.getState { state in
@@ -55,7 +56,7 @@ final class PassDatabaseManagerImp: PassDatabaseManager {
                                                             recordIdentifier: item.uuid.uuidString)
                     }
                 store.replaceCredentialIdentities(with: credentialIdentities) { success, error in
-                    Swift.debugPrint("credentials replaced \(success), \(error)")
+                    Swift.debugPrint("credentials replaced \(success), \(String(describing: error))")
                 }
             }
         }

@@ -27,14 +27,19 @@ class PasswordsViewController: UIViewController, PasswordsSeachResultsDispalyCon
     private let pasteboardManager: PasteboardManager
     private let recentPasswordsManager: RecentPasswordsManager
     private let credentialsSelectionManager: CredentialsSelectionManager?
+    private let footerViewProvider: (() -> UIView)?
 
     private var subscriptionSet = Set<AnyCancellable>()
 
-    init(title: String? = nil,
+    init(title: String? = "Passwords",
+         footerViewProvider: (() -> UIView)? = nil,
+         sectionTitle: String? = nil,
          items: [PassItem] = [],
          pasteboardManager: PasteboardManager,
          recentPasswordsManager: RecentPasswordsManager,
          credentialsSelectionManager: CredentialsSelectionManager?) {
+        self.footerViewProvider = footerViewProvider
+        self.sectionTitle = sectionTitle
         self.items = items
         self.pasteboardManager = pasteboardManager
         self.recentPasswordsManager = recentPasswordsManager
@@ -54,9 +59,10 @@ class PasswordsViewController: UIViewController, PasswordsSeachResultsDispalyCon
         tableView.dataSource = self
         tableView.delegate = self
         tableView.register(SubtitleTableViewCell.self, forCellReuseIdentifier: cellId)
-        tableView.tableHeaderView = UIView(frame: CGRect(x: 0, y: 0, width: 0, height: 0.01))
-        if #available(iOS 15, *) {
-            tableView.sectionHeaderTopPadding = 10
+        tableView.tableHeaderView = UIView(frame: CGRect(x: 0, y: 0, width: 0, height: 16))
+        if let headerView = footerViewProvider?() {
+            tableView.tableFooterView = headerView
+            tableView.tableFooterView?.frame = CGRect(x: 0, y: 0, width: 0, height: 64)
         }
         return tableView
     }()

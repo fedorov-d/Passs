@@ -44,7 +44,7 @@ class GroupsViewController: UIViewController {
         tableView.dataSource = self
         tableView.delegate = self
         tableView.register(UITableViewCell.self, forCellReuseIdentifier: cellId)
-        tableView.tableHeaderView = UIView(frame: CGRect(x: 0, y: 0, width: 0, height: 0.01))
+        tableView.tableHeaderView = UIView(frame: CGRect(x: 0, y: 0, width: 0, height: 16))
         if #available(iOS 15, *) {
             tableView.sectionHeaderTopPadding = 10
         }
@@ -81,9 +81,8 @@ class GroupsViewController: UIViewController {
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         if credentialsSelectionManager?.serviceIdentifiers != nil {
-            DispatchQueue.main.asyncAfter(deadline: .now() + .milliseconds(100)) {
-                self.navigationItem.searchController?.searchBar.becomeFirstResponder()
-            }
+            // TODO: handle scopes.
+//            navigationItem.searchController?.searchBar.scopeButtonTitles = ["Maching items", "Recent items"]
         }
     }
 }

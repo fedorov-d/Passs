@@ -10,6 +10,7 @@ import AuthenticationServices
 
 protocol CredentialsSelectionManager: AnyObject {
     var serviceIdentifiers: [ASCredentialServiceIdentifier]? { get set }
+    var serviceIdentifiersStrings: [String]? { get }
     var onCredentialsSelected: ((PassItem) -> Void) { get }
     var onCancel: (() -> Void) { get }
     func matchigItems(for items: [PassItem]) -> [PassItem]?
@@ -20,6 +21,10 @@ final class CredentialsSelectionManagerImp: CredentialsSelectionManager {
 
     let onCredentialsSelected: (PassItem) -> Void
     let onCancel: () -> Void
+
+    var serviceIdentifiersStrings: [String]? {
+        serviceIdentifiers?.compactMap{ $0.identifier }
+    }
 
     init(onCredentialsSelected: @escaping (PassItem) -> Void,
          onCancel: @escaping () -> Void) {

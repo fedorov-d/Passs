@@ -105,9 +105,9 @@ class DatabaseListViewController: UIViewController {
         appearance.configureWithDefaultBackground()
         navigationController?.navigationBar.standardAppearance = appearance
         navigationController?.navigationBar.compactAppearance = appearance
-        appearance.shadowColor = .clear
         appearance.backgroundColor = .systemBackground
         navigationController?.navigationBar.scrollEdgeAppearance = appearance
+        appearance.shadowColor = .clear
         if #available(iOS 15.0, *) {
             navigationController?.navigationBar.compactScrollEdgeAppearance = appearance
         }
