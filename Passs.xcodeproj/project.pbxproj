@@ -392,6 +392,7 @@
 				0AD616CB29EA46AD00BCE3AD /* QRCodeViewController.swift */,
 				0A52EDC629FFE8B7003463EF /* PasswordDetailsViewController.swift */,
 				A377A6F12A00EFE000213490 /* NotificationViewController.swift */,
+				0A52EDC629FFE8B7003463EF /* PasswordDetailsViewController.swift */,
 			);
 			path = Controller;
 			sourceTree = "<group>";
