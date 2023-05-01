@@ -55,6 +55,11 @@ final class RootCoordinator {
                                                                    recentPasswordsManager: recentPasswordsManager)
         navigationController.pushViewController(passwordsViewController, animated: true)
     }
+
+    private func showPasswordDetailsViewController(_ passItem: PassItem) {
+        let passwordDetailsViewController = PasswordDetailsViewController(passItem: passItem)
+        navigationController.pushViewController(passwordDetailsViewController, animated: true)
+    }
 }
 
 extension RootCoordinator {
@@ -122,6 +127,9 @@ extension RootCoordinator {
             footerViewProvider: footerViewProvider,
             sectionTitle: sectionTitle,
             items: items.sortedByName(),
+            onItemSelect: { [weak self] item in
+                self?.showPasswordDetailsViewController(item)
+            },
             pasteboardManager: serviceLocator.pasteboardManager,
             recentPasswordsManager: recentPasswordsManager,
             credentialsSelectionManager: serviceLocator.credentialsSelectionManager

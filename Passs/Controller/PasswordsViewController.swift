@@ -28,6 +28,7 @@ class PasswordsViewController: UIViewController, PasswordsSeachResultsDispalyCon
     private let recentPasswordsManager: RecentPasswordsManager
     private let credentialsSelectionManager: CredentialsSelectionManager?
     private let footerViewProvider: (() -> UIView)?
+    private var onItemSelect: ((PassItem) -> Void)?
 
     private var subscriptionSet = Set<AnyCancellable>()
 
@@ -35,12 +36,14 @@ class PasswordsViewController: UIViewController, PasswordsSeachResultsDispalyCon
          footerViewProvider: (() -> UIView)? = nil,
          sectionTitle: String? = nil,
          items: [PassItem] = [],
+         onItemSelect: ((PassItem) -> Void)? = nil,
          pasteboardManager: PasteboardManager,
          recentPasswordsManager: RecentPasswordsManager,
          credentialsSelectionManager: CredentialsSelectionManager?) {
         self.footerViewProvider = footerViewProvider
         self.sectionTitle = sectionTitle
         self.items = items
+        self.onItemSelect = onItemSelect
         self.pasteboardManager = pasteboardManager
         self.recentPasswordsManager = recentPasswordsManager
         self.credentialsSelectionManager = credentialsSelectionManager
@@ -145,6 +148,7 @@ extension PasswordsViewController: UITableViewDelegate {
         tableView.deselectRow(at: indexPath, animated: true)
         let item = items[indexPath.row]
         credentialsSelectionManager?.onCredentialsSelected(item)
+        onItemSelect?(item)
     }
 
     func tableView(_ tableView: UITableView,

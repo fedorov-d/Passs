@@ -9,6 +9,6 @@ import Foundation
 
 enum Constants {
     static let clearPasteboardTimeInterval: TimeInterval = 40
-    static let closeDatabaseTimeInterval: TimeInterval = 10
+    static let closeDatabaseTimeInterval: TimeInterval = 60
     static let maxRecentItems = 5
 }
