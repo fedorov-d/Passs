@@ -178,11 +178,9 @@ class DatabaseListViewController: UIViewController {
 extension DatabaseListViewController {
     @objc
     func importTapped() {
-        let contr = NotificationViewController(image: UIImage(systemName: "chevron.right")!, text: "Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum ")
-        contr.show()
-//        let documentPickerController = UIDocumentPickerViewController.keepassDatabasesPicker()
-//        documentPickerController.delegate = self
-//        self.present(documentPickerController, animated: true, completion: nil)
+        let documentPickerController = UIDocumentPickerViewController.keepassDatabasesPicker()
+        documentPickerController.delegate = self
+        self.present(documentPickerController, animated: true, completion: nil)
     }
 
     @objc
