@@ -36,6 +36,27 @@ final class NotificationViewController: UIViewController {
         return backgroundView
     }()
 
+    private lazy var contentStackView: UIStackView = {
+        let contentStackView = UIStackView()
+        contentStackView.axis = .horizontal
+        contentStackView.alignment = .top
+        contentStackView.distribution = .equalCentering
+        contentStackView.spacing = 10
+        return contentStackView
+    }()
+
+    private lazy var iconImage = UIImageView()
+
+    private lazy var textLabel: UILabel = {
+        let textLabel = UILabel()
+        textLabel.font = .preferredFont(forTextStyle: .caption2)
+        textLabel.textColor = .label
+        textLabel.numberOfLines = 0
+        textLabel.setContentCompressionResistancePriority(.defaultLow, for: .horizontal)
+        textLabel.setContentCompressionResistancePriority(.required, for: .vertical)
+        return textLabel
+    }()
+
     override func loadView() {
         view = UIView()
         view.backgroundColor = .clear
@@ -45,8 +66,15 @@ final class NotificationViewController: UIViewController {
         backgroundView.snp.makeConstraints { make in
             make.horizontalEdges.equalToSuperview().inset(16)
             make.bottom.equalToSuperview().inset(view.safeAreaInsets.bottom).inset(16)
-            make.height.equalTo(54)
         }
+        backgroundView.addSubview(contentStackView)
+        contentStackView.snp.makeConstraints { make in
+            make.edges.equalToSuperview()
+        }
+        iconImage.image = image
+        contentStackView.addArrangedSubview(iconImage)
+        textLabel.text = text
+        contentStackView.addArrangedSubview(textLabel)
     }
 
     func show() {
