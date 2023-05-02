@@ -67,6 +67,8 @@
 		A35A8B1F27BEB3FE00216C24 /* SelectKeyButtonCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A35A8B1E27BEB3FE00216C24 /* SelectKeyButtonCell.swift */; };
 		A365CAB127B4F0F2009877D1 /* RootCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = A365CAB027B4F0F2009877D1 /* RootCoordinator.swift */; };
 		A365CAB327B4FAE9009877D1 /* ServiceLocator.swift in Sources */ = {isa = PBXBuildFile; fileRef = A365CAB227B4FAE9009877D1 /* ServiceLocator.swift */; };
+		A377A6F22A00EFE000213490 /* NotificationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A377A6F12A00EFE000213490 /* NotificationViewController.swift */; };
+		A377A6F32A00EFE000213490 /* NotificationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A377A6F12A00EFE000213490 /* NotificationViewController.swift */; };
 		A392D9CA27C66FA500206161 /* SettingsManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = A392D9C927C66FA500206161 /* SettingsManager.swift */; };
 		A392D9CC27C79D2F00206161 /* UserDefaults+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = A392D9CB27C79D2F00206161 /* UserDefaults+Extensions.swift */; };
 		A3B5E32627AD9EE40061CAC6 /* UIViewController+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3B5E32527AD9EE40061CAC6 /* UIViewController+Extensions.swift */; };
@@ -168,6 +170,7 @@
 		A35A8B1E27BEB3FE00216C24 /* SelectKeyButtonCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectKeyButtonCell.swift; sourceTree = "<group>"; };
 		A365CAB027B4F0F2009877D1 /* RootCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RootCoordinator.swift; sourceTree = "<group>"; };
 		A365CAB227B4FAE9009877D1 /* ServiceLocator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ServiceLocator.swift; sourceTree = "<group>"; };
+		A377A6F12A00EFE000213490 /* NotificationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationViewController.swift; sourceTree = "<group>"; };
 		A392D9C927C66FA500206161 /* SettingsManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsManager.swift; sourceTree = "<group>"; };
 		A392D9CB27C79D2F00206161 /* UserDefaults+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UserDefaults+Extensions.swift"; sourceTree = "<group>"; };
 		A3B5E32527AD9EE40061CAC6 /* UIViewController+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewController+Extensions.swift"; sourceTree = "<group>"; };
@@ -388,6 +391,7 @@
 				A35A8B1127BC2F1500216C24 /* UnlockViewController.swift */,
 				0AD616CB29EA46AD00BCE3AD /* QRCodeViewController.swift */,
 				0A52EDC629FFE8B7003463EF /* PasswordDetailsViewController.swift */,
+				A377A6F12A00EFE000213490 /* NotificationViewController.swift */,
 			);
 			path = Controller;
 			sourceTree = "<group>";
@@ -651,6 +655,7 @@
 				A3CFA4C6279289740020F82F /* UIImage+Extensions.swift in Sources */,
 				A3F3DA34260DBEB60057AF24 /* PasteboardManager.swift in Sources */,
 				A3CAA30B27A9B93D00330FAC /* SubtitleTableViewCell.swift in Sources */,
+				A377A6F22A00EFE000213490 /* NotificationViewController.swift in Sources */,
 				A35A8B1F27BEB3FE00216C24 /* SelectKeyButtonCell.swift in Sources */,
 				A3CFA4C8279349370020F82F /* GroupsViewController.swift in Sources */,
 				A3F3DA36260DC1D10057AF24 /* PassDatabaseManager.swift in Sources */,
@@ -701,6 +706,7 @@
 				0A1EF7F62937D56F00F9DEC3 /* SwitchCell.swift in Sources */,
 				0A1EF7FA2937D56F00F9DEC3 /* SubtitleTableViewCell.swift in Sources */,
 				0A1EF7FE2937D57400F9DEC3 /* UIViewController+Extensions.swift in Sources */,
+				A377A6F32A00EFE000213490 /* NotificationViewController.swift in Sources */,
 				0A1EF7F92937D56F00F9DEC3 /* SelectKeyButtonCell.swift in Sources */,
 				0A1EF8052937D57D00F9DEC3 /* RecentPasswordsManager.swift in Sources */,
 				0A1EF80D2937D57D00F9DEC3 /* SettingsManager.swift in Sources */,
