@@ -39,9 +39,9 @@ final class NotificationViewController: UIViewController {
     private lazy var contentStackView: UIStackView = {
         let contentStackView = UIStackView()
         contentStackView.axis = .horizontal
-        contentStackView.alignment = .top
-        contentStackView.distribution = .equalCentering
-        contentStackView.spacing = 10
+        contentStackView.alignment = .center
+        contentStackView.distribution = .fill
+        contentStackView.spacing = 16
         return contentStackView
     }()
 
@@ -72,9 +72,10 @@ final class NotificationViewController: UIViewController {
             make.edges.equalToSuperview()
         }
         iconImage.image = image
-        contentStackView.addArrangedSubview(iconImage)
+        iconImage.tintColor = .label
+        contentStackView.addArrangedSubview(iconImage.embeddedInContainerView(withEdges: .init(top: 10, leading: 16, bottom: 10, trailing: 0)))
         textLabel.text = text
-        contentStackView.addArrangedSubview(textLabel)
+        contentStackView.addArrangedSubview(textLabel.embeddedInContainerView(withEdges: .init(top: 10, leading: 0, bottom: 10, trailing: 16)))
     }
 
     func show() {

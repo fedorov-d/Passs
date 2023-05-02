@@ -118,3 +118,13 @@ extension UIViewController {
         self.navigationItem.rightBarButtonItem = barButtonItem
     }
 }
+
+extension UIView {
+    func embeddedInContainerView(containerView: UIView = UIView(), withEdges edges: NSDirectionalEdgeInsets) -> UIView {
+        containerView.addSubview(self)
+        self.snp.makeConstraints { make in
+            make.edges.equalToSuperview().inset(edges)
+        }
+        return containerView
+    }
+}
