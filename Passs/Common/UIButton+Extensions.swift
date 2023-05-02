@@ -25,4 +25,12 @@ extension UIButton {
     func setBackgroundColor(_ color: UIColor, for state: UIControl.State) {
         self.setBackgroundImage(image(withColor: color), for: state)
     }
+
+    func removeAllActions(for controlEvent: UIControl.Event = .touchUpInside) {
+        allTargets.forEach { target in
+            actions(forTarget: target, forControlEvent: controlEvent)?.forEach { selector in
+                removeTarget(target, action: Selector(selector), for: controlEvent)
+            }
+        }
+    }
 }

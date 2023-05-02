@@ -35,6 +35,21 @@ class TextFieldCell: UITableViewCell {
         }
     }
 
+    override var backgroundColor: UIColor? {
+        didSet {
+            contentView.backgroundColor = backgroundColor
+        }
+    }
+
+    var textFieldBackgroundColor: UIColor? {
+        get {
+            textField.backgroundColor
+        }
+        set {
+            textField.backgroundColor = newValue
+        }
+    }
+
     override func becomeFirstResponder() -> Bool {
         textField.becomeFirstResponder()
     }
@@ -43,7 +58,8 @@ class TextFieldCell: UITableViewCell {
         let textField = UITextField()
         textField.isSecureTextEntry = true
         textField.delegate = self
-        let font = UIFont.preferredFont(forTextStyle: .callout)
+        let size = UIFont.preferredFont(forTextStyle: .callout).pointSize
+        let font = UIFont.monospacedSystemFont(ofSize: size, weight: .regular)
         textField.font = font
         textField.borderStyle = .none
         textField.returnKeyType = .continue

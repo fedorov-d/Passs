@@ -9,10 +9,14 @@ import UIKit
 
 class SelectKeyButtonCell: UITableViewCell {
     var onButtonTap: (() -> Void)?
+    var title: String? {
+        didSet {
+            button.setTitle(title, for: .normal)
+        }
+    }
 
     private lazy var button: UIButton = {
         let button = UIButton()
-        button.setTitle("Select key file", for: .normal)
         button.setTitleColor(.systemBlue, for: .normal)
         button.setTitleColor(.systemBlue.withAlphaComponent(0.7), for: .highlighted)
         button.addTarget(self, action: #selector(buttonTapped(_:)), for: .touchUpInside)
@@ -35,6 +39,10 @@ class SelectKeyButtonCell: UITableViewCell {
         fatalError("init(coder:) has not been implemented")
     }
 
+    func setTarget(_ target: Any?, action: Selector) {
+        button.removeAllActions()
+        button.addTarget(target, action: action, for: .touchUpInside)
+    }
 }
 
 extension SelectKeyButtonCell {
@@ -42,5 +50,4 @@ extension SelectKeyButtonCell {
     private func buttonTapped(_ sender: UIButton) {
         onButtonTap?()
     }
-
 }

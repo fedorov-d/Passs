@@ -157,7 +157,7 @@ extension PasswordsViewController: UITableViewDelegate {
         return UIContextMenuConfiguration(actionProvider: { [weak self] menuElements in
             guard let item = self?.items[indexPath.row] else { return nil }
             let copyUsernameAction = UIAction(title: "Copy username",
-                                   image: UIImage(systemName: "doc.on.doc.fill")) { action in
+                                   image: UIImage(systemName: "doc.on.doc")) { action in
                 self?.copyUsername(item)
             }
             guard let password = item.password else {
