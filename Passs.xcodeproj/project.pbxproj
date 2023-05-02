@@ -154,7 +154,7 @@
 		A31842462721D69200786744 /* PasteboardManagerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PasteboardManagerTests.swift; sourceTree = "<group>"; };
 		A31842482721D69200786744 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		A318424E2721DB5F00786744 /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
-		A32C6545260C557200DC6653 /* Passs.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Passs.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		A32C6545260C557200DC6653 /* Keep.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Keep.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		A32C6548260C557300DC6653 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		A32C654C260C557300DC6653 /* PasswordsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PasswordsViewController.swift; sourceTree = "<group>"; };
 		A32C6551260C557700DC6653 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -277,7 +277,7 @@
 		A32C6546260C557200DC6653 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				A32C6545260C557200DC6653 /* Passs.app */,
+				A32C6545260C557200DC6653 /* Keep.app */,
 				A31842442721D69200786744 /* PasssTests.xctest */,
 				A3B5E32B27AEA7330061CAC6 /* CredentialProvider.appex */,
 			);
@@ -415,9 +415,9 @@
 			productReference = A31842442721D69200786744 /* PasssTests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
 		};
-		A32C6544260C557200DC6653 /* Passs */ = {
+		A32C6544260C557200DC6653 /* Keep */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = A32C6559260C557700DC6653 /* Build configuration list for PBXNativeTarget "Passs" */;
+			buildConfigurationList = A32C6559260C557700DC6653 /* Build configuration list for PBXNativeTarget "Keep" */;
 			buildPhases = (
 				DB2F66A65660A25F26E3CD04 /* [CP] Check Pods Manifest.lock */,
 				A32C6541260C557200DC6653 /* Sources */,
@@ -432,9 +432,9 @@
 			dependencies = (
 				A3B5E33727AEA7340061CAC6 /* PBXTargetDependency */,
 			);
-			name = Passs;
+			name = Keep;
 			productName = Passs;
-			productReference = A32C6545260C557200DC6653 /* Passs.app */;
+			productReference = A32C6545260C557200DC6653 /* Keep.app */;
 			productType = "com.apple.product-type.application";
 		};
 		A3B5E32A27AEA7330061CAC6 /* CredentialProvider */ = {
@@ -490,7 +490,7 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				A32C6544260C557200DC6653 /* Passs */,
+				A32C6544260C557200DC6653 /* Keep */,
 				A31842432721D69200786744 /* PasssTests */,
 				A3B5E32A27AEA7330061CAC6 /* CredentialProvider */,
 			);
@@ -730,7 +730,7 @@
 /* Begin PBXTargetDependency section */
 		A318424A2721D69200786744 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = A32C6544260C557200DC6653 /* Passs */;
+			target = A32C6544260C557200DC6653 /* Keep */;
 			targetProxy = A31842492721D69200786744 /* PBXContainerItemProxy */;
 		};
 		A3B5E33727AEA7340061CAC6 /* PBXTargetDependency */ = {
@@ -1047,7 +1047,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		A32C6559260C557700DC6653 /* Build configuration list for PBXNativeTarget "Passs" */ = {
+		A32C6559260C557700DC6653 /* Build configuration list for PBXNativeTarget "Keep" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				A32C655A260C557700DC6653 /* Debug */,
