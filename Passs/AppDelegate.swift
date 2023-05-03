@@ -49,7 +49,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         var clearPasteboardTaskIdentifier: UIBackgroundTaskIdentifier? = nil
         clearPasteboardTaskIdentifier = application
             .beginBackgroundTask(withName: "clear.pasteboard") { [pasteboardManager] in
-                pasteboardManager.dropPassword {
+                pasteboardManager.clearPasteboard {
                     guard let clearPasteboardTaskIdentifier else { return }
                     application.endBackgroundTask(clearPasteboardTaskIdentifier)
                 }

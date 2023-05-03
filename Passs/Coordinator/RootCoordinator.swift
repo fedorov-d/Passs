@@ -13,7 +13,11 @@ final class RootCoordinator {
 
     init(serviceLocator: ServiceLocator) {
         self.serviceLocator = serviceLocator
-        self.navigationController = UINavigationController()
+        self.navigationController = UINavigationController(navigationBarClass: ProgressNavigationBar.self,
+                                                           toolbarClass: nil)
+        if let navigationBar = navigationController.navigationBar as? ProgressNavigationBar {
+            serviceLocator.pasteboardManager.delegate = navigationBar
+        }
         navigationController.navigationBar.prefersLargeTitles = true
     }
 
