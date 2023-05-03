@@ -49,7 +49,7 @@ final class NotificationViewController: UIViewController {
 
     private lazy var textLabel: UILabel = {
         let textLabel = UILabel()
-        textLabel.font = .preferredFont(forTextStyle: .caption2)
+        textLabel.font = .preferredFont(forTextStyle: .caption1)
         textLabel.textColor = .label
         textLabel.numberOfLines = 0
         textLabel.setContentCompressionResistancePriority(.defaultLow, for: .horizontal)
@@ -65,7 +65,7 @@ final class NotificationViewController: UIViewController {
         view.addSubview(backgroundView)
         backgroundView.snp.makeConstraints { make in
             make.horizontalEdges.equalToSuperview().inset(16)
-            make.bottom.equalToSuperview().inset(view.safeAreaInsets.bottom).inset(16)
+            make.bottom.equalToSuperview().inset(view.safeAreaInsets.bottom).inset(32)
         }
         backgroundView.addSubview(contentStackView)
         contentStackView.snp.makeConstraints { make in

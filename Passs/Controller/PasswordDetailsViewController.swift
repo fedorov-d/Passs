@@ -194,11 +194,13 @@ private extension PasswordDetailsViewController {
     @objc
     func copyUsername() {
         executeHapticFeedback()
+        showNotification(text: "Username copied to clipboard")
     }
 
     @objc
     func copyPassword() {
         executeHapticFeedback()
+        showNotification(text: "Password copied to clipboard")
     }
 
     @objc
@@ -231,5 +233,13 @@ private extension PasswordDetailsViewController {
     private func executeHapticFeedback() {
         let impactMed = UIImpactFeedbackGenerator(style: .light)
         impactMed.impactOccurred()
+    }
+
+    private func showNotification(text: String) {
+        let notificationViewController = NotificationViewController(
+            image: UIImage(systemName: "exclamationmark.circle")!,
+            text: text
+        )
+        notificationViewController.show()
     }
 }
