@@ -9,9 +9,11 @@ import UIKit
 
 final class PasswordDetailsViewController: UIViewController {
     private let passItem: PassItem
+    private let pasteboardManager: PasteboardManager
 
-    init(passItem: PassItem) {
+    init(passItem: PassItem, pasteboardManager: PasteboardManager) {
         self.passItem = passItem
+        self.pasteboardManager = pasteboardManager
         super.init(nibName: nil, bundle: nil)
     }
 
@@ -39,9 +41,9 @@ final class PasswordDetailsViewController: UIViewController {
     private let textFieldCellID = "textFieldCellID"
     private let buttonCellID = "buttonCellID"
 
-    private func makeCopyButton(action: Selector) -> UIView {
+    private func makeButton(image: UIImage? = nil, action: Selector) -> UIView {
         let copyButton = UIButton(type: .system)
-        copyButton.setImage(UIImage(systemName: "doc.on.doc"), for: .normal)
+        copyButton.setImage(image, for: .normal)
         copyButton.addTarget(self, action: action, for: .touchUpInside)
         return copyButton
     }
@@ -72,10 +74,14 @@ final class PasswordDetailsViewController: UIViewController {
         let passwordSection: Section = .titled("Password")
         snapshot.appendSections([passwordSection])
         snapshot.appendItems([.password,
-                              .button(title: "Show password", action: #selector(togglePasswordVisibility))],
+                              .button(id: .togglePassword,
+                                      title: "Show password",
+                                      action: #selector(togglePasswordVisibility))],
                              toSection: passwordSection)
         if let password = passItem.password, !password.isEmpty {
-            snapshot.appendItems([.button(title: "Generate QR Code", action: #selector(showQRCode))],
+            snapshot.appendItems([.button(id: .generateQRCode,
+                                          title: "Generate QR Code",
+                                          action: #selector(showQRCode))],
                                  toSection: passwordSection)
         }
 
@@ -90,12 +96,17 @@ final class PasswordDetailsViewController: UIViewController {
 }
 
 extension PasswordDetailsViewController {
+    enum ButtonID: String {
+        case togglePassword
+        case generateQRCode
+    }
+
     enum Section: Hashable {
         case titled(_ title: String)
     }
 
     enum Element: Hashable {
-        case username, password, button(title: String, action: Selector), url, icon
+        case username, password, button(id: ButtonID, title: String, action: Selector), url, icon
     }
 
     final class DiffableDataSource: UITableViewDiffableDataSource<Section, Element> {
@@ -113,7 +124,7 @@ extension PasswordDetailsViewController {
             tableView: tableView,
             cellProvider: { [weak self]  tableView, indexPath, element in
                 guard let self else { return UITableViewCell() }
-                if case .button(let title, let action) = element {
+                if case .button(_, let title, let action) = element {
                     return showButtonCell(title: title, action: action, at: indexPath)
                 } else {
                     return textFieldCell(for: element, atIndexPath: indexPath)
@@ -138,12 +149,14 @@ extension PasswordDetailsViewController {
         switch element {
         case .username:
             cell.textValue = passItem.username ?? ""
-            cell.accessoryView = makeCopyButton(action: #selector(copyUsername))
+            cell.accessoryView = makeButton(image: UIImage(systemName: "doc.on.doc"), action: #selector(copyUsername))
         case .password:
             cell.textValue = passItem.password ?? ""
-            cell.accessoryView = makeCopyButton(action: #selector(copyPassword))
+            cell.accessoryView = makeButton(image: UIImage(systemName: "doc.on.doc"), action: #selector(copyPassword))
         case .url:
             cell.textValue = passItem.url ?? ""
+            cell.accessoryView = makeButton(image: UIImage(systemName:  "arrow.up.right.square"),
+                                            action: #selector(openURL))
         case .icon:
             cell.textValue = "some icon"
         default:
@@ -174,7 +187,7 @@ extension PasswordDetailsViewController: UITableViewDelegate {
             copyPassword()
         case .url:
             openURL()
-        case .button(_, let action):
+        case .button(_, _, let action):
             perform(action)
         default:
             break
@@ -184,21 +197,23 @@ extension PasswordDetailsViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
         let section = dataSource.snapshot().sectionIdentifiers[indexPath.section]
         let element = dataSource.snapshot().itemIdentifiers(inSection: section)[indexPath.row]
-        if case .password = element, let cell = cell as? TextFieldCell {
-            cell.isSecureTextEntry = !isPasswordVisible
-        }
+        updateCell(cell, with: element)
     }
 }
 
 private extension PasswordDetailsViewController {
     @objc
     func copyUsername() {
+        guard let username = passItem.username else { return }
+        pasteboardManager.copy(username)
         executeHapticFeedback()
         showNotification(text: "Username copied to clipboard")
     }
 
     @objc
     func copyPassword() {
+        guard let password = passItem.password else { return }
+        pasteboardManager.copy(password)
         executeHapticFeedback()
         showNotification(text: "Password copied to clipboard")
     }
@@ -209,8 +224,8 @@ private extension PasswordDetailsViewController {
         tableView.indexPathsForVisibleRows?.forEach { indexPath  in
             let section = dataSource.snapshot().sectionIdentifiers[indexPath.section]
             let element = dataSource.snapshot().itemIdentifiers(inSection: section)[indexPath.row]
-            if case .password = element, let cell = self.tableView.cellForRow(at: indexPath) as? TextFieldCell {
-                cell.isSecureTextEntry = !isPasswordVisible
+            if let cell = self.tableView.cellForRow(at: indexPath) {
+                self.updateCell(cell, with: element)
             }
         }
     }
@@ -227,7 +242,23 @@ private extension PasswordDetailsViewController {
 
     @objc
     func openURL() {
+        guard let url = passItem.url.flatMap({ URL(string: $0) }) else { return }
+#if !CREDENTIALS_PROVIDER_EXTENSION
+        UIApplication.shared.openURL(url)
+#endif
+    }
 
+    private func updateCell(_ cell: UITableViewCell, with element: Element) {
+        switch element {
+        case .password:
+            guard let cell = cell as? TextFieldCell else { break }
+            cell.isSecureTextEntry = !isPasswordVisible
+        case .button(let id, _, _):
+            guard id == .togglePassword, let cell = cell as? SelectKeyButtonCell else { break }
+            cell.title = isPasswordVisible ? "Hide password" : "Show password"
+        default:
+            break
+        }
     }
 
     private func executeHapticFeedback() {

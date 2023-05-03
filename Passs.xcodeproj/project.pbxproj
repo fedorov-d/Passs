@@ -93,7 +93,7 @@
 		A3FF57D427BFD6F400D41659 /* UIDocumentPickerController+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3FF57D327BFD6F400D41659 /* UIDocumentPickerController+Extensions.swift */; };
 		A3FF57D627BFED1E00D41659 /* UnlockData.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3FF57D527BFED1E00D41659 /* UnlockData.swift */; };
 		AC4B5A89BE2359C8A81E7472 /* Pods_PasssTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 61C958F420CCDECE8DEC67FD /* Pods_PasssTests.framework */; };
-		C36AB2D5AB40F2100342ABC8 /* Pods_Passs.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 096CD049FCD875D09982CB67 /* Pods_Passs.framework */; };
+		B653F71337F4EBCD629F9FCC /* Pods_Keep.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = ADB79A128448B2460381FEE8 /* Pods_Keep.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -138,7 +138,6 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
-		096CD049FCD875D09982CB67 /* Pods_Passs.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Passs.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		0A1EF7ED2937A99200F9DEC3 /* UIFont+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIFont+Extensions.swift"; sourceTree = "<group>"; };
 		0A4FA0A129EF1832004E9906 /* PassItem+SFSymbols.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "PassItem+SFSymbols.swift"; sourceTree = "<group>"; };
 		0A52EDC329FE6CD2003463EF /* BrowseDatabaseTableHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BrowseDatabaseTableHeaderView.swift; sourceTree = "<group>"; };
@@ -151,6 +150,8 @@
 		3DBED3956B7666EBE5677B9B /* Pods-PasssTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PasssTests.release.xcconfig"; path = "Target Support Files/Pods-PasssTests/Pods-PasssTests.release.xcconfig"; sourceTree = "<group>"; };
 		61C958F420CCDECE8DEC67FD /* Pods_PasssTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_PasssTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		69039581FF5D2E799B3EA7B8 /* Pods-CredentialProvider.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-CredentialProvider.debug.xcconfig"; path = "Target Support Files/Pods-CredentialProvider/Pods-CredentialProvider.debug.xcconfig"; sourceTree = "<group>"; };
+		6E54ACEAAC3ACCB78AEAEE1A /* Pods-Keep.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Keep.debug.xcconfig"; path = "Target Support Files/Pods-Keep/Pods-Keep.debug.xcconfig"; sourceTree = "<group>"; };
+		984E7C4E3E0B69E504BC960D /* Pods-Keep.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Keep.release.xcconfig"; path = "Target Support Files/Pods-Keep/Pods-Keep.release.xcconfig"; sourceTree = "<group>"; };
 		A1BE885742778874F9F7BB11 /* Pods-Passs.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Passs.release.xcconfig"; path = "Target Support Files/Pods-Passs/Pods-Passs.release.xcconfig"; sourceTree = "<group>"; };
 		A31842442721D69200786744 /* PasssTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = PasssTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		A31842462721D69200786744 /* PasteboardManagerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PasteboardManagerTests.swift; sourceTree = "<group>"; };
@@ -197,6 +198,7 @@
 		A3FF57D327BFD6F400D41659 /* UIDocumentPickerController+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIDocumentPickerController+Extensions.swift"; sourceTree = "<group>"; };
 		A3FF57D527BFED1E00D41659 /* UnlockData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UnlockData.swift; sourceTree = "<group>"; };
 		A5FA10701D7AA8184255F37D /* Pods-CredentialProvider.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-CredentialProvider.release.xcconfig"; path = "Target Support Files/Pods-CredentialProvider/Pods-CredentialProvider.release.xcconfig"; sourceTree = "<group>"; };
+		ADB79A128448B2460381FEE8 /* Pods_Keep.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Keep.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		BBF18EB9167ADB17B2C12082 /* Pods_CredentialProvider.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_CredentialProvider.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		BDD5B3A1CD787FB487C055B9 /* Pods-PasssTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PasssTests.debug.xcconfig"; path = "Target Support Files/Pods-PasssTests/Pods-PasssTests.debug.xcconfig"; sourceTree = "<group>"; };
 		EBA44A656624B8CD1C05172E /* Pods-Passs.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Passs.debug.xcconfig"; path = "Target Support Files/Pods-Passs/Pods-Passs.debug.xcconfig"; sourceTree = "<group>"; };
@@ -216,7 +218,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				A3B5E33E27AEACEF0061CAC6 /* AuthenticationServices.framework in Frameworks */,
-				C36AB2D5AB40F2100342ABC8 /* Pods_Passs.framework in Frameworks */,
+				B653F71337F4EBCD629F9FCC /* Pods_Keep.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -241,6 +243,8 @@
 				3DBED3956B7666EBE5677B9B /* Pods-PasssTests.release.xcconfig */,
 				69039581FF5D2E799B3EA7B8 /* Pods-CredentialProvider.debug.xcconfig */,
 				A5FA10701D7AA8184255F37D /* Pods-CredentialProvider.release.xcconfig */,
+				6E54ACEAAC3ACCB78AEAEE1A /* Pods-Keep.debug.xcconfig */,
+				984E7C4E3E0B69E504BC960D /* Pods-Keep.release.xcconfig */,
 			);
 			path = Pods;
 			sourceTree = "<group>";
@@ -248,10 +252,10 @@
 		5FB1834A3E031CBCCDD4B639 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				096CD049FCD875D09982CB67 /* Pods_Passs.framework */,
 				61C958F420CCDECE8DEC67FD /* Pods_PasssTests.framework */,
 				A3B5E32C27AEA7340061CAC6 /* AuthenticationServices.framework */,
 				BBF18EB9167ADB17B2C12082 /* Pods_CredentialProvider.framework */,
+				ADB79A128448B2460381FEE8 /* Pods_Keep.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -596,15 +600,15 @@
 			files = (
 			);
 			inputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-Passs/Pods-Passs-frameworks-${CONFIGURATION}-input-files.xcfilelist",
+				"${PODS_ROOT}/Target Support Files/Pods-Keep/Pods-Keep-frameworks-${CONFIGURATION}-input-files.xcfilelist",
 			);
 			name = "[CP] Embed Pods Frameworks";
 			outputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-Passs/Pods-Passs-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+				"${PODS_ROOT}/Target Support Files/Pods-Keep/Pods-Keep-frameworks-${CONFIGURATION}-output-files.xcfilelist",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-Passs/Pods-Passs-frameworks.sh\"\n";
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-Keep/Pods-Keep-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		DB2F66A65660A25F26E3CD04 /* [CP] Check Pods Manifest.lock */ = {
@@ -622,7 +626,7 @@
 			outputFileListPaths = (
 			);
 			outputPaths = (
-				"$(DERIVED_FILE_DIR)/Pods-Passs-checkManifestLockResult.txt",
+				"$(DERIVED_FILE_DIR)/Pods-Keep-checkManifestLockResult.txt",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -925,7 +929,7 @@
 		};
 		A32C655A260C557700DC6653 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = EBA44A656624B8CD1C05172E /* Pods-Passs.debug.xcconfig */;
+			baseConfigurationReference = 6E54ACEAAC3ACCB78AEAEE1A /* Pods-Keep.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = Passs/Passs.entitlements;
@@ -950,7 +954,7 @@
 		};
 		A32C655B260C557700DC6653 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = A1BE885742778874F9F7BB11 /* Pods-Passs.release.xcconfig */;
+			baseConfigurationReference = 984E7C4E3E0B69E504BC960D /* Pods-Keep.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = Passs/Passs.entitlements;

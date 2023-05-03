@@ -57,7 +57,10 @@ final class RootCoordinator {
     }
 
     private func showPasswordDetailsViewController(_ passItem: PassItem) {
-        let passwordDetailsViewController = PasswordDetailsViewController(passItem: passItem)
+        let passwordDetailsViewController = PasswordDetailsViewController(
+            passItem: passItem,
+            pasteboardManager: serviceLocator.pasteboardManager
+        )
         navigationController.pushViewController(passwordDetailsViewController, animated: true)
     }
 }

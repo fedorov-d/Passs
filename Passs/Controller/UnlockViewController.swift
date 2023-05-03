@@ -83,6 +83,7 @@ final class UnlockViewController: UIViewController {
     }()
 
     private lazy var biometryCell: SwitchCell? = {
+        guard localAuthManager.isLocalAuthAvailable() else { return nil }
         let biometryTypeString: String
         switch localAuthManager.biomeryType {
         case .touchID:
