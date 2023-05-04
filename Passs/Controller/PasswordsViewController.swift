@@ -110,8 +110,20 @@ extension PasswordsViewController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: cellId, for: indexPath)
         let item = items[indexPath.row]
-        cell.textLabel?.text = item.title
-        cell.detailTextLabel?.text = item.username
+
+        let isTitleEmpty = (item.title ?? "").isEmpty
+        let textLabelFont = UIFont.preferredFont(forTextStyle: .body)
+
+        let title = isTitleEmpty ? "No title" : item.title!
+        cell.textLabel?.text = title
+        cell.textLabel?.font = isTitleEmpty ? textLabelFont.italics() : textLabelFont
+
+        let isUsernameEmpty = (item.username ?? "").isEmpty
+        let username = isUsernameEmpty ? "No username" : item.username!
+        let detailTextLabelFont = UIFont.preferredFont(forTextStyle: .caption1)
+
+        cell.detailTextLabel?.text = username
+        cell.detailTextLabel?.font = isUsernameEmpty ? detailTextLabelFont.italics() : detailTextLabelFont
         cell.detailTextLabel?.textColor = .secondaryLabel
         cell.imageView?.image = UIImage(systemName: item.iconSymbol)
         return cell

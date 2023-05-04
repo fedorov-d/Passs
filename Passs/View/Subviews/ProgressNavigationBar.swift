@@ -13,14 +13,20 @@ final class ProgressNavigationBar: UINavigationBar {
 
     private lazy var progressView: UIProgressView = {
         let progressView = UIProgressView(progressViewStyle: .bar)
-        progressView.tintColor = .systemBlue
+        progressView.tintColor = .systemBlue.withAlphaComponent(0.6)
         progressView.progress = 0
         return progressView
     }()
 
+    private lazy var progressViewContainer: UIView = {
+        let progressViewContainer = UIView()
+        progressViewContainer.clipsToBounds = true
+        return progressViewContainer
+    }()
+
     override init(frame: CGRect) {
         super.init(frame: frame)
-        addSubview(progressView)
+        addSubview(progressView.embeddedInContainerView(containerView: progressViewContainer, withEdges: .zero))
     }
 
     @available(*, unavailable)
@@ -30,15 +36,16 @@ final class ProgressNavigationBar: UINavigationBar {
 
     override func layoutSubviews() {
         super.layoutSubviews()
-        progressView.frame = CGRect(x: 0, y: bounds.maxY - progressView.bounds.height,
-                                    width: bounds.width, height: progressView.bounds.height)
+        progressViewContainer.frame = CGRect(x: 0, y: bounds.maxY - 0.5,
+                                             width: bounds.width, height: 0.5)
     }
 }
 
 extension ProgressNavigationBar: PasteboardManagerDelegate {
     func pasteboardManager(_ pasteboardManager: PasteboardManager, willClearPasteboard progress: ClearProgress) {
+        progressView.progress = 1.0
         progress.$progress.sink { [weak self] in
-            self?.progressView.progress = Float($0)
+            self?.progressView.setProgress(Float($0), animated: true)
         }
         .store(in: &cancellables)
     }

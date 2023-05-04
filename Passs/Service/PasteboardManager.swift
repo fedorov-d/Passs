@@ -20,8 +20,8 @@ protocol PasteboardManager: AnyObject {
 }
 
 final class ClearProgress {
-    private(set) @Published var progress: CGFloat = 1.0
-    private let timeInterval: TimeInterval
+    @Published private(set) var progress: CGFloat = 1.0
+    let timeInterval: TimeInterval
     private let clearDate: Date
     private var timer: Timer?
 
@@ -31,12 +31,13 @@ final class ClearProgress {
     }
 
     func start(completion: @escaping () -> Void) {
-        let step = timeInterval/0.25
-        let timer = Timer(timeInterval: 0.25, repeats: true) { [weak self] _ in
+        let refreshRate = 1.0 / 30.0
+        let step = 1.0 / (timeInterval / refreshRate)
+        let timer = Timer(timeInterval: refreshRate, repeats: true) { [weak self] _ in
             guard let self else { return }
             self.progress -= step
             if self.progress == .zero {
-                timer?.invalidate()
+                self.timer?.invalidate()
                 completion()
             }
         }
@@ -71,11 +72,13 @@ final class PasteboardManagerImp: PasteboardManager {
             completion()
             return
         }
-        clearProgress = ClearProgress(timeInterval: clearInterval)
-        clearProgress?.start { [weak self] in
-            self.?pasteboard.value = ""
+        let clearProgress = ClearProgress(timeInterval: clearInterval)
+        clearProgress.start { [weak self] in
+            self?.pasteboard.value = ""
             completion()
         }
+        self.clearProgress = clearProgress
+        delegate?.pasteboardManager(self, willClearPasteboard: clearProgress)
     }
 }
 

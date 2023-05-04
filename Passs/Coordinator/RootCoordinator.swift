@@ -110,9 +110,13 @@ extension RootCoordinator {
         return GroupsViewController(
             databaseManager: passDatabaseManager,
             recentPasswordsManager: recentPasswordsManager,
-            credentialsSelectionManager: self.serviceLocator.credentialsSelectionManager,
-            searchResultsControllerProvider: {
-                PasswordsViewController(
+            credentialsSelectionManager: serviceLocator.credentialsSelectionManager,
+            searchResultsControllerProvider: { [weak self] in
+                guard let self else { fatalError() }
+                return PasswordsViewController(
+                    onItemSelect: { passItem in
+                        self.showPasswordDetailsViewController(passItem)
+                    },
                     pasteboardManager: self.serviceLocator.pasteboardManager,
                     recentPasswordsManager: recentPasswordsManager,
                     credentialsSelectionManager: self.serviceLocator.credentialsSelectionManager

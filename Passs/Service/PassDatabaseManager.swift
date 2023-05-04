@@ -96,7 +96,7 @@ final class PassDatabaseManagerImp: PassDatabaseManager {
         }
         let compositeKey = KPKCompositeKey(keys: keys)
         let tree = try KPKTree(contentsOf: url, key: compositeKey)
-        databaseName = tree.root?.title
+        databaseName = url.lastPathComponent
         databaseURL = url
         passwordGroups = tree.root?.groups.sorted {
             $0.title?.localizedCaseInsensitiveCompare($1.title ?? "") == .orderedAscending

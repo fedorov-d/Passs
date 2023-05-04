@@ -73,7 +73,7 @@ final class NotificationViewController: UIViewController {
         backgroundView.snp.makeConstraints { make in
             make.width.lessThanOrEqualTo(view.readableContentGuide.snp.width)
             make.centerX.equalToSuperview()
-            make.bottom.equalToSuperview().inset(view.safeAreaInsets.bottom).inset(32)
+            make.bottom.equalTo(view.safeAreaLayoutGuide.snp.bottom).inset(16)
         }
 
         backgroundView.addSubview(contentStackView)
