@@ -14,7 +14,7 @@ protocol PasteboardManagerDelegate: AnyObject {
 
 protocol PasteboardManager: AnyObject {
     var delegate: PasteboardManagerDelegate? { get set }
-    var needsDropPassword: Bool { get }
+    var hasPassword: Bool { get }
     func copy(_: String)
     func clearPasteboard(completion: @escaping () -> Void)
 }
@@ -59,16 +59,16 @@ final class PasteboardManagerImp: PasteboardManager {
         self.pasteboard = pasteboard
     }
 
-    private(set) var needsDropPassword = false
+    private(set) var hasPassword = false
     
     func copy(_ value: String) {
-        needsDropPassword = true
+        hasPassword = true
         pasteboard.value = value
         clearPasteboard()
     }
     
     func clearPasteboard(completion: @escaping (() -> Void) = {}) {
-        guard needsDropPassword else {
+        guard hasPassword else {
             completion()
             return
         }

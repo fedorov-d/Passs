@@ -1,6 +1,6 @@
 import XCTest
 @testable import KeePassKit
-@testable import Passs
+@testable import Keep
 
 class MockedPasteboard: Pasteboard {
     var value: String?

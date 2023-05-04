@@ -13,10 +13,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     private var coordinator: RootCoordinator?
     private var serviceLocator = ServiceLocatorImp()
 
-    func application(
-        _ application: UIApplication,
-        didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?
-    ) -> Bool {
+    func application(_ application: UIApplication,
+                     didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         if let options = launchOptions,
            let launchURL = options[UIApplication.LaunchOptionsKey.url] as? URL {
             do {
@@ -45,7 +43,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     private func beginClearPasteboardBackgroundTaskIfNeeded(_ application: UIApplication) {
         let pasteboardManager = serviceLocator.pasteboardManager
-        guard pasteboardManager.needsDropPassword else { return }
+        guard pasteboardManager.hasPassword else { return }
         var clearPasteboardTaskIdentifier: UIBackgroundTaskIdentifier? = nil
         clearPasteboardTaskIdentifier = application
             .beginBackgroundTask(withName: "clear.pasteboard") { [pasteboardManager] in
