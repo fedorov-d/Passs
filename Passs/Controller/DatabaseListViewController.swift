@@ -47,7 +47,7 @@ class DatabaseListViewController: UIViewController {
 
     private lazy var noDatabasesView: UIView = {
         let label = UILabel()
-        label.textColor = .secondaryLabel
+        label.textColor = .systemRed
         label.font = .preferredFont(forTextStyle: .largeTitle)
         label.numberOfLines = 0
         label.textAlignment = .center
@@ -304,16 +304,19 @@ fileprivate extension DatabaseListViewController {
     }
 
     func deleteDatabase(at databaseURL: URL) {
-        databasesProvider.deleteDatabase(at: databaseURL)
         if settingsManager.defaultDatabaseURL == databaseURL {
             settingsManager.defaultDatabaseURL = nil
         }
+        databasesProvider.deleteDatabase(at: databaseURL)
     }
 
     func updateDataSource() {
         var snapshot = NSDiffableDataSourceSnapshot<Section, URL>()
         var urls = databasesProvider.databaseURLs
-        guard !urls.isEmpty else { return }
+        guard !urls.isEmpty else {
+            dataSource.apply(snapshot, animatingDifferences: true)
+            return            
+        }
         if let defaultDatabaseURL = settingsManager.defaultDatabaseURL ?? (urls.count == 1 ? urls.first : nil)  {
             if let index = urls.firstIndex(of: defaultDatabaseURL) {
                 urls.remove(at: index)

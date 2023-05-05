@@ -56,7 +56,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             }
     }
 
+    func applicationWillResignActive(_ application: UIApplication) {
+        coordinator?.showAppSwitcherOverlayViewController()
+    }
+
     func applicationDidBecomeActive(_ application: UIApplication) {
+        coordinator?.hideAppSwithcherOverlayViewController()
         guard let enterBackgroundTimestamp = UserDefaults.standard.value(
             forKey: UserDefaults.Keys.enterBackgroundTimestamp.rawValue
         ) as? TimeInterval else { return }

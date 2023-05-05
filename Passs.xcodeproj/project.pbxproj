@@ -55,6 +55,7 @@
 		A32C654D260C557300DC6653 /* PasswordsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A32C654C260C557300DC6653 /* PasswordsViewController.swift */; };
 		A32C6552260C557700DC6653 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A32C6551260C557700DC6653 /* Assets.xcassets */; };
 		A32C6555260C557700DC6653 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A32C6553260C557700DC6653 /* LaunchScreen.storyboard */; };
+		A343496C2A0519DC000D42C4 /* AppSwitcherOverlayViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A343496B2A0519DC000D42C4 /* AppSwitcherOverlayViewController.swift */; };
 		A35A8B0E27B56B8E00216C24 /* UIButton+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = A35A8B0D27B56B8E00216C24 /* UIButton+Extensions.swift */; };
 		A35A8B1227BC2F1500216C24 /* UnlockViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A35A8B1127BC2F1500216C24 /* UnlockViewController.swift */; };
 		A35A8B1627BC33B000216C24 /* TextFieldCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A35A8B1527BC33B000216C24 /* TextFieldCell.swift */; };
@@ -157,6 +158,7 @@
 		A32C6551260C557700DC6653 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		A32C6554260C557700DC6653 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		A32C6556260C557700DC6653 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		A343496B2A0519DC000D42C4 /* AppSwitcherOverlayViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppSwitcherOverlayViewController.swift; sourceTree = "<group>"; };
 		A35A8B0D27B56B8E00216C24 /* UIButton+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIButton+Extensions.swift"; sourceTree = "<group>"; };
 		A35A8B1127BC2F1500216C24 /* UnlockViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UnlockViewController.swift; sourceTree = "<group>"; };
 		A35A8B1527BC33B000216C24 /* TextFieldCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextFieldCell.swift; sourceTree = "<group>"; };
@@ -387,6 +389,7 @@
 				A35A8B1127BC2F1500216C24 /* UnlockViewController.swift */,
 				0AD616CB29EA46AD00BCE3AD /* QRCodeViewController.swift */,
 				A377A6F12A00EFE000213490 /* NotificationViewController.swift */,
+				A343496B2A0519DC000D42C4 /* AppSwitcherOverlayViewController.swift */,
 			);
 			path = Controller;
 			sourceTree = "<group>";
@@ -653,6 +656,7 @@
 				A3CAA30B27A9B93D00330FAC /* SubtitleTableViewCell.swift in Sources */,
 				A377A6F22A00EFE000213490 /* NotificationViewController.swift in Sources */,
 				A35A8B1F27BEB3FE00216C24 /* SelectKeyButtonCell.swift in Sources */,
+				A343496C2A0519DC000D42C4 /* AppSwitcherOverlayViewController.swift in Sources */,
 				A3CFA4C8279349370020F82F /* GroupsViewController.swift in Sources */,
 				A3F3DA36260DC1D10057AF24 /* PassDatabaseManager.swift in Sources */,
 				A3F4959F261E242700E4AA7E /* DatabaseListViewController.swift in Sources */,
