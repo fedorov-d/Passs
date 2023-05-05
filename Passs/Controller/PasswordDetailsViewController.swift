@@ -122,12 +122,12 @@ extension PasswordDetailsViewController {
     func makeDataSource() -> UITableViewDiffableDataSource<Section, Element> {
         return DiffableDataSource(
             tableView: tableView,
-            cellProvider: { [weak self]  tableView, indexPath, element in
+            cellProvider: { [weak self] tableView, indexPath, element in
                 guard let self else { return UITableViewCell() }
                 if case .button(_, let title, let action) = element {
-                    return showButtonCell(title: title, action: action, at: indexPath)
+                    return self.showButtonCell(title: title, action: action, at: indexPath)
                 } else {
-                    return textFieldCell(for: element, atIndexPath: indexPath)
+                    return self.textFieldCell(for: element, atIndexPath: indexPath)
                 }
             }
         )
