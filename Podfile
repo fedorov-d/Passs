@@ -19,7 +19,7 @@ target 'CredentialProvider' do
   common
 end
 
-target 'PasssTests' do
+target 'KeepTests' do
   common
 end
 
