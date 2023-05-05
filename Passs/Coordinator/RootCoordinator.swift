@@ -11,6 +11,20 @@ final class RootCoordinator {
     let navigationController: UINavigationController
     private let serviceLocator: ServiceLocator
 
+#if !CREDENTIALS_PROVIDER_EXTENSION
+    private var appSwitcherViewController: AppSwitcherOverlayViewController?
+    func showAppSwitcherOverlayViewController() {
+        let appSwitcherViewController = AppSwitcherOverlayViewController()
+        navigationController.present(appSwitcherViewController, animated: true)
+        self.appSwitcherViewController = appSwitcherViewController
+    }
+
+    func hideAppSwithcherOverlayViewController() {
+        appSwitcherViewController?.dismiss(animated: true)
+        appSwitcherViewController = nil
+    }
+#endif
+
     init(serviceLocator: ServiceLocator) {
         self.serviceLocator = serviceLocator
         self.navigationController = UINavigationController(navigationBarClass: ProgressNavigationBar.self,
