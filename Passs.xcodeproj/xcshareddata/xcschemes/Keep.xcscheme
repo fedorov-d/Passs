@@ -38,6 +38,17 @@
                ReferencedContainer = "container:Passs.xcodeproj">
             </BuildableReference>
          </TestableReference>
+         <TestableReference
+            skipped = "NO"
+            parallelizable = "YES">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "A34349702A052EE2000D42C4"
+               BuildableName = "KeepTests.xctest"
+               BlueprintName = "KeepTests"
+               ReferencedContainer = "container:Passs.xcodeproj">
+            </BuildableReference>
+         </TestableReference>
       </Testables>
    </TestAction>
    <LaunchAction

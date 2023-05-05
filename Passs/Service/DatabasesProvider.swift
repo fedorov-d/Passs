@@ -49,7 +49,7 @@ final class DatabasesProviderImp: DatabasesProvider {
         guard !databaseURLs.contains(url),
               supportedExtensions.contains(url.pathExtension) else { return }
         databaseURLs.append(url)
-        delegate?.didAddDatabase(at: databaseURLs.count - 1)
+        delegate?.didAddDatabase(at: databaseURLs.indices.last ?? 0)
     }
 
     func deleteDatabase(at databaseURL: URL) {
