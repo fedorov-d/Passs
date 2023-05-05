@@ -28,6 +28,7 @@ class PasswordsViewController: UIViewController, PasswordsSeachResultsDispalyCon
     private let recentPasswordsManager: RecentPasswordsManager
     private let credentialsSelectionManager: CredentialsSelectionManager?
     private let footerViewProvider: (() -> UIView)?
+    private var onItemSelect: ((PassItem) -> Void)?
 
     private var subscriptionSet = Set<AnyCancellable>()
 
@@ -35,12 +36,14 @@ class PasswordsViewController: UIViewController, PasswordsSeachResultsDispalyCon
          footerViewProvider: (() -> UIView)? = nil,
          sectionTitle: String? = nil,
          items: [PassItem] = [],
+         onItemSelect: ((PassItem) -> Void)? = nil,
          pasteboardManager: PasteboardManager,
          recentPasswordsManager: RecentPasswordsManager,
          credentialsSelectionManager: CredentialsSelectionManager?) {
         self.footerViewProvider = footerViewProvider
         self.sectionTitle = sectionTitle
         self.items = items
+        self.onItemSelect = onItemSelect
         self.pasteboardManager = pasteboardManager
         self.recentPasswordsManager = recentPasswordsManager
         self.credentialsSelectionManager = credentialsSelectionManager
@@ -107,8 +110,20 @@ extension PasswordsViewController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: cellId, for: indexPath)
         let item = items[indexPath.row]
-        cell.textLabel?.text = item.title
-        cell.detailTextLabel?.text = item.username
+
+        let isTitleEmpty = (item.title ?? "").isEmpty
+        let textLabelFont = UIFont.preferredFont(forTextStyle: .body)
+
+        let title = isTitleEmpty ? "No title" : item.title!
+        cell.textLabel?.text = title
+        cell.textLabel?.font = isTitleEmpty ? textLabelFont.italics() : textLabelFont
+
+        let isUsernameEmpty = (item.username ?? "").isEmpty
+        let username = isUsernameEmpty ? "No username" : item.username!
+        let detailTextLabelFont = UIFont.preferredFont(forTextStyle: .caption1)
+
+        cell.detailTextLabel?.text = username
+        cell.detailTextLabel?.font = isUsernameEmpty ? detailTextLabelFont.italics() : detailTextLabelFont
         cell.detailTextLabel?.textColor = .secondaryLabel
         cell.imageView?.image = UIImage(systemName: item.iconSymbol)
         return cell
@@ -145,6 +160,7 @@ extension PasswordsViewController: UITableViewDelegate {
         tableView.deselectRow(at: indexPath, animated: true)
         let item = items[indexPath.row]
         credentialsSelectionManager?.onCredentialsSelected(item)
+        onItemSelect?(item)
     }
 
     func tableView(_ tableView: UITableView,
@@ -153,7 +169,7 @@ extension PasswordsViewController: UITableViewDelegate {
         return UIContextMenuConfiguration(actionProvider: { [weak self] menuElements in
             guard let item = self?.items[indexPath.row] else { return nil }
             let copyUsernameAction = UIAction(title: "Copy username",
-                                   image: UIImage(systemName: "doc.on.doc.fill")) { action in
+                                   image: UIImage(systemName: "doc.on.doc")) { action in
                 self?.copyUsername(item)
             }
             guard let password = item.password else {

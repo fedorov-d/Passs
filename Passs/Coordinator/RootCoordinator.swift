@@ -13,7 +13,11 @@ final class RootCoordinator {
 
     init(serviceLocator: ServiceLocator) {
         self.serviceLocator = serviceLocator
-        self.navigationController = UINavigationController()
+        self.navigationController = UINavigationController(navigationBarClass: ProgressNavigationBar.self,
+                                                           toolbarClass: nil)
+        if let navigationBar = navigationController.navigationBar as? ProgressNavigationBar {
+            serviceLocator.pasteboardManager.delegate = navigationBar
+        }
         navigationController.navigationBar.prefersLargeTitles = true
     }
 
@@ -54,6 +58,14 @@ final class RootCoordinator {
                                                                    items: items,
                                                                    recentPasswordsManager: recentPasswordsManager)
         navigationController.pushViewController(passwordsViewController, animated: true)
+    }
+
+    private func showPasswordDetailsViewController(_ passItem: PassItem) {
+        let passwordDetailsViewController = PasswordDetailsViewController(
+            passItem: passItem,
+            pasteboardManager: serviceLocator.pasteboardManager
+        )
+        navigationController.pushViewController(passwordDetailsViewController, animated: true)
     }
 }
 
@@ -98,9 +110,13 @@ extension RootCoordinator {
         return GroupsViewController(
             databaseManager: passDatabaseManager,
             recentPasswordsManager: recentPasswordsManager,
-            credentialsSelectionManager: self.serviceLocator.credentialsSelectionManager,
-            searchResultsControllerProvider: {
-                PasswordsViewController(
+            credentialsSelectionManager: serviceLocator.credentialsSelectionManager,
+            searchResultsControllerProvider: { [weak self] in
+                guard let self else { fatalError() }
+                return PasswordsViewController(
+                    onItemSelect: { passItem in
+                        self.showPasswordDetailsViewController(passItem)
+                    },
                     pasteboardManager: self.serviceLocator.pasteboardManager,
                     recentPasswordsManager: recentPasswordsManager,
                     credentialsSelectionManager: self.serviceLocator.credentialsSelectionManager
@@ -122,6 +138,9 @@ extension RootCoordinator {
             footerViewProvider: footerViewProvider,
             sectionTitle: sectionTitle,
             items: items.sortedByName(),
+            onItemSelect: { [weak self] item in
+                self?.showPasswordDetailsViewController(item)
+            },
             pasteboardManager: serviceLocator.pasteboardManager,
             recentPasswordsManager: recentPasswordsManager,
             credentialsSelectionManager: serviceLocator.credentialsSelectionManager

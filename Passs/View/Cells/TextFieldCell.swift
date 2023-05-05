@@ -11,9 +11,42 @@ class TextFieldCell: UITableViewCell {
     var onTextChanged: ((_: String) -> Void)?
     var onReturn: (() -> Void)?
 
-    var text: String {
+    var textValue: String {
         get {
             textField.text ?? ""
+        }
+        set {
+            textField.text = newValue
+        }
+    }
+
+    var isSecureTextEntry: Bool {
+        get {
+            textField.isSecureTextEntry
+        }
+        set {
+            textField.isSecureTextEntry = newValue
+        }
+    }
+
+    var isEditable: Bool = true {
+        didSet {
+            textField.isUserInteractionEnabled = isEditable
+        }
+    }
+
+    override var backgroundColor: UIColor? {
+        didSet {
+            contentView.backgroundColor = backgroundColor
+        }
+    }
+
+    var textFieldBackgroundColor: UIColor? {
+        get {
+            textField.backgroundColor
+        }
+        set {
+            textField.backgroundColor = newValue
         }
     }
 
@@ -25,7 +58,8 @@ class TextFieldCell: UITableViewCell {
         let textField = UITextField()
         textField.isSecureTextEntry = true
         textField.delegate = self
-        let font = UIFont.preferredFont(forTextStyle: .callout)
+        let size = UIFont.preferredFont(forTextStyle: .callout).pointSize
+        let font = UIFont.monospacedSystemFont(ofSize: size, weight: .regular)
         textField.font = font
         textField.borderStyle = .none
         textField.returnKeyType = .continue
@@ -39,7 +73,7 @@ class TextFieldCell: UITableViewCell {
         selectionStyle = .none
         contentView.addSubview(textField)
         textField.snp.makeConstraints { make in
-            make.leading.trailing.equalToSuperview().inset(16)
+            make.horizontalEdges.equalToSuperview().inset(16)
             make.top.bottom.equalToSuperview().inset(2)
         }
     }

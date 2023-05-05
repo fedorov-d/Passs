@@ -9,7 +9,7 @@ def common
     pod 'KeePassKit', :git => 'https://github.com/fedorov-d/KeePassKit.git', :submodules => true
 end
 
-target 'Passs' do
+target 'Keep' do
     pod 'SnapKit'
     common
 end

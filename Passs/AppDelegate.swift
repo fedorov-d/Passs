@@ -13,10 +13,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     private var coordinator: RootCoordinator?
     private var serviceLocator = ServiceLocatorImp()
 
-    func application(
-        _ application: UIApplication,
-        didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?
-    ) -> Bool {
+    func application(_ application: UIApplication,
+                     didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         if let options = launchOptions,
            let launchURL = options[UIApplication.LaunchOptionsKey.url] as? URL {
             do {
@@ -45,11 +43,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     private func beginClearPasteboardBackgroundTaskIfNeeded(_ application: UIApplication) {
         let pasteboardManager = serviceLocator.pasteboardManager
-        guard pasteboardManager.needsDropPassword else { return }
+        guard pasteboardManager.hasPassword else { return }
         var clearPasteboardTaskIdentifier: UIBackgroundTaskIdentifier? = nil
         clearPasteboardTaskIdentifier = application
             .beginBackgroundTask(withName: "clear.pasteboard") { [pasteboardManager] in
-                pasteboardManager.dropPassword {
+                pasteboardManager.clearPasteboard {
                     guard let clearPasteboardTaskIdentifier else { return }
                     application.endBackgroundTask(clearPasteboardTaskIdentifier)
                 }
@@ -57,7 +55,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
 
     func applicationDidBecomeActive(_ application: UIApplication) {
-        guard let enterBackgroundTimestamp = UserDefaults.standard.value(
+        guard let enterBackgroundTimestamp = UserDefaults.shared.value(
             forKey: UserDefaults.Keys.enterBackgroundTimestamp.rawValue
         ) as? TimeInterval else { return }
         deleteTimestamp()

@@ -33,7 +33,8 @@ final class CredentialsSelectionManagerImp: CredentialsSelectionManager {
     }
 
     func matchigItems(for items: [PassItem]) -> [PassItem]? {
-        serviceIdentifiers?.compactMap { serviceIndentifier -> [PassItem]? in
+        Swift.debugPrint("filtering passwords for \(String(describing: serviceIdentifiersStrings))")
+        return serviceIdentifiers?.compactMap { serviceIndentifier -> [PassItem]? in
             switch serviceIndentifier.type {
             case .domain:
                 return items.filter { passItem in
