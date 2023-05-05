@@ -55,7 +55,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
 
     func applicationDidBecomeActive(_ application: UIApplication) {
-        guard let enterBackgroundTimestamp = UserDefaults.standard.value(
+        guard let enterBackgroundTimestamp = UserDefaults.shared.value(
             forKey: UserDefaults.Keys.enterBackgroundTimestamp.rawValue
         ) as? TimeInterval else { return }
         deleteTimestamp()
