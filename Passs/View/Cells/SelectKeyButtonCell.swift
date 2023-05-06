@@ -17,8 +17,8 @@ class SelectKeyButtonCell: UITableViewCell {
 
     private lazy var button: UIButton = {
         let button = UIButton()
-        button.setTitleColor(.systemBlue, for: .normal)
-        button.setTitleColor(.systemBlue.withAlphaComponent(0.7), for: .highlighted)
+        button.setTitleColor(.keepCyan, for: .normal)
+        button.setTitleColor(.keepCyan.withAlphaComponent(0.7), for: .highlighted)
         button.addTarget(self, action: #selector(buttonTapped(_:)), for: .touchUpInside)
         button.contentHorizontalAlignment = .leading
         return button

@@ -101,17 +101,6 @@ class DatabaseListViewController: UIViewController {
 
         self.navigationItem.backButtonTitle = ""
 
-        let appearance = UINavigationBarAppearance()
-        appearance.configureWithDefaultBackground()
-        navigationController?.navigationBar.standardAppearance = appearance
-        navigationController?.navigationBar.compactAppearance = appearance
-        appearance.backgroundColor = .systemBackground
-        navigationController?.navigationBar.scrollEdgeAppearance = appearance
-        appearance.shadowColor = .clear
-        if #available(iOS 15.0, *) {
-            navigationController?.navigationBar.compactScrollEdgeAppearance = appearance
-        }
-
         if credentialsSelectionManager == nil {
             self.navigationItem.rightBarButtonItem = UIBarButtonItem(
                 barButtonSystemItem: .add,
@@ -396,7 +385,7 @@ private extension DatabaseListViewController {
 
                 cell.textLabel?.text = databaseURL.lastPathComponent
                 cell.accessoryType = .disclosureIndicator
-                cell.imageView?.image = UIImage(systemName: "square.stack.3d.up")?.tinted(with: .systemBlue)
+                cell.imageView?.image = UIImage(systemName: "square.stack.3d.up")
                 guard let detailTextLabel = cell.detailTextLabel,
                       let date = self.modificationDate(forFileAtURL: databaseURL) else { return cell }
                 let secondaryLabel: UIColor = .secondaryLabel

@@ -125,7 +125,7 @@ extension GroupsViewController: UITableViewDataSource {
         guard let group = databaseManager.passwordGroups?[indexPath.row] else { fatalError() }
         cell.textLabel?.text = group.title
         cell.accessoryType = .disclosureIndicator
-        cell.imageView?.image = UIImage(systemName: "folder")?.tinted(with: .systemBlue)
+        cell.imageView?.image = UIImage(systemName: "folder")
         return cell
     }
 }

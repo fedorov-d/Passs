@@ -13,7 +13,7 @@ final class ProgressNavigationBar: UINavigationBar {
 
     private lazy var progressView: UIProgressView = {
         let progressView = UIProgressView(progressViewStyle: .bar)
-        progressView.tintColor = .systemBlue.withAlphaComponent(0.6)
+        progressView.tintColor = .keepCyan.withAlphaComponent(0.6)
         progressView.progress = 0
         return progressView
     }()
@@ -27,6 +27,16 @@ final class ProgressNavigationBar: UINavigationBar {
     override init(frame: CGRect) {
         super.init(frame: frame)
         addSubview(progressView.embeddedInContainerView(containerView: progressViewContainer, withEdges: .zero))
+
+        let appearance = UINavigationBarAppearance()
+        appearance.configureWithOpaqueBackground()
+        appearance.backgroundColor = .secondarySystemBackground
+        standardAppearance = appearance
+        compactAppearance = appearance
+        scrollEdgeAppearance = appearance
+        if #available(iOS 15.0, *) {
+            compactScrollEdgeAppearance = appearance
+        }
     }
 
     @available(*, unavailable)

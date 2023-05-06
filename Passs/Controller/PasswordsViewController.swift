@@ -199,7 +199,7 @@ extension PasswordsViewController {
             completion()
             closure(true)
         }
-        action.backgroundColor = .systemBlue
+        action.backgroundColor = .keepCyan
         return UISwipeActionsConfiguration(actions: [action])
     }
 

@@ -109,6 +109,7 @@ final class UnlockViewController: UIViewController {
         cell.onButtonTap = { [weak self] in
             self?.openKeyfile()
         }
+        cell.title = "Select key"
         return cell
     }()
 
@@ -152,15 +153,6 @@ final class UnlockViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        let appearance = UINavigationBarAppearance()
-        appearance.configureWithOpaqueBackground()
-        appearance.backgroundColor = .secondarySystemBackground
-        navigationController?.navigationBar.standardAppearance = appearance
-        navigationController?.navigationBar.scrollEdgeAppearance = appearance
-        navigationController?.navigationBar.compactAppearance = appearance
-        if #available(iOS 15.0, *) {
-            navigationController?.navigationBar.compactScrollEdgeAppearance = appearance
-        }
         navigationItem.title = "Unlock database"
         navigationItem.leftBarButtonItem = cancelButton
         navigationItem.rightBarButtonItem = unlockButton
