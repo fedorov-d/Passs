@@ -76,7 +76,7 @@ class GroupsViewController: UIViewController {
 
         NotificationCenter.default.publisher(for: UIPasteboard.changedNotification)
             .sink { [weak self] _ in
-                self?.updateRecentPasswords()
+                self?.updateRecentPasswords(afterPasteboardChange: true)
             }
             .store(in: &cancellables)
 
@@ -162,11 +162,14 @@ extension GroupsViewController {
         return credentialsSelectionManager?.matchigItems(for: items)
     }
 
-    private func updateRecentPasswords() {
+    private func updateRecentPasswords(afterPasteboardChange: Bool = false) {
         guard let passwordsViewController, let groups = databaseManager.passwordGroups else { return }
         let items = groups.flatMap { $0.items }
         let fallback = fallbackItems(for: items)
         guard fallback.items.count > 0 else { return }
+        guard !afterPasteboardChange, fallback.items.map(\.uuid) != passwordsViewController.items.map(\.uuid) else {
+            return
+        }
         passwordsViewController.view.isHidden = false
         passwordsViewController.sectionTitle = fallback.title
         passwordsViewController.items = fallback.items
