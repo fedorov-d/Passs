@@ -15,7 +15,7 @@ class GroupsViewController: UIViewController {
     private let groupSelected: (PassGroup) -> Void
     private let searchResultsControllerProvider: () -> PasswordsSeachResultsDispalyController & UIViewController
 
-    private var subscriptionSet = Set<AnyCancellable>()
+    private var cancellables = Set<AnyCancellable>()
 
     init(databaseManager: PassDatabaseManager,
          recentPasswordsManager: RecentPasswordsManager,
@@ -40,10 +40,9 @@ class GroupsViewController: UIViewController {
 
     private lazy var tableView: UITableView = {
         let tableView = UITableView(frame: .zero, style: .insetGrouped)
-        tableView.rowHeight = 48
         tableView.dataSource = self
         tableView.delegate = self
-        tableView.register(UITableViewCell.self, forCellReuseIdentifier: cellId)
+        tableView.register(SubtitleTableViewCell.self, forCellReuseIdentifier: cellId)
         tableView.tableHeaderView = UIView(frame: CGRect(x: 0, y: 0, width: 0, height: 16))
         if #available(iOS 15, *) {
             tableView.sectionHeaderTopPadding = 10
@@ -75,7 +74,13 @@ class GroupsViewController: UIViewController {
         navigationItem.hidesSearchBarWhenScrolling = false
         definesPresentationContext = false
 
-        setupKeyboardAvoidance(for: tableView, subscriptionSet: &subscriptionSet)
+        NotificationCenter.default.publisher(for: UIPasteboard.changedNotification)
+            .sink { [weak self] _ in
+                self?.updateRecentPasswords(afterPasteboardChange: true)
+            }
+            .store(in: &cancellables)
+
+        setupKeyboardAvoidance(for: tableView, cancellables: &cancellables)
     }
 
     override func viewDidAppear(_ animated: Bool) {
@@ -89,18 +94,13 @@ class GroupsViewController: UIViewController {
 
 extension GroupsViewController: UISearchResultsUpdating {
     func updateSearchResults(for searchController: UISearchController) {
-        guard let passwordsController = searchController.searchResultsController
-                as? PasswordsSeachResultsDispalyController & UIViewController,
-              let groups = databaseManager.passwordGroups else { return }
-        let items = groups.flatMap { $0.items }
         guard let text = searchController.searchBar.text?.lowercased(), !text.isEmpty else {
-            let fallback = fallbackItems(for: items)
-            guard fallback.items.count > 0 else { return }
-            passwordsController.view.isHidden = false
-            passwordsController.sectionTitle = fallback.title
-            passwordsController.items = fallback.items
+            updateRecentPasswords()
             return
         }
+
+        guard let groups = databaseManager.passwordGroups else { return }
+        let items = groups.flatMap { $0.items }
         let matchingItems = items.filter { item in
             item.title?.lowercased().contains(text) ?? false
         }.sorted { item1, item2 in
@@ -110,8 +110,8 @@ extension GroupsViewController: UISearchResultsUpdating {
             }
             return range1.lowerBound < range2.lowerBound
         }
-        passwordsController.sectionTitle = matchingItems.isEmpty ? "No matching items" : "Matching items"
-        passwordsController.items = matchingItems
+        passwordsViewController?.sectionTitle = (matchingItems.isEmpty ? "No matching entries" : "Matching entries").uppercased()
+        passwordsViewController?.items = matchingItems
     }
 }
 
@@ -124,8 +124,14 @@ extension GroupsViewController: UITableViewDataSource {
         let cell = tableView.dequeueReusableCell(withIdentifier: cellId, for: indexPath)
         guard let group = databaseManager.passwordGroups?[indexPath.row] else { fatalError() }
         cell.textLabel?.text = group.title
+        cell.textLabel?.font = .preferredFont(forTextStyle: .body)
+
+        cell.detailTextLabel?.text = "\(group.items.count) entries"
+        cell.detailTextLabel?.textColor = .secondaryLabel
+        cell.detailTextLabel?.font = .preferredFont(forTextStyle: .caption1)
+
         cell.accessoryType = .disclosureIndicator
-        cell.imageView?.image = UIImage(systemName: "folder")?.tinted(with: .systemBlue)
+        cell.imageView?.image = UIImage(systemName: "folder")
         return cell
     }
 }
@@ -139,14 +145,33 @@ extension GroupsViewController: UITableViewDelegate {
 }
 
 extension GroupsViewController {
+    private var passwordsViewController: (PasswordsSeachResultsDispalyController & UIViewController)? {
+        navigationItem.searchController?.searchResultsController
+            as? PasswordsSeachResultsDispalyController & UIViewController
+    }
+
     private func fallbackItems(for items: [PassItem]) -> (items: [PassItem], title: String) {
-        if let credentialsSelectionManager,
-           credentialsSelectionManager.serviceIdentifiers != nil,
-           let matchingItems = credentialsSelectionManager.matchigItems(for: items),
-           !matchingItems.isEmpty {
-            return (items: matchingItems, title: "Matching items")
+        if let matchingItems = matchingCredentialsSelectionItems(for: items), !matchingItems.isEmpty {
+            return (items: matchingItems, title: "Matching entries".uppercased())
         } else {
-            return (items: recentPasswordsManager.matchingItems(for: items), title: "Recent items")
+            return (items: recentPasswordsManager.matchingItems(for: items), title: "Recent items".uppercased())
         }
+    }
+
+    private func matchingCredentialsSelectionItems(for items: [PassItem]) -> [PassItem]? {
+        return credentialsSelectionManager?.matchigItems(for: items)
+    }
+
+    private func updateRecentPasswords(afterPasteboardChange: Bool = false) {
+        guard let passwordsViewController, let groups = databaseManager.passwordGroups else { return }
+        let items = groups.flatMap { $0.items }
+        let fallback = fallbackItems(for: items)
+        guard fallback.items.count > 0 else { return }
+        guard !afterPasteboardChange, fallback.items.map(\.uuid) != passwordsViewController.items.map(\.uuid) else {
+            return
+        }
+        passwordsViewController.view.isHidden = false
+        passwordsViewController.sectionTitle = fallback.title
+        passwordsViewController.items = fallback.items
     }
 }

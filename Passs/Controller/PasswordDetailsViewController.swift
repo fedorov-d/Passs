@@ -42,10 +42,10 @@ final class PasswordDetailsViewController: UIViewController {
     private let buttonCellID = "buttonCellID"
 
     private func makeButton(image: UIImage? = nil, action: Selector) -> UIView {
-        let copyButton = UIButton(type: .system)
-        copyButton.setImage(image, for: .normal)
-        copyButton.addTarget(self, action: action, for: .touchUpInside)
-        return copyButton
+        let button = UIButton(type: .system)
+        button.setImage(image, for: .normal)
+        button.addTarget(self, action: action, for: .touchUpInside)
+        return button
     }
 
     override func loadView() {
@@ -165,10 +165,6 @@ extension PasswordDetailsViewController {
 
         cell.accessoryView?.frame = CGRect(x: 0, y: 0, width: 44, height: 44)
         return cell
-    }
-
-    func reuseIdentifier(for: Element) -> String {
-        textFieldCellID
     }
 }
 

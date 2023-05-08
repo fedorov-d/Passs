@@ -27,7 +27,7 @@ class DatabaseListViewController: UIViewController {
     private let onDatabaseOpened: () -> Void
     private let onAskForPassword: (_: URL) -> Void
 
-    private var subscriptionSet = Set<AnyCancellable>()
+    private var cancellables = Set<AnyCancellable>()
 
     private lazy var dataSource = makeDataSource()
 
@@ -39,7 +39,7 @@ class DatabaseListViewController: UIViewController {
     }()
     
     private lazy var tableView: UITableView = {
-        let tableView = UITableView(frame: .zero, style: .grouped)
+        let tableView = UITableView(frame: .zero, style: .insetGrouped)
         tableView.delegate = self
         tableView.register(SubtitleTableViewCell.self, forCellReuseIdentifier: cellId)
         return tableView
@@ -47,7 +47,7 @@ class DatabaseListViewController: UIViewController {
 
     private lazy var noDatabasesView: UIView = {
         let label = UILabel()
-        label.textColor = .systemRed
+        label.textColor = .secondaryLabel
         label.font = .preferredFont(forTextStyle: .largeTitle)
         label.numberOfLines = 0
         label.textAlignment = .center
@@ -101,17 +101,6 @@ class DatabaseListViewController: UIViewController {
 
         self.navigationItem.backButtonTitle = ""
 
-        let appearance = UINavigationBarAppearance()
-        appearance.configureWithDefaultBackground()
-        navigationController?.navigationBar.standardAppearance = appearance
-        navigationController?.navigationBar.compactAppearance = appearance
-        appearance.backgroundColor = .systemBackground
-        navigationController?.navigationBar.scrollEdgeAppearance = appearance
-        appearance.shadowColor = .clear
-        if #available(iOS 15.0, *) {
-            navigationController?.navigationBar.compactScrollEdgeAppearance = appearance
-        }
-
         if credentialsSelectionManager == nil {
             self.navigationItem.rightBarButtonItem = UIBarButtonItem(
                 barButtonSystemItem: .add,
@@ -128,13 +117,13 @@ class DatabaseListViewController: UIViewController {
             .sink { [weak self] _ in
                 self?.ignoreApplicationDidBecomeActive = true
             }
-            .store(in: &subscriptionSet)
+            .store(in: &cancellables)
 
         applicationDidEnterBackground()
             .sink { [weak self] in
                 self?.ignoreApplicationDidBecomeActive = false
             }
-            .store(in: &subscriptionSet)
+            .store(in: &cancellables)
 
         applicationDidBecomeActivePublisher()
             .filter { [weak self] _ in
@@ -146,7 +135,7 @@ class DatabaseListViewController: UIViewController {
                 self.tableView.reloadData()
                 self.unlockDatabaseIfNeeded()
             }
-            .store(in: &subscriptionSet)
+            .store(in: &cancellables)
     }
 
     override func viewDidAppear(_ animated: Bool) {
@@ -396,7 +385,7 @@ private extension DatabaseListViewController {
 
                 cell.textLabel?.text = databaseURL.lastPathComponent
                 cell.accessoryType = .disclosureIndicator
-                cell.imageView?.image = UIImage(systemName: "square.stack.3d.up")?.tinted(with: .systemBlue)
+                cell.imageView?.image = UIImage(systemName: "square.stack.3d.up")
                 guard let detailTextLabel = cell.detailTextLabel,
                       let date = self.modificationDate(forFileAtURL: databaseURL) else { return cell }
                 let secondaryLabel: UIColor = .secondaryLabel

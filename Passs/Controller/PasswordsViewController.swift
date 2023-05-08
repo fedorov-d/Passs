@@ -30,7 +30,7 @@ class PasswordsViewController: UIViewController, PasswordsSeachResultsDispalyCon
     private let footerViewProvider: (() -> UIView)?
     private var onItemSelect: ((PassItem) -> Void)?
 
-    private var subscriptionSet = Set<AnyCancellable>()
+    private var cancellables = Set<AnyCancellable>()
 
     init(title: String? = "Passwords",
          footerViewProvider: (() -> UIView)? = nil,
@@ -97,7 +97,7 @@ class PasswordsViewController: UIViewController, PasswordsSeachResultsDispalyCon
         setCancelNavigationItemIfNeeded(with: credentialsSelectionManager)
 
         tableView.reloadData()
-        setupKeyboardAvoidance(for: tableView, subscriptionSet: &subscriptionSet)
+        setupKeyboardAvoidance(for: tableView, cancellables: &cancellables)
     }
 
 }
@@ -129,14 +129,16 @@ extension PasswordsViewController: UITableViewDataSource {
         return cell
     }
 
-    func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
-        return sectionTitle
+    func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+        let label = UILabel()
+        label.textColor = .secondaryLabel
+        label.numberOfLines = 0
+        label.text = sectionTitle
+        label.font = .preferredFont(forTextStyle: .footnote)
+        label.setContentCompressionResistancePriority(.defaultLow, for: .horizontal)
+        label.setContentCompressionResistancePriority(.required, for: .vertical)
+        return label.embeddedInContainerView(withEdges: .init(top: 4, leading: 16, bottom: 8, trailing: 16))
     }
-
-    func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-        23
-    }
-
 }
 
 extension PasswordsViewController: UITableViewDelegate {
@@ -159,33 +161,50 @@ extension PasswordsViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
         let item = items[indexPath.row]
+#if CREDENTIALS_PROVIDER_EXTENSION
         credentialsSelectionManager?.onCredentialsSelected(item)
+#else
         onItemSelect?(item)
+#endif
     }
 
     func tableView(_ tableView: UITableView,
                    contextMenuConfigurationForRowAt indexPath: IndexPath,
                    point: CGPoint) -> UIContextMenuConfiguration? {
         return UIContextMenuConfiguration(actionProvider: { [weak self] menuElements in
-            guard let item = self?.items[indexPath.row] else { return nil }
-            let copyUsernameAction = UIAction(title: "Copy username",
-                                   image: UIImage(systemName: "doc.on.doc")) { action in
-                self?.copyUsername(item)
+            guard let item = self?.items[indexPath.row] else { fatalError() }
+            var menuItems = [UIAction]()
+            if let username = item.username, !username.isEmpty {
+                let copyUsernameAction = UIAction(title: "Copy username",
+                                                  image: UIImage(systemName: "doc.on.doc")) { action in
+                    self?.copyUsername(item)
+                }
+                menuItems.append(copyUsernameAction)
             }
-            guard let password = item.password else {
-                return UIMenu(title: item.username ?? "",
-                              children: [copyUsernameAction])
+            if let password = item.password, !password.isEmpty {
+                let copyPasswordAction = UIAction(title: "Copy password",
+                                                  image: UIImage(systemName: "doc.on.doc")) { action in
+                    self?.copyPassword(item)
+                }
+                menuItems.append(copyPasswordAction)
+
+                let generateQRAction = UIAction(title: "Generate QR code",
+                                                image: UIImage(systemName: "qrcode")) { action in
+                    self?.presentQRCode(for: password)
+                }
+                menuItems.append(generateQRAction)
             }
-            let copyPasswordAction = UIAction(title: "Copy password",
-                                   image: UIImage(systemName: "doc.on.doc")) { action in
-                self?.copyPassword(item)
+#if !CREDENTIALS_PROVIDER_EXTENSION
+            if let url = item.url.flatMap({ URL(string: $0) }) {
+                let generateQRAction = UIAction(title: "Open link",
+                                                image: UIImage(systemName: "arrow.up.right.square")) { action in
+                    UIApplication.shared.openURL(url)
+                }
+                menuItems.append(generateQRAction)
             }
-            let generateQRAction = UIAction(title: "Generate QR code",
-                                            image: UIImage(systemName: "qrcode")) { action in
-                self?.presentQRCode(for: password)
-            }
-            return UIMenu(title: item.username ?? "",
-                          children: [copyUsernameAction, copyPasswordAction, generateQRAction])
+#endif
+            return UIMenu(title: "",
+                          children: menuItems)
         })
     }
 }
@@ -199,7 +218,7 @@ extension PasswordsViewController {
             completion()
             closure(true)
         }
-        action.backgroundColor = .systemBlue
+        action.backgroundColor = .keepCyan
         return UISwipeActionsConfiguration(actions: [action])
     }
 

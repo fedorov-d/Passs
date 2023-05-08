@@ -14,6 +14,7 @@ final class RootCoordinator {
 #if !CREDENTIALS_PROVIDER_EXTENSION
     private var appSwitcherViewController: AppSwitcherOverlayViewController?
     func showAppSwitcherOverlayViewController() {
+        guard navigationController.viewControllers.count > 1 else { return }
         let appSwitcherViewController = AppSwitcherOverlayViewController()
         navigationController.present(appSwitcherViewController, animated: true)
         self.appSwitcherViewController = appSwitcherViewController
@@ -47,12 +48,14 @@ final class RootCoordinator {
     }
 
     private func showUnlockViewController(forDatabaseAt url: URL, passDatabaseManager: PassDatabaseManager) {
-        let controller = self.unlockViewController(
+        let unlockViewController = self.unlockViewController(
             forDatabaseAt: url,
             passDatabaseManager: passDatabaseManager,
             localAuthManager: self.serviceLocator.localAuthManager()
         )
-        let navigationController = UINavigationController(rootViewController: controller)
+        let navigationController = UINavigationController(navigationBarClass: ProgressNavigationBar.self,
+                                                          toolbarClass: nil)
+        navigationController.viewControllers = [unlockViewController]
         self.navigationController.present(navigationController, animated: true)
     }
 
@@ -178,7 +181,7 @@ extension RootCoordinator: DefaultDatabaseUnlock {
            !matchingItems.isEmpty {
             let recentPasswordsManager = self.serviceLocator.recentPasswordsManager(databaseURL: databaseURL)
             let sectionTitle = (credentialsSelectionManager.serviceIdentifiersStrings?.joined(separator: ","))
-                .flatMap { "matching \($0)" }
+                .flatMap { "Entries matching \($0)" }
             self.showPasswordsViewController(
                 title: "Passwords",
                 footerViewProvider: {

@@ -23,6 +23,7 @@ class CredentialProviderViewController: ASCredentialProviderViewController {
 
     override func loadView() {
         view = UIView()
+        view.tintColor = .keepCyan
     }
 
     override func viewDidLoad() {

@@ -13,7 +13,7 @@ final class ProgressNavigationBar: UINavigationBar {
 
     private lazy var progressView: UIProgressView = {
         let progressView = UIProgressView(progressViewStyle: .bar)
-        progressView.tintColor = .systemBlue.withAlphaComponent(0.6)
+        progressView.tintColor = .keepCyan.withAlphaComponent(0.6)
         progressView.progress = 0
         return progressView
     }()
@@ -27,6 +27,7 @@ final class ProgressNavigationBar: UINavigationBar {
     override init(frame: CGRect) {
         super.init(frame: frame)
         addSubview(progressView.embeddedInContainerView(containerView: progressViewContainer, withEdges: .zero))
+        updateApperance()
     }
 
     @available(*, unavailable)
@@ -38,6 +39,35 @@ final class ProgressNavigationBar: UINavigationBar {
         super.layoutSubviews()
         progressViewContainer.frame = CGRect(x: 0, y: bounds.maxY - 0.5,
                                              width: bounds.width, height: 0.5)
+    }
+
+    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+        super.traitCollectionDidChange(previousTraitCollection)
+        let appearance = UINavigationBarAppearance()
+        appearance.configureWithOpaqueBackground()
+        appearance.backgroundColor = traitCollection.userInterfaceStyle == .dark ?
+            .secondarySystemBackground :
+            .systemBackground
+        standardAppearance = appearance
+        compactAppearance = appearance
+        scrollEdgeAppearance = appearance
+        if #available(iOS 15.0, *) {
+            compactScrollEdgeAppearance = appearance
+        }
+    }
+}
+
+private extension ProgressNavigationBar {
+    func updateApperance() {
+        let appearance = UINavigationBarAppearance()
+        appearance.configureWithOpaqueBackground()
+        appearance.backgroundColor = .systemBackground
+        standardAppearance = appearance
+        compactAppearance = appearance
+        scrollEdgeAppearance = appearance
+        if #available(iOS 15.0, *) {
+            compactScrollEdgeAppearance = appearance
+        }
     }
 }
 

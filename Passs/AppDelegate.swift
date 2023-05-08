@@ -25,6 +25,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         }
         coordinator = RootCoordinator(serviceLocator: serviceLocator)
         window = UIWindow()
+        window?.tintColor = .keepCyan
         window?.rootViewController = coordinator?.navigationController
         window?.makeKeyAndVisible()
         coordinator?.showDatabasesViewController()
