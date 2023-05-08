@@ -46,8 +46,8 @@
 		0A717ACF2A067A5B00072F6D /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A32C6551260C557700DC6653 /* Assets.xcassets */; };
 		0A717AD12A08A1D200072F6D /* GenericContentTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A717AD02A08A1D200072F6D /* GenericContentTableViewCell.swift */; };
 		0A717AD22A08A1D200072F6D /* GenericContentTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A717AD02A08A1D200072F6D /* GenericContentTableViewCell.swift */; };
-		0A717AD42A08C77800072F6D /* UITextField+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A717AD32A08C77800072F6D /* UITextField+Extensions.swift */; };
-		0A717AD52A08C77900072F6D /* UITextField+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A717AD32A08C77800072F6D /* UITextField+Extensions.swift */; };
+		0A717AD42A08C77800072F6D /* UITableView+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A717AD32A08C77800072F6D /* UITableView+Extensions.swift */; };
+		0A717AD52A08C77900072F6D /* UITableView+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A717AD32A08C77800072F6D /* UITableView+Extensions.swift */; };
 		0A850A0F2937F98E00754CC9 /* UnlockData.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3FF57D527BFED1E00D41659 /* UnlockData.swift */; };
 		0A850A102937F99E00754CC9 /* PassItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3F3DA27260CA5FC0057AF24 /* PassItem.swift */; };
 		0A850A112937F9EF00754CC9 /* PassItem+KeePassKit.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3F3DA29260CA8440057AF24 /* PassItem+KeePassKit.swift */; };
@@ -157,7 +157,7 @@
 		0A52EDC929FFEF32003463EF /* UIView+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIView+Extensions.swift"; sourceTree = "<group>"; };
 		0A717ACC2A06716700072F6D /* UIColor+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIColor+Extensions.swift"; sourceTree = "<group>"; };
 		0A717AD02A08A1D200072F6D /* GenericContentTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GenericContentTableViewCell.swift; sourceTree = "<group>"; };
-		0A717AD32A08C77800072F6D /* UITextField+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UITextField+Extensions.swift"; sourceTree = "<group>"; };
+		0A717AD32A08C77800072F6D /* UITableView+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UITableView+Extensions.swift"; sourceTree = "<group>"; };
 		0A8D3E372938F515005D4435 /* CredentialsSelectionManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CredentialsSelectionManager.swift; sourceTree = "<group>"; };
 		0AD29C4F293FCE55007A9061 /* BarButtonItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BarButtonItem.swift; sourceTree = "<group>"; };
 		0AD616CB29EA46AD00BCE3AD /* QRCodeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QRCodeViewController.swift; sourceTree = "<group>"; };
@@ -377,7 +377,7 @@
 				0AD29C4F293FCE55007A9061 /* BarButtonItem.swift */,
 				0A52EDC929FFEF32003463EF /* UIView+Extensions.swift */,
 				0A717ACC2A06716700072F6D /* UIColor+Extensions.swift */,
-				0A717AD32A08C77800072F6D /* UITextField+Extensions.swift */,
+				0A717AD32A08C77800072F6D /* UITableView+Extensions.swift */,
 			);
 			path = Common;
 			sourceTree = "<group>";
@@ -716,7 +716,7 @@
 				A35A8B1627BC33B000216C24 /* TextFieldCell.swift in Sources */,
 				A35A8B1D27BE2C8200216C24 /* ColoredTableViewHeaderFooterView.swift in Sources */,
 				A392D9CC27C79D2F00206161 /* UserDefaults+Extensions.swift in Sources */,
-				0A717AD42A08C77800072F6D /* UITextField+Extensions.swift in Sources */,
+				0A717AD42A08C77800072F6D /* UITableView+Extensions.swift in Sources */,
 				A3F4959C261E22F700E4AA7E /* DatabasesProvider.swift in Sources */,
 				A3B5E34027B16E620061CAC6 /* LocalAuthManager.swift in Sources */,
 				0A717ACD2A06716700072F6D /* UIColor+Extensions.swift in Sources */,
@@ -765,7 +765,7 @@
 				A3F034462A028CF300277ED2 /* ProgressNavigationBar.swift in Sources */,
 				0A1EF7F92937D56F00F9DEC3 /* SelectKeyButtonCell.swift in Sources */,
 				0A717AD22A08A1D200072F6D /* GenericContentTableViewCell.swift in Sources */,
-				0A717AD52A08C77900072F6D /* UITextField+Extensions.swift in Sources */,
+				0A717AD52A08C77900072F6D /* UITableView+Extensions.swift in Sources */,
 				0A1EF8052937D57D00F9DEC3 /* RecentPasswordsManager.swift in Sources */,
 				0A1EF80D2937D57D00F9DEC3 /* SettingsManager.swift in Sources */,
 				0AD29C51293FCF38007A9061 /* BarButtonItem.swift in Sources */,
