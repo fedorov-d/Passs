@@ -181,7 +181,7 @@ extension RootCoordinator: DefaultDatabaseUnlock {
            !matchingItems.isEmpty {
             let recentPasswordsManager = self.serviceLocator.recentPasswordsManager(databaseURL: databaseURL)
             let sectionTitle = (credentialsSelectionManager.serviceIdentifiersStrings?.joined(separator: ","))
-                .flatMap { "matching \($0)" }
+                .flatMap { "Entries matching \($0)" }
             self.showPasswordsViewController(
                 title: "Passwords",
                 footerViewProvider: {

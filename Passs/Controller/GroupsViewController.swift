@@ -110,7 +110,7 @@ extension GroupsViewController: UISearchResultsUpdating {
             }
             return range1.lowerBound < range2.lowerBound
         }
-        passwordsViewController?.sectionTitle = matchingItems.isEmpty ? "No matching items" : "Matching items"
+        passwordsViewController?.sectionTitle = (matchingItems.isEmpty ? "No matching entries" : "Matching entries").uppercased()
         passwordsViewController?.items = matchingItems
     }
 }
@@ -152,9 +152,9 @@ extension GroupsViewController {
 
     private func fallbackItems(for items: [PassItem]) -> (items: [PassItem], title: String) {
         if let matchingItems = matchingCredentialsSelectionItems(for: items), !matchingItems.isEmpty {
-            return (items: matchingItems, title: "Matching items")
+            return (items: matchingItems, title: "Matching entries".uppercased())
         } else {
-            return (items: recentPasswordsManager.matchingItems(for: items), title: "Recent items")
+            return (items: recentPasswordsManager.matchingItems(for: items), title: "Recent items".uppercased())
         }
     }
 

@@ -71,10 +71,9 @@ final class UnlockViewController: UIViewController {
         cell.customContentInset = .init(top: 2, leading: 16, bottom: 2, trailing: 16)
         cell.selectionStyle = .none
         let textField = cell.customContentView
+        textField.delegate = self
         textField.isSecureTextEntry = true
-        let size = UIFont.preferredFont(forTextStyle: .callout).pointSize
-        let font = UIFont.monospacedSystemFont(ofSize: size, weight: .regular)
-        textField.font = font
+        textField.font = UIFont.preferredFont(forTextStyle: .callout)
         textField.borderStyle = .none
         textField.returnKeyType = .continue
         textField.clearButtonMode = .whileEditing
@@ -315,5 +314,12 @@ extension UnlockViewController: UIDocumentPickerDelegate {
 fileprivate extension UnlockViewController {
     enum Constants {
         static let rowHeight: CGFloat = 44
+    }
+}
+
+extension UnlockViewController: UITextFieldDelegate {
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        tryUnlock()
+        return true
     }
 }

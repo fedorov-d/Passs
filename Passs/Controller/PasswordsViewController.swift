@@ -129,14 +129,16 @@ extension PasswordsViewController: UITableViewDataSource {
         return cell
     }
 
-    func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
-        return sectionTitle
+    func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+        let label = UILabel()
+        label.textColor = .secondaryLabel
+        label.numberOfLines = 0
+        label.text = sectionTitle
+        label.font = .preferredFont(forTextStyle: .footnote)
+        label.setContentCompressionResistancePriority(.defaultLow, for: .horizontal)
+        label.setContentCompressionResistancePriority(.required, for: .vertical)
+        return label.embeddedInContainerView(withEdges: .init(top: 4, leading: 16, bottom: 8, trailing: 16))
     }
-
-    func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-        23
-    }
-
 }
 
 extension PasswordsViewController: UITableViewDelegate {
@@ -159,8 +161,11 @@ extension PasswordsViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
         let item = items[indexPath.row]
+#if CREDENTIALS_PROVIDER_EXTENSION
         credentialsSelectionManager?.onCredentialsSelected(item)
+#else
         onItemSelect?(item)
+#endif
     }
 
     func tableView(_ tableView: UITableView,
