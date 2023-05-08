@@ -169,28 +169,36 @@ extension PasswordsViewController: UITableViewDelegate {
         return UIContextMenuConfiguration(actionProvider: { [weak self] menuElements in
             guard let item = self?.items[indexPath.row] else { fatalError() }
             var menuItems = [UIAction]()
-            if item.username != nil {
+            if let username = item.username, !username.isEmpty {
                 let copyUsernameAction = UIAction(title: "Copy username",
                                                   image: UIImage(systemName: "doc.on.doc")) { action in
                     self?.copyUsername(item)
                 }
                 menuItems.append(copyUsernameAction)
             }
-            if item.password != nil {
+            if let password = item.password, !password.isEmpty {
                 let copyPasswordAction = UIAction(title: "Copy password",
                                                   image: UIImage(systemName: "doc.on.doc")) { action in
                     self?.copyPassword(item)
                 }
                 menuItems.append(copyPasswordAction)
-            }
-            if item.url != nil, let password = item.password {
+
                 let generateQRAction = UIAction(title: "Generate QR code",
                                                 image: UIImage(systemName: "qrcode")) { action in
                     self?.presentQRCode(for: password)
                 }
                 menuItems.append(generateQRAction)
             }
-            return UIMenu(title: item.username ?? "",
+#if !CREDENTIALS_PROVIDER_EXTENSION
+            if let url = item.url.flatMap({ URL(string: $0) }) {
+                let generateQRAction = UIAction(title: "Open link",
+                                                image: UIImage(systemName: "arrow.up.right.square")) { action in
+                    UIApplication.shared.openURL(url)
+                }
+                menuItems.append(generateQRAction)
+            }
+#endif
+            return UIMenu(title: "",
                           children: menuItems)
         })
     }

@@ -39,7 +39,7 @@ class DatabaseListViewController: UIViewController {
     }()
     
     private lazy var tableView: UITableView = {
-        let tableView = UITableView(frame: .zero, style: .grouped)
+        let tableView = UITableView(frame: .zero, style: .insetGrouped)
         tableView.delegate = self
         tableView.register(SubtitleTableViewCell.self, forCellReuseIdentifier: cellId)
         return tableView
@@ -47,7 +47,7 @@ class DatabaseListViewController: UIViewController {
 
     private lazy var noDatabasesView: UIView = {
         let label = UILabel()
-        label.textColor = .systemRed
+        label.textColor = .secondaryLabel
         label.font = .preferredFont(forTextStyle: .largeTitle)
         label.numberOfLines = 0
         label.textAlignment = .center

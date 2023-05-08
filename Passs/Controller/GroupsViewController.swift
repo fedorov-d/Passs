@@ -74,6 +74,12 @@ class GroupsViewController: UIViewController {
         navigationItem.hidesSearchBarWhenScrolling = false
         definesPresentationContext = false
 
+        NotificationCenter.default.publisher(for: UIPasteboard.changedNotification)
+            .sink { [weak self] _ in
+                self?.updateRecentPasswords()
+            }
+            .store(in: &cancellables)
+
         setupKeyboardAvoidance(for: tableView, cancellables: &cancellables)
     }
 
@@ -88,16 +94,13 @@ class GroupsViewController: UIViewController {
 
 extension GroupsViewController: UISearchResultsUpdating {
     func updateSearchResults(for searchController: UISearchController) {
-        guard let passwordsViewController, let groups = databaseManager.passwordGroups else { return }
-        let items = groups.flatMap { $0.items }
         guard let text = searchController.searchBar.text?.lowercased(), !text.isEmpty else {
-            let fallback = fallbackItems(for: items)
-            guard fallback.items.count > 0 else { return }
-            passwordsViewController.view.isHidden = false
-            passwordsViewController.sectionTitle = fallback.title
-            passwordsViewController.items = fallback.items
+            updateRecentPasswords()
             return
         }
+
+        guard let groups = databaseManager.passwordGroups else { return }
+        let items = groups.flatMap { $0.items }
         let matchingItems = items.filter { item in
             item.title?.lowercased().contains(text) ?? false
         }.sorted { item1, item2 in
@@ -107,8 +110,8 @@ extension GroupsViewController: UISearchResultsUpdating {
             }
             return range1.lowerBound < range2.lowerBound
         }
-        passwordsViewController.sectionTitle = matchingItems.isEmpty ? "No matching items" : "Matching items"
-        passwordsViewController.items = matchingItems
+        passwordsViewController?.sectionTitle = matchingItems.isEmpty ? "No matching items" : "Matching items"
+        passwordsViewController?.items = matchingItems
     }
 }
 
@@ -148,13 +151,24 @@ extension GroupsViewController {
     }
 
     private func fallbackItems(for items: [PassItem]) -> (items: [PassItem], title: String) {
-        if let credentialsSelectionManager,
-           credentialsSelectionManager.serviceIdentifiers != nil,
-           let matchingItems = credentialsSelectionManager.matchigItems(for: items),
-           !matchingItems.isEmpty {
+        if let matchingItems = matchingCredentialsSelectionItems(for: items), !matchingItems.isEmpty {
             return (items: matchingItems, title: "Matching items")
         } else {
             return (items: recentPasswordsManager.matchingItems(for: items), title: "Recent items")
         }
+    }
+
+    private func matchingCredentialsSelectionItems(for items: [PassItem]) -> [PassItem]? {
+        return credentialsSelectionManager?.matchigItems(for: items)
+    }
+
+    private func updateRecentPasswords() {
+        guard let passwordsViewController, let groups = databaseManager.passwordGroups else { return }
+        let items = groups.flatMap { $0.items }
+        let fallback = fallbackItems(for: items)
+        guard fallback.items.count > 0 else { return }
+        passwordsViewController.view.isHidden = false
+        passwordsViewController.sectionTitle = fallback.title
+        passwordsViewController.items = fallback.items
     }
 }

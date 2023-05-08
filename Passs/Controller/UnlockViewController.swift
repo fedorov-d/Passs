@@ -49,7 +49,7 @@ final class UnlockViewController: UIViewController {
     // MARK: - UI components
 
     private lazy var tableView: UITableView = {
-        let tableView = UITableView(frame: .zero, style: .grouped)
+        let tableView = UITableView(frame: .zero, style: .insetGrouped)
         tableView.dataSource = self
         tableView.delegate = self
         if #available(iOS 15.0, *) {
