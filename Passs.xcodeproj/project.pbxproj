@@ -94,6 +94,8 @@
 		A3CFA4C6279289740020F82F /* UIImage+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3CFA4C5279289740020F82F /* UIImage+Extensions.swift */; };
 		A3CFA4C8279349370020F82F /* GroupsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3CFA4C7279349370020F82F /* GroupsViewController.swift */; };
 		A3CFA4CA2795F9650020F82F /* KeychainManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3CFA4C92795F9650020F82F /* KeychainManager.swift */; };
+		A3D767FB2A09139800BC8ABA /* PasscodeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3D767FA2A09139800BC8ABA /* PasscodeView.swift */; };
+		A3D767FC2A09139800BC8ABA /* PasscodeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3D767FA2A09139800BC8ABA /* PasscodeView.swift */; };
 		A3F034452A028CF300277ED2 /* ProgressNavigationBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3F034442A028CF300277ED2 /* ProgressNavigationBar.swift */; };
 		A3F034462A028CF300277ED2 /* ProgressNavigationBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3F034442A028CF300277ED2 /* ProgressNavigationBar.swift */; };
 		A3F3DA28260CA5FC0057AF24 /* PassItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3F3DA27260CA5FC0057AF24 /* PassItem.swift */; };
@@ -206,6 +208,7 @@
 		A3CFA4C5279289740020F82F /* UIImage+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIImage+Extensions.swift"; sourceTree = "<group>"; };
 		A3CFA4C7279349370020F82F /* GroupsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GroupsViewController.swift; sourceTree = "<group>"; };
 		A3CFA4C92795F9650020F82F /* KeychainManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeychainManager.swift; sourceTree = "<group>"; };
+		A3D767FA2A09139800BC8ABA /* PasscodeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PasscodeView.swift; sourceTree = "<group>"; };
 		A3F034442A028CF300277ED2 /* ProgressNavigationBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProgressNavigationBar.swift; sourceTree = "<group>"; };
 		A3F3DA27260CA5FC0057AF24 /* PassItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PassItem.swift; sourceTree = "<group>"; };
 		A3F3DA29260CA8440057AF24 /* PassItem+KeePassKit.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "PassItem+KeePassKit.swift"; sourceTree = "<group>"; };
@@ -439,6 +442,7 @@
 				A377A6F12A00EFE000213490 /* NotificationViewController.swift */,
 				0A52EDC629FFE8B7003463EF /* PasswordDetailsViewController.swift */,
 				A343496B2A0519DC000D42C4 /* AppSwitcherOverlayViewController.swift */,
+				A3D767FA2A09139800BC8ABA /* PasscodeView.swift */,
 			);
 			path = Controller;
 			sourceTree = "<group>";
@@ -683,6 +687,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A3D767FB2A09139800BC8ABA /* PasscodeView.swift in Sources */,
 				A35A8B1227BC2F1500216C24 /* UnlockViewController.swift in Sources */,
 				0A52EDC429FE6CD2003463EF /* BrowseDatabaseTableHeaderView.swift in Sources */,
 				0A8D3E382938F515005D4435 /* CredentialsSelectionManager.swift in Sources */,
@@ -784,6 +789,7 @@
 				0A1EF7F72937D56F00F9DEC3 /* TextFieldCell.swift in Sources */,
 				0A850A112937F9EF00754CC9 /* PassItem+KeePassKit.swift in Sources */,
 				0A1EF8062937D57D00F9DEC3 /* PassDatabaseManager.swift in Sources */,
+				A3D767FC2A09139800BC8ABA /* PasscodeView.swift in Sources */,
 				0A1EF7F82937D56F00F9DEC3 /* ColoredTableViewHeaderFooterView.swift in Sources */,
 				0A850A102937F99E00754CC9 /* PassItem.swift in Sources */,
 			);
@@ -943,7 +949,7 @@
 				DEVELOPMENT_TEAM = 3YK694S6H3;
 				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
 				INFOPLIST_FILE = Passs/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -968,7 +974,7 @@
 				DEVELOPMENT_TEAM = 3YK694S6H3;
 				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
 				INFOPLIST_FILE = Passs/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -1037,7 +1043,7 @@
 				INFOPLIST_FILE = CredentialProvider/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = CredentialProvider;
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
-				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -1067,7 +1073,7 @@
 				INFOPLIST_FILE = CredentialProvider/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = CredentialProvider;
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
-				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",

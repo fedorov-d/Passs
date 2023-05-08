@@ -142,6 +142,7 @@ extension PasswordsViewController: UITableViewDataSource {
 }
 
 extension PasswordsViewController: UITableViewDelegate {
+#if !CREDENTIALS_PROVIDER_EXTENSION
     func tableView(_ tableView: UITableView,
                    leadingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
         swipeActionConfiguration(with: "Copy username") { [unowned self] in
@@ -157,6 +158,7 @@ extension PasswordsViewController: UITableViewDelegate {
             self.copyPassword(item)
         }
     }
+#endif
 
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
@@ -168,6 +170,7 @@ extension PasswordsViewController: UITableViewDelegate {
 #endif
     }
 
+#if !CREDENTIALS_PROVIDER_EXTENSION
     func tableView(_ tableView: UITableView,
                    contextMenuConfigurationForRowAt indexPath: IndexPath,
                    point: CGPoint) -> UIContextMenuConfiguration? {
@@ -194,7 +197,6 @@ extension PasswordsViewController: UITableViewDelegate {
                 }
                 menuItems.append(generateQRAction)
             }
-#if !CREDENTIALS_PROVIDER_EXTENSION
             if let url = item.url.flatMap({ URL(string: $0) }) {
                 let generateQRAction = UIAction(title: "Open link",
                                                 image: UIImage(systemName: "arrow.up.right.square")) { action in
@@ -202,11 +204,11 @@ extension PasswordsViewController: UITableViewDelegate {
                 }
                 menuItems.append(generateQRAction)
             }
-#endif
             return UIMenu(title: "",
                           children: menuItems)
         })
     }
+#endif
 }
 
 extension PasswordsViewController {
