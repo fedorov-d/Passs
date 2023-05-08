@@ -15,7 +15,7 @@ class GroupsViewController: UIViewController {
     private let groupSelected: (PassGroup) -> Void
     private let searchResultsControllerProvider: () -> PasswordsSeachResultsDispalyController & UIViewController
 
-    private var subscriptionSet = Set<AnyCancellable>()
+    private var cancellables = Set<AnyCancellable>()
 
     init(databaseManager: PassDatabaseManager,
          recentPasswordsManager: RecentPasswordsManager,
@@ -40,10 +40,9 @@ class GroupsViewController: UIViewController {
 
     private lazy var tableView: UITableView = {
         let tableView = UITableView(frame: .zero, style: .insetGrouped)
-        tableView.rowHeight = 48
         tableView.dataSource = self
         tableView.delegate = self
-        tableView.register(UITableViewCell.self, forCellReuseIdentifier: cellId)
+        tableView.register(SubtitleTableViewCell.self, forCellReuseIdentifier: cellId)
         tableView.tableHeaderView = UIView(frame: CGRect(x: 0, y: 0, width: 0, height: 16))
         if #available(iOS 15, *) {
             tableView.sectionHeaderTopPadding = 10
@@ -75,7 +74,7 @@ class GroupsViewController: UIViewController {
         navigationItem.hidesSearchBarWhenScrolling = false
         definesPresentationContext = false
 
-        setupKeyboardAvoidance(for: tableView, subscriptionSet: &subscriptionSet)
+        setupKeyboardAvoidance(for: tableView, cancellables: &cancellables)
     }
 
     override func viewDidAppear(_ animated: Bool) {
@@ -89,16 +88,14 @@ class GroupsViewController: UIViewController {
 
 extension GroupsViewController: UISearchResultsUpdating {
     func updateSearchResults(for searchController: UISearchController) {
-        guard let passwordsController = searchController.searchResultsController
-                as? PasswordsSeachResultsDispalyController & UIViewController,
-              let groups = databaseManager.passwordGroups else { return }
+        guard let passwordsViewController, let groups = databaseManager.passwordGroups else { return }
         let items = groups.flatMap { $0.items }
         guard let text = searchController.searchBar.text?.lowercased(), !text.isEmpty else {
             let fallback = fallbackItems(for: items)
             guard fallback.items.count > 0 else { return }
-            passwordsController.view.isHidden = false
-            passwordsController.sectionTitle = fallback.title
-            passwordsController.items = fallback.items
+            passwordsViewController.view.isHidden = false
+            passwordsViewController.sectionTitle = fallback.title
+            passwordsViewController.items = fallback.items
             return
         }
         let matchingItems = items.filter { item in
@@ -110,8 +107,8 @@ extension GroupsViewController: UISearchResultsUpdating {
             }
             return range1.lowerBound < range2.lowerBound
         }
-        passwordsController.sectionTitle = matchingItems.isEmpty ? "No matching items" : "Matching items"
-        passwordsController.items = matchingItems
+        passwordsViewController.sectionTitle = matchingItems.isEmpty ? "No matching items" : "Matching items"
+        passwordsViewController.items = matchingItems
     }
 }
 
@@ -124,6 +121,12 @@ extension GroupsViewController: UITableViewDataSource {
         let cell = tableView.dequeueReusableCell(withIdentifier: cellId, for: indexPath)
         guard let group = databaseManager.passwordGroups?[indexPath.row] else { fatalError() }
         cell.textLabel?.text = group.title
+        cell.textLabel?.font = .preferredFont(forTextStyle: .body)
+
+        cell.detailTextLabel?.text = "\(group.items.count) entries"
+        cell.detailTextLabel?.textColor = .secondaryLabel
+        cell.detailTextLabel?.font = .preferredFont(forTextStyle: .caption1)
+
         cell.accessoryType = .disclosureIndicator
         cell.imageView?.image = UIImage(systemName: "folder")
         return cell
@@ -139,6 +142,11 @@ extension GroupsViewController: UITableViewDelegate {
 }
 
 extension GroupsViewController {
+    private var passwordsViewController: (PasswordsSeachResultsDispalyController & UIViewController)? {
+        navigationItem.searchController?.searchResultsController
+            as? PasswordsSeachResultsDispalyController & UIViewController
+    }
+
     private func fallbackItems(for items: [PassItem]) -> (items: [PassItem], title: String) {
         if let credentialsSelectionManager,
            credentialsSelectionManager.serviceIdentifiers != nil,

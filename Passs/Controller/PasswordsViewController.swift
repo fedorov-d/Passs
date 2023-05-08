@@ -30,7 +30,7 @@ class PasswordsViewController: UIViewController, PasswordsSeachResultsDispalyCon
     private let footerViewProvider: (() -> UIView)?
     private var onItemSelect: ((PassItem) -> Void)?
 
-    private var subscriptionSet = Set<AnyCancellable>()
+    private var cancellables = Set<AnyCancellable>()
 
     init(title: String? = "Passwords",
          footerViewProvider: (() -> UIView)? = nil,
@@ -97,7 +97,7 @@ class PasswordsViewController: UIViewController, PasswordsSeachResultsDispalyCon
         setCancelNavigationItemIfNeeded(with: credentialsSelectionManager)
 
         tableView.reloadData()
-        setupKeyboardAvoidance(for: tableView, subscriptionSet: &subscriptionSet)
+        setupKeyboardAvoidance(for: tableView, cancellables: &cancellables)
     }
 
 }
@@ -167,25 +167,31 @@ extension PasswordsViewController: UITableViewDelegate {
                    contextMenuConfigurationForRowAt indexPath: IndexPath,
                    point: CGPoint) -> UIContextMenuConfiguration? {
         return UIContextMenuConfiguration(actionProvider: { [weak self] menuElements in
-            guard let item = self?.items[indexPath.row] else { return nil }
-            let copyUsernameAction = UIAction(title: "Copy username",
-                                   image: UIImage(systemName: "doc.on.doc")) { action in
-                self?.copyUsername(item)
+            guard let item = self?.items[indexPath.row] else { fatalError() }
+            var menuItems = [UIAction]()
+            if item.username != nil {
+                let copyUsernameAction = UIAction(title: "Copy username",
+                                                  image: UIImage(systemName: "doc.on.doc")) { action in
+                    self?.copyUsername(item)
+                }
+                menuItems.append(copyUsernameAction)
             }
-            guard let password = item.password else {
-                return UIMenu(title: item.username ?? "",
-                              children: [copyUsernameAction])
+            if item.password != nil {
+                let copyPasswordAction = UIAction(title: "Copy password",
+                                                  image: UIImage(systemName: "doc.on.doc")) { action in
+                    self?.copyPassword(item)
+                }
+                menuItems.append(copyPasswordAction)
             }
-            let copyPasswordAction = UIAction(title: "Copy password",
-                                   image: UIImage(systemName: "doc.on.doc")) { action in
-                self?.copyPassword(item)
-            }
-            let generateQRAction = UIAction(title: "Generate QR code",
-                                            image: UIImage(systemName: "qrcode")) { action in
-                self?.presentQRCode(for: password)
+            if item.url != nil, let password = item.password {
+                let generateQRAction = UIAction(title: "Generate QR code",
+                                                image: UIImage(systemName: "qrcode")) { action in
+                    self?.presentQRCode(for: password)
+                }
+                menuItems.append(generateQRAction)
             }
             return UIMenu(title: item.username ?? "",
-                          children: [copyUsernameAction, copyPasswordAction, generateQRAction])
+                          children: menuItems)
         })
     }
 }

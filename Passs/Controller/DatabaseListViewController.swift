@@ -27,7 +27,7 @@ class DatabaseListViewController: UIViewController {
     private let onDatabaseOpened: () -> Void
     private let onAskForPassword: (_: URL) -> Void
 
-    private var subscriptionSet = Set<AnyCancellable>()
+    private var cancellables = Set<AnyCancellable>()
 
     private lazy var dataSource = makeDataSource()
 
@@ -117,13 +117,13 @@ class DatabaseListViewController: UIViewController {
             .sink { [weak self] _ in
                 self?.ignoreApplicationDidBecomeActive = true
             }
-            .store(in: &subscriptionSet)
+            .store(in: &cancellables)
 
         applicationDidEnterBackground()
             .sink { [weak self] in
                 self?.ignoreApplicationDidBecomeActive = false
             }
-            .store(in: &subscriptionSet)
+            .store(in: &cancellables)
 
         applicationDidBecomeActivePublisher()
             .filter { [weak self] _ in
@@ -135,7 +135,7 @@ class DatabaseListViewController: UIViewController {
                 self.tableView.reloadData()
                 self.unlockDatabaseIfNeeded()
             }
-            .store(in: &subscriptionSet)
+            .store(in: &cancellables)
     }
 
     override func viewDidAppear(_ animated: Bool) {

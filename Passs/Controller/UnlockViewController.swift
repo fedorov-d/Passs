@@ -14,7 +14,7 @@ final class UnlockViewController: UIViewController {
     private let localAuthManager: LocalAuthManager
     private let completion: () -> Void
 
-    private var subscriptionSet = Set<AnyCancellable>()
+    private var cancellables = Set<AnyCancellable>()
 
     private let passwordCellId = "passwordCellId"
     private let selectKeyCellId = "selectKeyCellId"
@@ -56,29 +56,29 @@ final class UnlockViewController: UIViewController {
             tableView.sectionHeaderTopPadding = .leastNonzeroMagnitude
         }
         tableView.showsVerticalScrollIndicator = false
-        tableView.register(TextFieldCell.self, forCellReuseIdentifier: passwordCellId)
+        tableView.register(GenericContentTableViewCell<UITextField>.self, forCellReuseIdentifier: passwordCellId)
         tableView.register(SwitchCell.self, forCellReuseIdentifier: biometryCellId)
         tableView.register(ColoredTableViewHeaderFooterView.self, forHeaderFooterViewReuseIdentifier: footerId)
         tableView.register(SelectKeyButtonCell.self, forCellReuseIdentifier: selectKeyCellId)
         return tableView
     }()
 
-    private lazy var passwordCell: TextFieldCell = {
+    private lazy var passwordCell: GenericContentTableViewCell<UITextField> = {
         let cell = tableView.dequeueReusableCell(
             withIdentifier: passwordCellId,
             for: IndexPath(row: 0, section: 0)
-        ) as! TextFieldCell
-        cell.onTextChanged = { [weak self] newText in
-            guard let self else { return }
-            self.unlockData.password = newText
-            self.navigationItem.rightBarButtonItem?.isEnabled = newText.count > 0
-            if newText.count == 0 {
-                self.biometryCell?.isOn = false
-            }
-            self.biometryCell?.isEnabled = newText.count > 0
-            self.errorFoorterView.label.isHidden = true
-        }
-        cell.onReturn = tryUnlock
+        ) as! GenericContentTableViewCell<UITextField>
+        cell.customContentInset = .init(top: 2, leading: 16, bottom: 2, trailing: 16)
+        cell.selectionStyle = .none
+        let textField = cell.customContentView
+        textField.isSecureTextEntry = true
+        let size = UIFont.preferredFont(forTextStyle: .callout).pointSize
+        let font = UIFont.monospacedSystemFont(ofSize: size, weight: .regular)
+        textField.font = font
+        textField.borderStyle = .none
+        textField.returnKeyType = .continue
+        textField.clearButtonMode = .whileEditing
+        textField.addTarget(self, action: #selector(passwordTextDidChange(_:)), for: .editingChanged)
         return cell
     }()
 
@@ -161,7 +161,7 @@ final class UnlockViewController: UIViewController {
 
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        _ = passwordCell.becomeFirstResponder()
+        _ = passwordCell.customContentView.becomeFirstResponder()
     }
 
 }
@@ -173,7 +173,7 @@ extension UnlockViewController {
             .sink { [weak self] keyboardParams in
                 self?.adjustTableInsets(with: keyboardParams.frameEnd)
             }
-            .store(in: &subscriptionSet)
+            .store(in: &cancellables)
     }
 
     private func adjustTableInsets(with keyboardFrame: CGRect) {
@@ -262,6 +262,18 @@ extension UnlockViewController {
     @objc
     private func unlockTapped(_ sender: AnyObject) {
         tryUnlock()
+    }
+
+    @objc
+    private func passwordTextDidChange(_ sender: UITextField) {
+        let newText = sender.text ?? ""
+        self.unlockData.password = newText
+        self.navigationItem.rightBarButtonItem?.isEnabled = newText.count > 0
+        if newText.count == 0 {
+            self.biometryCell?.isOn = false
+        }
+        self.biometryCell?.isEnabled = newText.count > 0
+        self.errorFoorterView.label.isHidden = true
     }
 
     private func tryUnlock() {
