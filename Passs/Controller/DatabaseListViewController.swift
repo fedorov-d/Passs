@@ -10,6 +10,7 @@ import MobileCoreServices
 import UniformTypeIdentifiers
 import LocalAuthentication
 import Combine
+import SwiftUI
 
 protocol DefaultDatabaseUnlock: AnyObject {
     func unlockDatabaseIfNeeded()
@@ -167,9 +168,20 @@ class DatabaseListViewController: UIViewController {
 extension DatabaseListViewController {
     @objc
     func importTapped() {
-        let documentPickerController = UIDocumentPickerViewController.keepassDatabasesPicker()
-        documentPickerController.delegate = self
-        self.present(documentPickerController, animated: true, completion: nil)
+//        let documentPickerController = UIDocumentPickerViewController.keepassDatabasesPicker()
+//        documentPickerController.delegate = self
+        //        self.present(documentPickerController, animated: true, completion: nil)
+        let controller = UIHostingController(rootView: PasscodeView(onCancel: { [weak self] in
+            self?.navigationController?.dismiss(animated: true)
+        }, onCompleted: { [weak self] in
+            self?.navigationController?.dismiss(animated: true)
+        }, validation: { _ in
+            Bool.random()
+        }))
+        controller.modalPresentationStyle = .overFullScreen
+        controller.modalTransitionStyle = .crossDissolve
+        self.navigationController?.present(controller, animated: true)
+        controller.view.backgroundColor = .clear
     }
 
     @objc

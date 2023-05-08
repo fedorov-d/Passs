@@ -45,20 +45,6 @@ final class RootCoordinator {
             navigationController.presentedViewController?.dismiss(animated: animated)
         default: break
         }
-
-        DispatchQueue.main.asyncAfter(deadline: .now() + .milliseconds(1000)) {
-            let controller = UIHostingController(rootView: PasscodeView(onCancel: { [weak self] in
-                self?.navigationController.dismiss(animated: true)
-            }, onCompleted: { [weak self] in
-                self?.navigationController.dismiss(animated: true)
-            }, validation: { _ in
-                true
-            }))
-            controller.modalPresentationStyle = .overFullScreen
-            controller.modalTransitionStyle = .crossDissolve
-            self.navigationController.present(controller, animated: true)
-            controller.view.backgroundColor = .clear
-        }
     }
 
     private func showUnlockViewController(forDatabaseAt url: URL, passDatabaseManager: PassDatabaseManager) {

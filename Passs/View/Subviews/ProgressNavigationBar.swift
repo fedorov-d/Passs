@@ -43,17 +43,7 @@ final class ProgressNavigationBar: UINavigationBar {
 
     override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
         super.traitCollectionDidChange(previousTraitCollection)
-        let appearance = UINavigationBarAppearance()
-        appearance.configureWithOpaqueBackground()
-        appearance.backgroundColor = traitCollection.userInterfaceStyle == .dark ?
-            .secondarySystemBackground :
-            .systemBackground
-        standardAppearance = appearance
-        compactAppearance = appearance
-        scrollEdgeAppearance = appearance
-        if #available(iOS 15.0, *) {
-            compactScrollEdgeAppearance = appearance
-        }
+        updateApperance()
     }
 }
 
@@ -61,9 +51,11 @@ private extension ProgressNavigationBar {
     func updateApperance() {
         let appearance = UINavigationBarAppearance()
         appearance.configureWithOpaqueBackground()
-        appearance.backgroundColor = .systemBackground
+        appearance.backgroundColor = 
+            .systemBackground
         standardAppearance = appearance
         compactAppearance = appearance
+        appearance.shadowColor = nil
         scrollEdgeAppearance = appearance
         if #available(iOS 15.0, *) {
             compactScrollEdgeAppearance = appearance

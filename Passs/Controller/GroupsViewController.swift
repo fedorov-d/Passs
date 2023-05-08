@@ -154,7 +154,7 @@ extension GroupsViewController {
         if let matchingItems = matchingCredentialsSelectionItems(for: items), !matchingItems.isEmpty {
             return (items: matchingItems, title: "Matching entries".uppercased())
         } else {
-            return (items: recentPasswordsManager.matchingItems(for: items), title: "Recent items".uppercased())
+            return (items: recentPasswordsManager.matchingItems(for: items), title: "Recently used".uppercased())
         }
     }
 
@@ -167,7 +167,7 @@ extension GroupsViewController {
         let items = groups.flatMap { $0.items }
         let fallback = fallbackItems(for: items)
         guard fallback.items.count > 0 else { return }
-        guard !afterPasteboardChange, fallback.items.map(\.uuid) != passwordsViewController.items.map(\.uuid) else {
+        guard !afterPasteboardChange || fallback.items.map(\.uuid) != passwordsViewController.items.map(\.uuid) else {
             return
         }
         passwordsViewController.view.isHidden = false
