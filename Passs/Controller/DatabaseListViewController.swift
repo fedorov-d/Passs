@@ -168,18 +168,20 @@ class DatabaseListViewController: UIViewController {
 extension DatabaseListViewController {
     @objc
     func importTapped() {
-        let documentPickerController = UIDocumentPickerViewController.keepassDatabasesPicker()
-        documentPickerController.delegate = self
-        self.present(documentPickerController, animated: true, completion: nil)
+                let documentPickerController = UIDocumentPickerViewController.keepassDatabasesPicker()
+                documentPickerController.delegate = self
+                self.present(documentPickerController, animated: true, completion: nil)
+//        let validate: (String?) -> Bool = { _ in Bool.random() }
 //        let passcodeView = PasscodeView(
-//            scenario: .init(steps: [PasscodeView.Step(type: .create), PasscodeView.Step(type: .repeat)],
+//            scenario: .init(steps: [
+//                .init(type: .check(validate: validate))
+//            ],
 //                            onDismiss: { [weak self] in
 //                                self?.navigationController?.dismiss(animated: true)
 //                            },
 //                            onComplete: { [weak self] passcode in
 //                                self?.navigationController?.dismiss(animated: true)
-//                            }
-//                           )
+//                            })
 //        )
 //        let controller = UIHostingController(rootView: passcodeView)
 //        self.navigationController?.present(controller, animated: true)
