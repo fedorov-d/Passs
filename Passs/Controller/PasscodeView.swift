@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct PasscodeView: View {
-    enum StepType {
+    enum StepType: String {
         case create
         case `repeat`
         case check
@@ -38,41 +38,52 @@ struct PasscodeView: View {
             steps[currentStepIndex]
         }
 
-        mutating func completeCurrentStep() -> Bool {
-            if currentStepIndex == steps.indices.last {
-                return false
+        var onDismiss: () -> Void
+        var onComplete: ((String) -> Void)?
+        var validate: ((String) -> Bool)?
+
+        mutating func resetInput() {
+            for index in steps.indices {
+                steps[index].input = ""
             }
-            currentStepIndex += 1
+            currentStepIndex = 0
+        }
+
+        var isValidInput: Bool {
+            guard currentStepIndex == steps.indices.last else { return true }
+            if case .repeat = currentStep.type {
+                return Set(steps.map(\.input)).count == 1
+            }
             return true
+        }
+
+        mutating func proceedToNextStepOrComplete() {
+            if currentStepIndex == steps.indices.last, let input = steps.last?.input {
+                onComplete?(input)
+            } else {
+                currentStepIndex += 1
+            }
         }
     }
 
-    struct Config {
-        var scenario: Scenario
-
-        var onCancel: () -> Void
-        var onCompleted: () -> Void
-        var validation: (String) -> Bool
-    }
-
-    @State private var start = false
+    @State private var isValidInput = true
     @State private var isOpened = false
 
-    @State var config: Config
+    @State var scenario: Scenario
 
     var body: some View {
         VStack(spacing: 20) {
             Spacer(minLength: 0)
-            TabView(selection: $config.scenario.currentStepIndex) {
-                ForEach(0..<config.scenario.steps.count, id: \.self) { index in
-                    let step = config.scenario.steps[index]
+            TabView(selection: $scenario.currentStepIndex) {
+                ForEach(0..<scenario.steps.count, id: \.self) { index in
+                    let step = scenario.steps[index]
                     VStack(spacing: 15) {
                         Text(step.type.title)
                             .foregroundColor(Color(UIColor.label))
                             .font(.system(.title2))
                         dotsView
                             .frame(height: 14)
-                            .offset(x: start ? 40 : 0)
+                            .offset(x: isValidInput ? 0 : 40)
                     }
                     .tag(index)
                     .transition(.slide)
@@ -91,8 +102,8 @@ struct PasscodeView: View {
         HStack(spacing: 20) {
             ForEach(0..<6) { index in
                 Circle()
-                    .strokeBorder(index <= config.scenario.currentStep.input.count - 1 ? Color.clear : Color(UIColor.secondaryLabel), lineWidth: 1)
-                    .background(Circle().foregroundColor(index > config.scenario.currentStep.input.count - 1 ? Color.clear : Color(UIColor.secondaryLabel)))
+                    .strokeBorder(index <= scenario.currentStep.input.count - 1 ? Color.clear : Color(UIColor.secondaryLabel), lineWidth: 1)
+                    .background(Circle().foregroundColor(index > scenario.currentStep.input.count - 1 ? Color.clear : Color(UIColor.secondaryLabel)))
                     .frame(width: 12)
             }
         }
@@ -131,54 +142,60 @@ struct PasscodeView: View {
 
     private func numberView(for string: String, secondary: String? = nil) -> some View {
             Button {
-                guard config.scenario.currentStep.input.count <= 6 else { return }
-                config.scenario.steps[config.scenario.currentStepIndex].input.append(string)
-                guard config.scenario.currentStep.input.count == 6 else { return }
-                withAnimation(.easeInOut(duration: 0.25)) {
-                    _ = config.scenario.completeCurrentStep()
-                }
-//                if config.validation(passcode.joined()) {
-//                    withAnimation(.linear(duration: 0.25)) {
-//                        isOpened = true
-//                    }
-//                    DispatchQueue.main.asyncAfter(deadline: .now() + .milliseconds(500)) {
-//                        config.onCompleted()
-//                    }
-//                } else {
-//                    start = true
-//                    withAnimation(Animation.spring(response: 0.2, dampingFraction: 0.17, blendDuration: 0.2)) {
-//                        start = false
-//                        passcode = []
-//                    }
-//                }
-            } label: {
-                Circle()
-                    .foregroundColor(Color(UIColor.secondarySystemBackground))
-                    .overlay(
-                        VStack(spacing: -3) {
-                            Text(string)
-                                .font(.system(.largeTitle))
-                                .scaledToFit()
-                                .lineLimit(nil)
-                                .fixedSize(horizontal: true, vertical: false)
-                            if let secondary {
-                                Text(secondary.uppercased())
-                                    .font(.system(.footnote, design: .rounded))
-                            }
+                guard scenario.currentStep.input.count < 6 else { return }
+                scenario.steps[scenario.currentStepIndex].input.append(string)
+                guard scenario.currentStep.input.count == 6 else { return }
+                if !scenario.isValidInput {
+                    isValidInput = false
+                    let impactMed = UIImpactFeedbackGenerator(style: .heavy)
+                    impactMed.impactOccurred()
+                    withAnimation(Animation.spring(response: 0.2,
+                                                   dampingFraction: 0.17,
+                                                   blendDuration: 0.2)) {
+                        isValidInput = true
+                    }
+                    DispatchQueue.main.asyncAfter(deadline: .now() + .milliseconds(200)) {
+                        withAnimation(.easeInOut(duration: 0.25)) {
+                            scenario.resetInput()
                         }
-                            .foregroundColor(Color(UIColor.label))
-                    )
-                    .frame(width: 75, height: 75)
+                    }
+                } else {
+                    withAnimation(.easeInOut(duration: 0.25)) {
+                        scenario.proceedToNextStepOrComplete()
+                    }
+                }
+            } label: {
+                numberLabel(for: string, secondaryLabel: secondary)
             }
     }
 
+    private func numberLabel(for primaryLabel: String, secondaryLabel: String? = nil) -> some View {
+        Circle()
+            .foregroundColor(Color(UIColor.secondarySystemBackground))
+            .overlay(
+                VStack(spacing: -3) {
+                    Text(primaryLabel)
+                        .font(.system(.largeTitle))
+                        .scaledToFit()
+                        .lineLimit(nil)
+                        .fixedSize(horizontal: true, vertical: false)
+                    if let secondaryLabel {
+                        Text(secondaryLabel.uppercased())
+                            .font(.system(.footnote, design: .rounded))
+                    }
+                }
+                    .foregroundColor(Color(UIColor.label))
+            )
+            .frame(width: 75, height: 75)
+    }
+
     private var bottomButton: some View {
-        Button(config.scenario.currentStep.input.isEmpty ? "Cancel" : "Delete") {
-            if config.scenario.currentStep.input.isEmpty {
-                config.onCancel()
+        Button(scenario.currentStep.input.isEmpty ? "Cancel" : "Delete") {
+            if scenario.currentStep.input.isEmpty {
+                scenario.onDismiss()
             } else {
                 isOpened = false
-                config.scenario.steps[config.scenario.currentStepIndex].input.removeLast()
+                scenario.steps[scenario.currentStepIndex].input.removeLast()
             }
         }
         .foregroundColor(Color(UIColor.keepCyan))
@@ -193,26 +210,20 @@ struct VisualEffectView: UIViewRepresentable {
 
 struct PasscodeView_PreviewsProvider: PreviewProvider {
     static var previews: some View {
-        PasscodeView(config: PasscodeView.Config(
-            scenario: .init(steps: [PasscodeView.Step(type: .create), PasscodeView.Step(type: .repeat)]),
-            onCancel: {
-
-            }, onCompleted: {
-
-            }, validation: { _ in
-                true
-            }))
+        PasscodeView(
+            scenario: .init(
+                steps: [PasscodeView.Step(type: .create), PasscodeView.Step(type: .repeat)],
+                onDismiss: {}
+            )
+        )
         .previewDevice(PreviewDevice(rawValue: "iPhone SE (3rd generation)"))
 
-        PasscodeView(config: PasscodeView.Config(
-            scenario: .init(steps: [PasscodeView.Step(type: .create), PasscodeView.Step(type: .repeat)]),
-            onCancel: {
-
-            }, onCompleted: {
-
-            }, validation: { _ in
-                false
-            }))
+        PasscodeView(
+            scenario: .init(
+                steps: [PasscodeView.Step(type: .create), PasscodeView.Step(type: .repeat)],
+                onDismiss: {}
+            )
+        )
             .previewDevice(PreviewDevice(rawValue: "iPhone 14 Pro Max"))
     }
 }
