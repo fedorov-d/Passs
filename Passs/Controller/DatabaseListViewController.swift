@@ -171,17 +171,17 @@ extension DatabaseListViewController {
 //        let documentPickerController = UIDocumentPickerViewController.keepassDatabasesPicker()
 //        documentPickerController.delegate = self
         //        self.present(documentPickerController, animated: true, completion: nil)
-        let controller = UIHostingController(rootView: PasscodeView(onCancel: { [weak self] in
-            self?.navigationController?.dismiss(animated: true)
-        }, onCompleted: { [weak self] in
-            self?.navigationController?.dismiss(animated: true)
-        }, validation: { _ in
-            Bool.random()
-        }))
-//        controller.modalPresentationStyle = .overFullScreen
-//        controller.modalTransitionStyle = .crossDissolve
+        let passcodeView = PasscodeView(config: PasscodeView.Config(
+            scenario: .init(steps: [PasscodeView.Step(type: .create), PasscodeView.Step(type: .repeat)]),
+            onCancel: {
+
+            }, onCompleted: {
+
+            }, validation: { _ in
+                Bool.random()
+            }))
+        let controller = UIHostingController(rootView: passcodeView)
         self.navigationController?.present(controller, animated: true)
-        controller.view.backgroundColor = .clear
     }
 
     @objc
