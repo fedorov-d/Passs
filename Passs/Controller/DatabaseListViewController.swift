@@ -178,8 +178,8 @@ extension DatabaseListViewController {
         }, validation: { _ in
             Bool.random()
         }))
-        controller.modalPresentationStyle = .overFullScreen
-        controller.modalTransitionStyle = .crossDissolve
+//        controller.modalPresentationStyle = .overFullScreen
+//        controller.modalTransitionStyle = .crossDissolve
         self.navigationController?.present(controller, animated: true)
         controller.view.backgroundColor = .clear
     }

@@ -22,13 +22,13 @@ struct PasscodeView: View {
             VisualEffectView(effect: UIBlurEffect(style: .light))
                 .edgesIgnoringSafeArea(.all)
             VStack(spacing: 20) {
-                Image(systemName: isOpened ? "lock.open" : "lock")
-                    .resizable()
-                    .foregroundColor(.secondary)
-                    .aspectRatio(contentMode: .fit)
-                    .frame(height: 30)
-                    .padding(.top, 20)
-                    .padding(.leading, isOpened ? 10 : 0)
+//                Image(systemName: isOpened ? "lock.open" : "lock")
+//                    .resizable()
+//                    .foregroundColor(.secondary)
+//                    .aspectRatio(contentMode: .fit)
+//                    .frame(height: 30)
+//                    .padding(.top, 20)
+//                    .padding(.leading, isOpened ? 10 : 0)
                 Spacer(minLength: 0)
                 VStack(spacing: 15) {
                     Text("Enter Passcode")
@@ -36,6 +36,7 @@ struct PasscodeView: View {
                         .frame(height: 14)
                         .offset(x: start ? 40 : 0)
                 }
+                .padding(.top, 20)
                 Spacer()
                 numPadView
                     .padding(.bottom, 24)
