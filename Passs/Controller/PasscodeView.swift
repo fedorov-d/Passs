@@ -12,13 +12,14 @@ struct PasscodeView: View {
     @State var scenario: Scenario
 
     var body: some View {
-        VStack(spacing: 20) {
+        VStack(spacing: 10) {
             Spacer(minLength: 0)
             titleAndDotsPages
-            Spacer()
+            Spacer(minLength: 0)
             numPad
                 .padding(.bottom, 24)
         }
+        .ignoresSafeArea(.keyboard, edges: .bottom)
         .background(Color(UIColor.systemBackground))
     }
 
@@ -83,9 +84,9 @@ struct PasscodeView: View {
                 numberView(primary: "9", secondary: "wxyz")
             }
             HStack(spacing: 30) {
-                Spacer()
+                Spacer(minLength: 0)
                 numberView(primary: "0")
-                Spacer()
+                Spacer(minLength: 0)
             }
             HStack(spacing: 30) {
                 dismissButton

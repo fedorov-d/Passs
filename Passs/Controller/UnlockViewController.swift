@@ -7,6 +7,7 @@
 
 import UIKit
 import Combine
+import SwiftUI
 
 final class UnlockViewController: UIViewController {
     private let passDatabaseManager: PassDatabaseManager
@@ -19,9 +20,12 @@ final class UnlockViewController: UIViewController {
     private let passwordCellId = "passwordCellId"
     private let selectKeyCellId = "selectKeyCellId"
     private let biometryCellId = "biometryCellId"
+    private let passcodeCellId = "passcodeCellId"
     private let footerId = "footerId"
 
     private var unlockData = UnlockData()
+
+    private lazy var dataSource = makeDataSource()
 
     // MARK: init
 
@@ -50,29 +54,28 @@ final class UnlockViewController: UIViewController {
 
     private lazy var tableView: UITableView = {
         let tableView = UITableView(frame: .zero, style: .insetGrouped)
-        tableView.dataSource = self
         tableView.delegate = self
         if #available(iOS 15.0, *) {
             tableView.sectionHeaderTopPadding = .leastNonzeroMagnitude
         }
+        tableView.rowHeight = Constants.rowHeight
         tableView.showsVerticalScrollIndicator = false
         tableView.register(GenericContentTableViewCell<UITextField>.self, forCellReuseIdentifier: passwordCellId)
         tableView.register(SwitchCell.self, forCellReuseIdentifier: biometryCellId)
         tableView.register(ColoredTableViewHeaderFooterView.self, forHeaderFooterViewReuseIdentifier: footerId)
         tableView.register(SelectKeyButtonCell.self, forCellReuseIdentifier: selectKeyCellId)
+        tableView.register(Value1TableViewCell.self, forCellReuseIdentifier: passcodeCellId)
         return tableView
     }()
 
     private lazy var passwordCell: GenericContentTableViewCell<UITextField> = {
-        let cell = tableView.dequeueReusableCell(
-            withIdentifier: passwordCellId,
-            for: IndexPath(row: 0, section: 0)
-        ) as! GenericContentTableViewCell<UITextField>
+        let cell = GenericContentTableViewCell<UITextField>(style: .default, reuseIdentifier: passwordCellId)
         cell.customContentInset = .init(top: 2, leading: 16, bottom: 2, trailing: 16)
         cell.selectionStyle = .none
         let textField = cell.customContentView
         textField.delegate = self
         textField.isSecureTextEntry = true
+        textField.placeholder = "Password"
         textField.font = UIFont.preferredFont(forTextStyle: .callout)
         textField.borderStyle = .none
         textField.returnKeyType = .continue
@@ -81,34 +84,35 @@ final class UnlockViewController: UIViewController {
         return cell
     }()
 
-    private lazy var biometryCell: SwitchCell? = {
-        guard localAuthManager.isLocalAuthAvailable() else { return nil }
-        let biometryTypeString: String
+    private lazy var biometryCell: SwitchCell = {
+        let text: String
         switch localAuthManager.biomeryType {
         case .touchID:
-            biometryTypeString = "Touch id"
+            text = "Use Touch id"
         case .faceID:
-            biometryTypeString = "Face id"
+            text = "Use Face id"
         default:
-            return nil
+            text = "Biometric auth is disabled"
         }
-        let cell = tableView.dequeueReusableCell(
-            withIdentifier: biometryCellId,
-            for: IndexPath(row: 0, section: 2)
-        ) as! SwitchCell
-        cell.textLabel?.text = "Unlock with \(biometryTypeString)"
+        let cell = SwitchCell(style: .default, reuseIdentifier: biometryCellId)
+        cell.textLabel?.text = text
         return cell
     }()
 
     private lazy var selectKeyCell: SelectKeyButtonCell = {
-        let cell = tableView.dequeueReusableCell(
-            withIdentifier: selectKeyCellId,
-            for: IndexPath(row: 0, section: 1)
-        ) as! SelectKeyButtonCell
+        let cell = SelectKeyButtonCell(style: .default, reuseIdentifier: selectKeyCellId)
         cell.onButtonTap = { [weak self] in
             self?.openKeyfile()
         }
         cell.title = "Select key"
+        return cell
+    }()
+
+    private lazy var passcodeCell: UITableViewCell = {
+        let cell = UITableViewCell(style: .value1, reuseIdentifier: passcodeCellId)
+        cell.textLabel?.text = "Passcode"
+        cell.detailTextLabel?.text = "Off"
+        cell.accessoryType = .disclosureIndicator
         return cell
     }()
 
@@ -139,6 +143,17 @@ final class UnlockViewController: UIViewController {
         return button
     }()
 
+    private lazy var clearKeyButton: UIButton = {
+        let button = UIButton(type: .close)
+        button.addAction(UIAction { [weak self] _ in
+            guard let self else { return }
+            self.unlockData.resetKeyfile()
+            self.selectKeyCell.title = "Select key"
+            self.selectKeyCell.accessoryView = nil
+        }, for: .touchUpInside)
+        return button
+    }()
+
     // MARK: - UIViewController lifecycle
 
     override func loadView() {
@@ -156,6 +171,9 @@ final class UnlockViewController: UIViewController {
         navigationItem.leftBarButtonItem = cancelButton
         navigationItem.rightBarButtonItem = unlockButton
         setupKeyboardObserver()
+
+        tableView.dataSource = dataSource
+        updateDataSource()
     }
 
     override func viewDidAppear(_ animated: Bool) {
@@ -163,6 +181,18 @@ final class UnlockViewController: UIViewController {
         _ = passwordCell.customContentView.becomeFirstResponder()
     }
 
+    private func updateDataSource(animated: Bool = true) {
+        var snapshot = NSDiffableDataSourceSnapshot<Section, Element>()
+        let unlockDataInputSection: Section = .unlockDataInput
+        snapshot.appendSections([unlockDataInputSection])
+        snapshot.appendItems([.password, .keyFile], toSection: unlockDataInputSection)
+
+        let saveUnlockDataSection: Section = .saveUnlockData
+        snapshot.appendSections([saveUnlockDataSection])
+        snapshot.appendItems([.faceID, .passcode],
+                             toSection: saveUnlockDataSection)
+        dataSource.apply(snapshot, animatingDifferences: true)
+    }
 }
 
 // MARK: - keyboard events
@@ -184,70 +214,40 @@ extension UnlockViewController {
 }
 
 // MARK: - tableView
-extension UnlockViewController: UITableViewDataSource, UITableViewDelegate  {
-    func numberOfSections(in tableView: UITableView) -> Int {
-        let localAuthType = localAuthManager.isLocalAuthAvailable() ? localAuthManager.biomeryType : .none
-        return localAuthType != .none ? 3 : 2
-    }
-
-    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        1
-    }
-
-    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        switch indexPath.section {
-        case 0:
-            return passwordCell
-        case 1:
-            return selectKeyCell
-        case 2:
-            return biometryCell!
-        default:
-            fatalError()
-        }
-    }
-
-    func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
-        switch section {
-        case 0:
-            return "Enter password"
-        case 1:
-            return "Key file is not selected"
-        default:
-            return nil
-        }
-    }
-
-    func tableView(_ tableView: UITableView, titleForFooterInSection section: Int) -> String? {
-        if section == 2 {
-            return "Your password will be securely stored in device's keychain"
-        }
-        return nil
-    }
-
+extension UnlockViewController: UITableViewDelegate  {
     func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
-        if section == 1 {
+        let section = dataSource.snapshot().sectionIdentifiers[section]
+        if section == .saveUnlockData {
             return errorFoorterView
         }
         return nil
     }
 
-    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        Constants.rowHeight
-    }
-
     func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
-        if section == 0 {
+        let section = dataSource.snapshot().sectionIdentifiers[section]
+        if section == .unlockDataInput {
             return 5
         }
         return UITableView.automaticDimension
     }
 
-    func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-        if section == 2 {
-            return 0
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        tableView.deselectRow(at: indexPath, animated: true)
+        let section = dataSource.snapshot().sectionIdentifiers[indexPath.section]
+        let element = dataSource.snapshot().itemIdentifiers(inSection: section)[indexPath.row]
+        switch element {
+        case .passcode:
+            let passcodeView = PasscodeView(scenario: .init(steps: [
+                .init(type: .create),
+                .init(type: .repeat)
+            ], onDismiss: {
+
+            }))
+            let controller = UIHostingController(rootView: passcodeView)
+            navigationController?.pushViewController(controller, animated: true)
+        default:
+            break
         }
-        return UITableView.automaticDimension
     }
 }
 
@@ -269,9 +269,9 @@ extension UnlockViewController {
         self.unlockData.password = newText
         self.navigationItem.rightBarButtonItem?.isEnabled = newText.count > 0
         if newText.count == 0 {
-            self.biometryCell?.isOn = false
+            self.biometryCell.isOn = false
         }
-        self.biometryCell?.isEnabled = newText.count > 0
+        self.biometryCell.isEnabled = newText.count > 0
         self.errorFoorterView.label.isHidden = true
     }
 
@@ -282,7 +282,7 @@ extension UnlockViewController {
                 password:unlockData.password,
                 keyFileData: unlockData.keyFileData
             )
-            if biometryCell?.isOn ?? false {
+            if biometryCell.isOn {
                 try localAuthManager.saveUnlockData(unlockData, for: databaseURL.lastPathComponent)
             }
             completion()
@@ -304,7 +304,8 @@ extension UnlockViewController: UIDocumentPickerDelegate {
         guard let url = urls.first else { return }
         do {
             try unlockData.setKeyfileURL(url)
-            tableView.reloadSections(IndexSet(integer: 1), with: .automatic)
+            selectKeyCell.title = unlockData.keyFileName
+            selectKeyCell.accessoryView = clearKeyButton
         } catch {
             // TODO: handle error
         }
@@ -321,5 +322,47 @@ extension UnlockViewController: UITextFieldDelegate {
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         tryUnlock()
         return true
+    }
+}
+
+private extension UnlockViewController {
+    enum Section: String {
+        case unlockDataInput
+        case saveUnlockData
+    }
+
+    enum Element: String {
+        case password, keyFile, faceID, passcode
+    }
+
+    final class DiffableDataSource: UITableViewDiffableDataSource<Section, Element> {
+        override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+            let section = snapshot().sectionIdentifiers[section]
+            switch section {
+            case .saveUnlockData:
+                return "Quick unlock"
+            default:
+                return nil
+            }
+        }
+    }
+
+    func makeDataSource() -> UITableViewDiffableDataSource<Section, Element> {
+        return DiffableDataSource(
+            tableView: tableView,
+            cellProvider: { [weak self]  tableView, indexPath, element in
+                guard let self else { return UITableViewCell() }
+                switch element {
+                case .password:
+                    return passwordCell
+                case .keyFile:
+                    return selectKeyCell
+                case .faceID:
+                    return biometryCell
+                case .passcode:
+                    return passcodeCell
+                }
+            }
+        )
     }
 }

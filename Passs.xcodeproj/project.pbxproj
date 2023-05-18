@@ -33,6 +33,8 @@
 		0A1EF80B2937D57D00F9DEC3 /* LocalAuthManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3B5E33F27B16E620061CAC6 /* LocalAuthManager.swift */; };
 		0A1EF80C2937D57D00F9DEC3 /* ServiceLocator.swift in Sources */ = {isa = PBXBuildFile; fileRef = A365CAB227B4FAE9009877D1 /* ServiceLocator.swift */; };
 		0A1EF80D2937D57D00F9DEC3 /* SettingsManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = A392D9C927C66FA500206161 /* SettingsManager.swift */; };
+		0A48D0542A0A953900BB2D06 /* UnlockView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A48D0532A0A953900BB2D06 /* UnlockView.swift */; };
+		0A48D0552A0A953900BB2D06 /* UnlockView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A48D0532A0A953900BB2D06 /* UnlockView.swift */; };
 		0A4FA0A229EF1832004E9906 /* PassItem+SFSymbols.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A4FA0A129EF1832004E9906 /* PassItem+SFSymbols.swift */; };
 		0A4FA0A329EF1832004E9906 /* PassItem+SFSymbols.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A4FA0A129EF1832004E9906 /* PassItem+SFSymbols.swift */; };
 		0A52EDC429FE6CD2003463EF /* BrowseDatabaseTableHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A52EDC329FE6CD2003463EF /* BrowseDatabaseTableHeaderView.swift */; };
@@ -153,6 +155,7 @@
 /* Begin PBXFileReference section */
 		088B9A2D32312B860C9A219C /* Pods-KeepTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-KeepTests.debug.xcconfig"; path = "Target Support Files/Pods-KeepTests/Pods-KeepTests.debug.xcconfig"; sourceTree = "<group>"; };
 		0A1EF7ED2937A99200F9DEC3 /* UIFont+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIFont+Extensions.swift"; sourceTree = "<group>"; };
+		0A48D0532A0A953900BB2D06 /* UnlockView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UnlockView.swift; sourceTree = "<group>"; };
 		0A4FA0A129EF1832004E9906 /* PassItem+SFSymbols.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "PassItem+SFSymbols.swift"; sourceTree = "<group>"; };
 		0A52EDC329FE6CD2003463EF /* BrowseDatabaseTableHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BrowseDatabaseTableHeaderView.swift; sourceTree = "<group>"; };
 		0A52EDC629FFE8B7003463EF /* PasswordDetailsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PasswordDetailsViewController.swift; sourceTree = "<group>"; };
@@ -443,6 +446,7 @@
 				0A52EDC629FFE8B7003463EF /* PasswordDetailsViewController.swift */,
 				A343496B2A0519DC000D42C4 /* AppSwitcherOverlayViewController.swift */,
 				A3D767FA2A09139800BC8ABA /* PasscodeView.swift */,
+				0A48D0532A0A953900BB2D06 /* UnlockView.swift */,
 			);
 			path = Controller;
 			sourceTree = "<group>";
@@ -704,6 +708,7 @@
 				A3CAA30B27A9B93D00330FAC /* SubtitleTableViewCell.swift in Sources */,
 				A377A6F22A00EFE000213490 /* NotificationViewController.swift in Sources */,
 				A35A8B1F27BEB3FE00216C24 /* SelectKeyButtonCell.swift in Sources */,
+				0A48D0542A0A953900BB2D06 /* UnlockView.swift in Sources */,
 				A343496C2A0519DC000D42C4 /* AppSwitcherOverlayViewController.swift in Sources */,
 				A3CFA4C8279349370020F82F /* GroupsViewController.swift in Sources */,
 				A3F3DA36260DC1D10057AF24 /* PassDatabaseManager.swift in Sources */,
@@ -759,6 +764,7 @@
 				0A52EDCB29FFEF32003463EF /* UIView+Extensions.swift in Sources */,
 				0A4FA0A329EF1832004E9906 /* PassItem+SFSymbols.swift in Sources */,
 				0A1EF7FC2937D57400F9DEC3 /* UserDefaults+Extensions.swift in Sources */,
+				0A48D0552A0A953900BB2D06 /* UnlockView.swift in Sources */,
 				0AD616CF29EA4DB600BCE3AD /* QRCodeManager.swift in Sources */,
 				0A717ACE2A06716700072F6D /* UIColor+Extensions.swift in Sources */,
 				0A1EF7FB2937D57400F9DEC3 /* UIButton+Extensions.swift in Sources */,

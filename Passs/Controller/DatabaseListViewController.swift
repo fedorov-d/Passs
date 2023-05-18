@@ -184,8 +184,12 @@ extension DatabaseListViewController {
 //                            onComplete: { [weak self] passcode in
 //                                self?.navigationController?.dismiss(animated: true)
 //                            })
-        )
+//        )
 //        let controller = UIHostingController(rootView: passcodeView)
+//        self.navigationController?.present(controller, animated: true)
+
+//        let unlockView = UnlockViewContainer()
+//        let controller = UIHostingController(rootView: unlockView)
 //        self.navigationController?.present(controller, animated: true)
     }
 

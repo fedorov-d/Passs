@@ -23,6 +23,11 @@ struct UnlockData {
         keyFileName = url.lastPathComponent
         keyFileData = try Data(contentsOf: url)
     }
+
+    mutating func resetKeyfile() {
+        keyFileData = nil
+        keyFileName = nil
+    }
 }
 
 extension UnlockData: Codable {}
