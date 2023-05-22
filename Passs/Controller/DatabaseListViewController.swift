@@ -247,6 +247,9 @@ extension DatabaseListViewController: UITableViewDelegate {
 
 extension DatabaseListViewController: DatabasesProviderDelegate {
     func didAddDatabase(at index: Int) {
+        if index == 0 {
+            settingsManager.defaultDatabaseURL = databasesProvider.databaseURLs.first
+        }
         updateDataSource()
         updateNoDatabasesLabelVisibility()
     }
