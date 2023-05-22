@@ -141,7 +141,7 @@ final class UnlockViewController: UIViewController {
         let button = UIBarButtonItem(
             title: "Unlock",
             style: .done,
-            target: nil,
+            target: self,
             action: #selector(unlockTapped)
         )
         button.isEnabled = false

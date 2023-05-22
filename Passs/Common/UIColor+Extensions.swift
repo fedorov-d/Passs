@@ -8,5 +8,5 @@
 import UIKit
 
 extension UIColor {
-    static var keepCyan = UIColor.systemBlue
+    static var keepCyan = UIColor(named: "keepCyan")!
 }
