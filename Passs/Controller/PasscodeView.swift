@@ -12,15 +12,18 @@ struct PasscodeView: View {
     @State var scenario: Scenario
 
     var body: some View {
-        VStack(spacing: 10) {
-            Spacer(minLength: 0)
-            titleAndDotsPages
-            Spacer(minLength: 0)
-            numPad
-                .padding(.bottom, 24)
+        GeometryReader { _ in
+
+            VStack(spacing: 10) {
+                Spacer(minLength: 0)
+                titleAndDotsPages
+                Spacer(minLength: 0)
+                numPad
+                    .padding(.bottom, 24)
+            }
+            .background(Color(UIColor.systemBackground))
         }
-        .ignoresSafeArea(.keyboard, edges: .bottom)
-        .background(Color(UIColor.systemBackground))
+        .ignoresSafeArea(.keyboard)
     }
 
     private let passcodeLenght = 6
@@ -31,6 +34,7 @@ struct PasscodeView: View {
                 let step = scenario.steps[index]
                 titleAndDotsPage(title: step.type.title)
                     .tag(index)
+                    .offset(x: isValidInput ? 0 : index == scenario.steps.indices.last ? 40 : 0)
             }
         }
         .tabViewStyle(PageTabViewStyle(indexDisplayMode: .never))
@@ -44,7 +48,6 @@ struct PasscodeView: View {
                 .font(.system(.title2))
             dots
                 .frame(height: 14)
-                .offset(x: isValidInput ? 0 : 40)
         }
         .transition(.slide)
     }
@@ -89,7 +92,6 @@ struct PasscodeView: View {
                 Spacer(minLength: 0)
             }
             HStack(spacing: 30) {
-                dismissButton
                 Spacer(minLength: 0)
                 bottomButton
             }

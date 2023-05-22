@@ -12,7 +12,7 @@ import SwiftUI
 final class UnlockViewController: UIViewController {
     private let passDatabaseManager: PassDatabaseManager
     private let databaseURL: URL
-    private let localAuthManager: LocalAuthManager
+    private let localAuthManager: QuickUnlockManager
     private let completion: () -> Void
 
     private var cancellables = Set<AnyCancellable>()
@@ -24,6 +24,11 @@ final class UnlockViewController: UIViewController {
     private let footerId = "footerId"
 
     private var unlockData = UnlockData()
+    private var passcode: String? {
+        didSet {
+            passcodeCell.detailTextLabel?.text = passcode == nil ? "Off" : "On"
+        }
+    }
 
     private lazy var dataSource = makeDataSource()
 
@@ -40,7 +45,7 @@ final class UnlockViewController: UIViewController {
     }
 
     init(passDatabaseManager: PassDatabaseManager,
-         localAuthManager: LocalAuthManager,
+         localAuthManager: QuickUnlockManager,
          forDatabaseAt url: URL,
          completion: @escaping () -> Void) {
         self.passDatabaseManager = passDatabaseManager
@@ -64,7 +69,6 @@ final class UnlockViewController: UIViewController {
         tableView.register(SwitchCell.self, forCellReuseIdentifier: biometryCellId)
         tableView.register(ColoredTableViewHeaderFooterView.self, forHeaderFooterViewReuseIdentifier: footerId)
         tableView.register(SelectKeyButtonCell.self, forCellReuseIdentifier: selectKeyCellId)
-        tableView.register(Value1TableViewCell.self, forCellReuseIdentifier: passcodeCellId)
         return tableView
     }()
 
@@ -85,6 +89,7 @@ final class UnlockViewController: UIViewController {
     }()
 
     private lazy var biometryCell: SwitchCell = {
+        localAuthManager.isLocalAuthAvailable()
         let text: String
         switch localAuthManager.biomeryType {
         case .touchID:
@@ -137,7 +142,7 @@ final class UnlockViewController: UIViewController {
             title: "Unlock",
             style: .done,
             target: nil,
-            action: #selector(unlockTapped(_:))
+            action: #selector(unlockTapped)
         )
         button.isEnabled = false
         return button
@@ -178,7 +183,9 @@ final class UnlockViewController: UIViewController {
 
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        _ = passwordCell.customContentView.becomeFirstResponder()
+        if navigationController?.viewControllers.count == 1 && passwordCell.customContentView.text?.isEmpty ?? true {
+            _ = passwordCell.customContentView.becomeFirstResponder()
+        }
     }
 
     private func updateDataSource(animated: Bool = true) {
@@ -240,9 +247,14 @@ extension UnlockViewController: UITableViewDelegate  {
             let passcodeView = PasscodeView(scenario: .init(steps: [
                 .init(type: .create),
                 .init(type: .repeat)
-            ], onDismiss: {
-
+            ], onDismiss: { [weak self] in
+                self?.navigationController?.popViewController(animated: true)
+            }, onComplete: { [weak self] passcode in
+                guard let self else { return }
+                self.passcode = passcode
+                self.navigationController?.popViewController(animated: true)
             }))
+            self.passwordCell.customContentView.resignFirstResponder()
             let controller = UIHostingController(rootView: passcodeView)
             navigationController?.pushViewController(controller, animated: true)
         default:
@@ -259,7 +271,7 @@ extension UnlockViewController {
     }
 
     @objc
-    private func unlockTapped(_ sender: AnyObject) {
+    private func unlockTapped() {
         tryUnlock()
     }
 
@@ -282,8 +294,10 @@ extension UnlockViewController {
                 password:unlockData.password,
                 keyFileData: unlockData.keyFileData
             )
-            if biometryCell.isOn {
-                try localAuthManager.saveUnlockData(unlockData, for: databaseURL.lastPathComponent)
+            if let protection = QuickUnlockProtection(passcode: passcode, biometry: biometryCell.isOn) {
+                try localAuthManager.saveUnlockData(unlockData,
+                                                    protection: protection,
+                                                    for: databaseURL.lastPathComponent)
             }
             completion()
         } catch _ {
@@ -296,7 +310,6 @@ extension UnlockViewController {
         documentPicker.delegate = self
         present(documentPicker, animated: true, completion: nil)
     }
-
 }
 
 extension UnlockViewController: UIDocumentPickerDelegate {

@@ -18,7 +18,7 @@ protocol DefaultDatabaseUnlock: AnyObject {
 
 class DatabaseListViewController: UIViewController {
     private let databasesProvider: DatabasesProvider
-    private let localAuthManager: LocalAuthManager
+    private let localAuthManager: QuickUnlockManager
     private let passDatabaseManager: PassDatabaseManager
     private let credentialsSelectionManager: CredentialsSelectionManager?
     fileprivate let settingsManager: SettingsManager
@@ -61,7 +61,7 @@ class DatabaseListViewController: UIViewController {
     
     init(databasesProvider: DatabasesProvider,
          passDatabaseManager: PassDatabaseManager,
-         localAuthManager: LocalAuthManager,
+         localAuthManager: QuickUnlockManager,
          credentialsSelectionManager: CredentialsSelectionManager?,
          settingsManager: SettingsManager,
          onAskForPassword: @escaping (_: URL) -> Void,
@@ -171,26 +171,6 @@ extension DatabaseListViewController {
         let documentPickerController = UIDocumentPickerViewController.keepassDatabasesPicker()
         documentPickerController.delegate = self
         self.present(documentPickerController, animated: true, completion: nil)
-//        let validate: (String?) -> Bool = { _ in Bool.random() }
-//        let passcodeView = PasscodeView(
-//            scenario: .init(steps: [
-//                .init(type: .check(validate: validate)),
-//                .init(type: .create),
-//                .init(type: .repeat)
-//            ],
-//                            onDismiss: { [weak self] in
-//                                self?.navigationController?.dismiss(animated: true)
-//                            },
-//                            onComplete: { [weak self] passcode in
-//                                self?.navigationController?.dismiss(animated: true)
-//                            })
-//        )
-//        let controller = UIHostingController(rootView: passcodeView)
-//        self.navigationController?.present(controller, animated: true)
-
-//        let unlockView = UnlockViewContainer()
-//        let controller = UIHostingController(rootView: unlockView)
-//        self.navigationController?.present(controller, animated: true)
     }
 
     @objc
@@ -360,23 +340,48 @@ extension DatabaseListViewController: DefaultDatabaseUnlock {
             Swift.debugPrint("database doesn't contain default URL")
             return
         }
-        localAuthManager.unlockData(for: url.lastPathComponent) { [weak self] result in
-            guard let self else { return }
-            switch result {
-            case .success(let unlockData):
-                do {
-                    try self.passDatabaseManager.unlockDatabase(
-                        with: url,
-                        password: unlockData.password,
-                        keyFileData: unlockData.keyFileData
-                    )
-                    self.onDatabaseOpened()
-                } catch (let error) {
-                    self.handlePasswordError(error, forDatabaseAt: url)
-                }
-            case .failure(let error):
+
+        self.localAuthManager.unlockData(
+            for: url.lastPathComponent,
+            passcodeCheckPassed: presentPasscodeCheckView(passcode:completion:),
+            completion: { [weak self] in self?.handleUnlockResult($0, url: url) }
+        )
+    }
+}
+
+fileprivate extension DatabaseListViewController {
+    func presentPasscodeCheckView(passcode: String, completion: @escaping (Bool) -> Void) {
+        let validate: (String?) -> Bool = { $0 == passcode }
+        let checkStep = PasscodeView.Scenario.Step(type: .check(validate: validate))
+        let passcodeCheckScenario = PasscodeView.Scenario(
+            steps: [checkStep],
+            onDismiss: { [weak self] in
+                completion(false)
+                self?.navigationController?.dismiss(animated: true)
+            },
+            onComplete: { [weak self] _ in
+                completion(true)
+                self?.navigationController?.dismiss(animated: true)
+            })
+        let passcodeView = PasscodeView(scenario: passcodeCheckScenario)
+        self.navigationController?.present(UIHostingController(rootView: passcodeView), animated: true)
+    }
+
+    func handleUnlockResult(_ result: Result<UnlockData, Error>, url: URL) {
+        switch result {
+        case .success(let unlockData):
+            do {
+                try self.passDatabaseManager.unlockDatabase(
+                    with: url,
+                    password: unlockData.password,
+                    keyFileData: unlockData.keyFileData
+                )
+                self.onDatabaseOpened()
+            } catch (let error) {
                 self.handlePasswordError(error, forDatabaseAt: url)
             }
+        case .failure(let error):
+            self.handlePasswordError(error, forDatabaseAt: url)
         }
     }
 }
@@ -397,7 +402,7 @@ private extension DatabaseListViewController {
         let reuseIdentifier = cellId
         return DiffableDataSource(
             tableView: tableView,
-            cellProvider: { [weak self]  tableView, indexPath, databaseURL in
+            cellProvider: { [weak self] tableView, indexPath, databaseURL in
                 guard let self else { return UITableViewCell() }
                 let cell = tableView.dequeueReusableCell(
                     withIdentifier: reuseIdentifier,

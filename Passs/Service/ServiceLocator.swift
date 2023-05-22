@@ -14,7 +14,7 @@ protocol ServiceLocator: AnyObject {
     var credentialsSelectionManager: CredentialsSelectionManager? { get }
 
     func keychainManager() -> KeychainManager
-    func localAuthManager() -> LocalAuthManager
+    func quickUnlockManager() -> QuickUnlockManager
     func passDatabaseManager() -> PassDatabaseManager
     func recentPasswordsManager(databaseURL: URL) -> RecentPasswordsManager
     func settingsManager() -> SettingsManager
@@ -43,8 +43,8 @@ final class ServiceLocatorImp: ServiceLocator {
         KeychainManagerImp()
     }
 
-    func localAuthManager() -> LocalAuthManager {
-        LocalAuthManagerImp(keychainManager: keychainManager())
+    func quickUnlockManager() -> QuickUnlockManager {
+        QuickUnlockManagerImp(keychainManager: keychainManager())
     }
 
     func passDatabaseManager() -> PassDatabaseManager {

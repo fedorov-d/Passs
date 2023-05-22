@@ -30,7 +30,7 @@
 		0A1EF8082937D57D00F9DEC3 /* DatabasesProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3F4959B261E22F700E4AA7E /* DatabasesProvider.swift */; };
 		0A1EF8092937D57D00F9DEC3 /* PasteboardManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3F3DA33260DBEB50057AF24 /* PasteboardManager.swift */; };
 		0A1EF80A2937D57D00F9DEC3 /* KeychainManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3CFA4C92795F9650020F82F /* KeychainManager.swift */; };
-		0A1EF80B2937D57D00F9DEC3 /* LocalAuthManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3B5E33F27B16E620061CAC6 /* LocalAuthManager.swift */; };
+		0A1EF80B2937D57D00F9DEC3 /* QuickUnlockManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3B5E33F27B16E620061CAC6 /* QuickUnlockManager.swift */; };
 		0A1EF80C2937D57D00F9DEC3 /* ServiceLocator.swift in Sources */ = {isa = PBXBuildFile; fileRef = A365CAB227B4FAE9009877D1 /* ServiceLocator.swift */; };
 		0A1EF80D2937D57D00F9DEC3 /* SettingsManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = A392D9C927C66FA500206161 /* SettingsManager.swift */; };
 		0A48D0542A0A953900BB2D06 /* UnlockView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A48D0532A0A953900BB2D06 /* UnlockView.swift */; };
@@ -88,7 +88,7 @@
 		A3B5E33027AEA7340061CAC6 /* CredentialProviderViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3B5E32F27AEA7340061CAC6 /* CredentialProviderViewController.swift */; };
 		A3B5E33827AEA7340061CAC6 /* CredentialProvider.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = A3B5E32B27AEA7330061CAC6 /* CredentialProvider.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		A3B5E33E27AEACEF0061CAC6 /* AuthenticationServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A3B5E32C27AEA7340061CAC6 /* AuthenticationServices.framework */; };
-		A3B5E34027B16E620061CAC6 /* LocalAuthManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3B5E33F27B16E620061CAC6 /* LocalAuthManager.swift */; };
+		A3B5E34027B16E620061CAC6 /* QuickUnlockManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3B5E33F27B16E620061CAC6 /* QuickUnlockManager.swift */; };
 		A3CAA30B27A9B93D00330FAC /* SubtitleTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3CAA30A27A9B93D00330FAC /* SubtitleTableViewCell.swift */; };
 		A3CAA30D27AB060300330FAC /* Application.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3CAA30C27AB060200330FAC /* Application.swift */; };
 		A3CAA30F27AB06CF00330FAC /* main.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3CAA30E27AB06CF00330FAC /* main.swift */; };
@@ -203,7 +203,7 @@
 		A3B5E33427AEA7340061CAC6 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		A3B5E33527AEA7340061CAC6 /* CredentialProvider.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = CredentialProvider.entitlements; sourceTree = "<group>"; };
 		A3B5E33D27AEACEF0061CAC6 /* Passs.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Passs.entitlements; sourceTree = "<group>"; };
-		A3B5E33F27B16E620061CAC6 /* LocalAuthManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalAuthManager.swift; sourceTree = "<group>"; };
+		A3B5E33F27B16E620061CAC6 /* QuickUnlockManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuickUnlockManager.swift; sourceTree = "<group>"; };
 		A3CAA30A27A9B93D00330FAC /* SubtitleTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubtitleTableViewCell.swift; sourceTree = "<group>"; };
 		A3CAA30C27AB060200330FAC /* Application.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Application.swift; sourceTree = "<group>"; };
 		A3CAA30E27AB06CF00330FAC /* main.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = main.swift; sourceTree = "<group>"; };
@@ -426,7 +426,7 @@
 				A318424E2721DB5F00786744 /* Constants.swift */,
 				A392D9C927C66FA500206161 /* SettingsManager.swift */,
 				A3CFA4C92795F9650020F82F /* KeychainManager.swift */,
-				A3B5E33F27B16E620061CAC6 /* LocalAuthManager.swift */,
+				A3B5E33F27B16E620061CAC6 /* QuickUnlockManager.swift */,
 				A3CAA31227ABCFB000330FAC /* RecentPasswordsManager.swift */,
 				0A8D3E372938F515005D4435 /* CredentialsSelectionManager.swift */,
 				0AD616CD29EA4C8500BCE3AD /* QRCodeManager.swift */,
@@ -728,7 +728,7 @@
 				A392D9CC27C79D2F00206161 /* UserDefaults+Extensions.swift in Sources */,
 				0A717AD42A08C77800072F6D /* UITableView+Extensions.swift in Sources */,
 				A3F4959C261E22F700E4AA7E /* DatabasesProvider.swift in Sources */,
-				A3B5E34027B16E620061CAC6 /* LocalAuthManager.swift in Sources */,
+				A3B5E34027B16E620061CAC6 /* QuickUnlockManager.swift in Sources */,
 				0A717ACD2A06716700072F6D /* UIColor+Extensions.swift in Sources */,
 				A3FF57D627BFED1E00D41659 /* UnlockData.swift in Sources */,
 				0AD616CE29EA4C8500BCE3AD /* QRCodeManager.swift in Sources */,
@@ -755,7 +755,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				0A1EF8092937D57D00F9DEC3 /* PasteboardManager.swift in Sources */,
-				0A1EF80B2937D57D00F9DEC3 /* LocalAuthManager.swift in Sources */,
+				0A1EF80B2937D57D00F9DEC3 /* QuickUnlockManager.swift in Sources */,
 				0A52EDC829FFE8B7003463EF /* PasswordDetailsViewController.swift in Sources */,
 				0A1EF8032937D57700F9DEC3 /* UnlockViewController.swift in Sources */,
 				0A1EF7FF2937D57400F9DEC3 /* UIDocumentPickerController+Extensions.swift in Sources */,

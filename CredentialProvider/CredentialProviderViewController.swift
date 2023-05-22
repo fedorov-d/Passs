@@ -86,9 +86,9 @@ class CredentialProviderViewController: ASCredentialProviderViewController {
             userInteractionRequiredFallback()
             return
         }
-        let localAuthManager = serviceLocator.localAuthManager()
+        let quickUnlockManager = serviceLocator.quickUnlockManager()
         let passDatabaseManager = serviceLocator.passDatabaseManager()
-        localAuthManager.unlockData(for: openedDatabaseURL.lastPathComponent) { result in
+        quickUnlockManager.unlockData(for: openedDatabaseURL.lastPathComponent) { result in
             switch result {
             case .success(let success):
                 do {

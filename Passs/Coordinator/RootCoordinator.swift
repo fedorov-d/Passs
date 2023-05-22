@@ -51,7 +51,7 @@ final class RootCoordinator {
         let unlockViewController = self.unlockViewController(
             forDatabaseAt: url,
             passDatabaseManager: passDatabaseManager,
-            localAuthManager: self.serviceLocator.localAuthManager()
+            localAuthManager: self.serviceLocator.quickUnlockManager()
         )
         let navigationController = UINavigationController(navigationBarClass: ProgressNavigationBar.self,
                                                           toolbarClass: nil)
@@ -92,7 +92,7 @@ extension RootCoordinator {
         return DatabaseListViewController(
             databasesProvider: serviceLocator.databasesProvider,
             passDatabaseManager: passDatabaseManager,
-            localAuthManager: serviceLocator.localAuthManager(),
+            localAuthManager: serviceLocator.quickUnlockManager(),
             credentialsSelectionManager: serviceLocator.credentialsSelectionManager,
             settingsManager: serviceLocator.settingsManager(),
             onAskForPassword: { [weak self] url in
@@ -106,7 +106,7 @@ extension RootCoordinator {
 
     private func unlockViewController(forDatabaseAt url: URL,
                                       passDatabaseManager: PassDatabaseManager,
-                                      localAuthManager: LocalAuthManager) -> UnlockViewController {
+                                      localAuthManager: QuickUnlockManager) -> UnlockViewController {
         let enterPasswordController = UnlockViewController(
             passDatabaseManager: passDatabaseManager,
             localAuthManager: localAuthManager,
