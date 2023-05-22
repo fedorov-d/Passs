@@ -87,24 +87,34 @@ final class QuickUnlockManagerImp: QuickUnlockManager {
                 return
             }
 
+            let checkBiometryIfNeeded = { [weak self] in
+                guard let self else { return }
+                guard protection.biometry == true else {
+                    self.isFetchingUnlockData = false
+                    completion(.success(unlockData))
+                    return
+                }
+                evaluatePolicy { [weak self] success, error in
+                    guard let self else { return }
+                    self.isFetchingUnlockData = false
+                    if success {
+                        completion(.success(unlockData))
+                    } else if let error = error {
+                        completion(.failure(error))
+                    }
+                }
+            }
+
             if let passcode = protection.passcode {
                 passcodeCheckPassed(passcode) { passed in
-
+                    guard passed else {
+                        self.isFetchingUnlockData = false
+                        return
+                    }
+                    checkBiometryIfNeeded()
                 }
-            }
-            guard protection.biometry == true else {
-                isFetchingUnlockData = false
-                completion(.success(unlockData))
-                return
-            }
-            evaluatePolicy { [weak self] success, error in
-                guard let self else { return }
-                self.isFetchingUnlockData = false
-                if success {
-                    completion(.success(unlockData))
-                } else if let error = error {
-                    completion(.failure(error))
-                }
+            } else {
+                checkBiometryIfNeeded()
             }
         } catch let error {
             isFetchingUnlockData = false

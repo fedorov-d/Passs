@@ -87,6 +87,9 @@ struct PasscodeView: View {
                 Spacer(minLength: 0)
             }
             HStack(spacing: 30) {
+                if scenario.onDismiss != nil {
+                    dismissButton
+                }
                 Spacer(minLength: 0)
                 bottomButton
             }
@@ -136,7 +139,7 @@ struct PasscodeView: View {
 
     private var dismissButton: some View {
         Button("Dismiss") {
-            scenario.onDismiss()
+            scenario.onDismiss?()
         }
         .foregroundColor(Color(UIColor.keepCyan))
     }
@@ -196,7 +199,7 @@ extension PasscodeView {
             steps[currentStepIndex]
         }
 
-        var onDismiss: () -> Void
+        var onDismiss: (() -> Void)?
         var onComplete: ((String) -> Void)?
 
         mutating func resetInput() {

@@ -89,12 +89,13 @@ final class UnlockViewController: UIViewController {
     }()
 
     private lazy var biometryCell: SwitchCell = {
-        localAuthManager.isLocalAuthAvailable()
-        let text: String
-        switch localAuthManager.biomeryType {
-        case .touchID:
+        let isLocalAuthAvailable = localAuthManager.isLocalAuthAvailable()
+        var text = ""
+
+        switch (isLocalAuthAvailable, localAuthManager.biomeryType) {
+        case (true, .touchID):
             text = "Use Touch id"
-        case .faceID:
+        case (true, .faceID):
             text = "Use Face id"
         default:
             text = "Biometric auth is disabled"
@@ -247,9 +248,7 @@ extension UnlockViewController: UITableViewDelegate  {
             let passcodeView = PasscodeView(scenario: .init(steps: [
                 .init(type: .create),
                 .init(type: .repeat)
-            ], onDismiss: { [weak self] in
-                self?.navigationController?.popViewController(animated: true)
-            }, onComplete: { [weak self] passcode in
+            ], onComplete: { [weak self] passcode in
                 guard let self else { return }
                 self.passcode = passcode
                 self.navigationController?.popViewController(animated: true)
@@ -283,7 +282,7 @@ extension UnlockViewController {
         if newText.count == 0 {
             self.biometryCell.isOn = false
         }
-        self.biometryCell.isEnabled = newText.count > 0
+        self.biometryCell.isEnabled = newText.count > 0 && localAuthManager.isLocalAuthAvailable()
         self.errorFoorterView.label.isHidden = true
     }
 
