@@ -247,6 +247,9 @@ extension DatabaseListViewController: UITableViewDelegate {
 
 extension DatabaseListViewController: DatabasesProviderDelegate {
     func didAddDatabase(at index: Int) {
+        if index == 0 {
+            settingsManager.defaultDatabaseURL = databasesProvider.databaseURLs.first
+        }
         updateDataSource()
         updateNoDatabasesLabelVisibility()
     }
@@ -364,7 +367,9 @@ fileprivate extension DatabaseListViewController {
                 self?.navigationController?.dismiss(animated: true)
             })
         let passcodeView = PasscodeView(scenario: passcodeCheckScenario)
-        self.navigationController?.present(UIHostingController(rootView: passcodeView), animated: true)
+        let hostingController = UIHostingController(rootView: passcodeView)
+        hostingController.isModalInPresentation = true
+        self.navigationController?.present(hostingController, animated: true)
     }
 
     func handleUnlockResult(_ result: Result<UnlockData, Error>, url: URL) {

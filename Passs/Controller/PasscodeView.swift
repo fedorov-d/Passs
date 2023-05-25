@@ -13,7 +13,6 @@ struct PasscodeView: View {
 
     var body: some View {
         GeometryReader { _ in
-
             VStack(spacing: 10) {
                 Spacer(minLength: 0)
                 titleAndDotsPages
@@ -30,26 +29,22 @@ struct PasscodeView: View {
 
     private var titleAndDotsPages: some View {
         TabView(selection: $scenario.currentStepIndex) {
-            ForEach(0..<scenario.steps.count, id: \.self) { index in
+            ForEach(scenario.steps.indices, id: \.self) { index in
                 let step = scenario.steps[index]
-                titleAndDotsPage(title: step.type.title)
+                VStack(spacing: 15) {
+                    Text(step.type.title)
+                        .foregroundColor(Color(UIColor.label))
+                        .font(.system(.title2))
+                    dots
+                        .frame(height: 14)
+                        .offset(x: isValidInput ? 0 : index == scenario.steps.indices.last ? 40 : 0)
+                }
+                .transition(.slide)
                     .tag(index)
-                    .offset(x: isValidInput ? 0 : index == scenario.steps.indices.last ? 40 : 0)
             }
         }
         .tabViewStyle(PageTabViewStyle(indexDisplayMode: .never))
         .padding(.top, 20)
-    }
-
-    private func titleAndDotsPage(title: String) -> some View {
-        VStack(spacing: 15) {
-            Text(title)
-                .foregroundColor(Color(UIColor.label))
-                .font(.system(.title2))
-            dots
-                .frame(height: 14)
-        }
-        .transition(.slide)
     }
 
     private var dots: some View {
@@ -92,6 +87,9 @@ struct PasscodeView: View {
                 Spacer(minLength: 0)
             }
             HStack(spacing: 30) {
+                if scenario.onDismiss != nil {
+                    dismissButton
+                }
                 Spacer(minLength: 0)
                 bottomButton
             }
@@ -141,7 +139,7 @@ struct PasscodeView: View {
 
     private var dismissButton: some View {
         Button("Dismiss") {
-            scenario.onDismiss()
+            scenario.onDismiss?()
         }
         .foregroundColor(Color(UIColor.keepCyan))
     }
@@ -201,7 +199,7 @@ extension PasscodeView {
             steps[currentStepIndex]
         }
 
-        var onDismiss: () -> Void
+        var onDismiss: (() -> Void)?
         var onComplete: ((String) -> Void)?
 
         mutating func resetInput() {
