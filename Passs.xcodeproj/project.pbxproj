@@ -33,6 +33,10 @@
 		0A1EF80B2937D57D00F9DEC3 /* QuickUnlockManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3B5E33F27B16E620061CAC6 /* QuickUnlockManager.swift */; };
 		0A1EF80C2937D57D00F9DEC3 /* ServiceLocator.swift in Sources */ = {isa = PBXBuildFile; fileRef = A365CAB227B4FAE9009877D1 /* ServiceLocator.swift */; };
 		0A1EF80D2937D57D00F9DEC3 /* SettingsManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = A392D9C927C66FA500206161 /* SettingsManager.swift */; };
+		0A3836E42A1FB93700FBB33F /* DatabaseSettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A3836E32A1FB93700FBB33F /* DatabaseSettingsViewController.swift */; };
+		0A3836E52A1FB93700FBB33F /* DatabaseSettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A3836E32A1FB93700FBB33F /* DatabaseSettingsViewController.swift */; };
+		0A3836E72A1FB9B100FBB33F /* Optional+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A3836E62A1FB9B100FBB33F /* Optional+Extension.swift */; };
+		0A3836E82A1FB9B100FBB33F /* Optional+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A3836E62A1FB9B100FBB33F /* Optional+Extension.swift */; };
 		0A4FA0A229EF1832004E9906 /* PassItem+SFSymbols.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A4FA0A129EF1832004E9906 /* PassItem+SFSymbols.swift */; };
 		0A4FA0A329EF1832004E9906 /* PassItem+SFSymbols.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A4FA0A129EF1832004E9906 /* PassItem+SFSymbols.swift */; };
 		0A52EDC429FE6CD2003463EF /* BrowseDatabaseTableHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A52EDC329FE6CD2003463EF /* BrowseDatabaseTableHeaderView.swift */; };
@@ -48,6 +52,8 @@
 		0A717AD22A08A1D200072F6D /* GenericContentTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A717AD02A08A1D200072F6D /* GenericContentTableViewCell.swift */; };
 		0A717AD42A08C77800072F6D /* UITableView+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A717AD32A08C77800072F6D /* UITableView+Extensions.swift */; };
 		0A717AD52A08C77900072F6D /* UITableView+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A717AD32A08C77800072F6D /* UITableView+Extensions.swift */; };
+		0A8262A52A1DD77A00632FA8 /* QuickUnlockProtection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A8262A42A1DD77A00632FA8 /* QuickUnlockProtection.swift */; };
+		0A8262A62A1DD77A00632FA8 /* QuickUnlockProtection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A8262A42A1DD77A00632FA8 /* QuickUnlockProtection.swift */; };
 		0A850A0F2937F98E00754CC9 /* UnlockData.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3FF57D527BFED1E00D41659 /* UnlockData.swift */; };
 		0A850A102937F99E00754CC9 /* PassItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3F3DA27260CA5FC0057AF24 /* PassItem.swift */; };
 		0A850A112937F9EF00754CC9 /* PassItem+KeePassKit.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3F3DA29260CA8440057AF24 /* PassItem+KeePassKit.swift */; };
@@ -153,6 +159,8 @@
 /* Begin PBXFileReference section */
 		088B9A2D32312B860C9A219C /* Pods-KeepTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-KeepTests.debug.xcconfig"; path = "Target Support Files/Pods-KeepTests/Pods-KeepTests.debug.xcconfig"; sourceTree = "<group>"; };
 		0A1EF7ED2937A99200F9DEC3 /* UIFont+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIFont+Extensions.swift"; sourceTree = "<group>"; };
+		0A3836E32A1FB93700FBB33F /* DatabaseSettingsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DatabaseSettingsViewController.swift; sourceTree = "<group>"; };
+		0A3836E62A1FB9B100FBB33F /* Optional+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Optional+Extension.swift"; sourceTree = "<group>"; };
 		0A4FA0A129EF1832004E9906 /* PassItem+SFSymbols.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "PassItem+SFSymbols.swift"; sourceTree = "<group>"; };
 		0A52EDC329FE6CD2003463EF /* BrowseDatabaseTableHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BrowseDatabaseTableHeaderView.swift; sourceTree = "<group>"; };
 		0A52EDC629FFE8B7003463EF /* PasswordDetailsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PasswordDetailsViewController.swift; sourceTree = "<group>"; };
@@ -160,6 +168,7 @@
 		0A717ACC2A06716700072F6D /* UIColor+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIColor+Extensions.swift"; sourceTree = "<group>"; };
 		0A717AD02A08A1D200072F6D /* GenericContentTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GenericContentTableViewCell.swift; sourceTree = "<group>"; };
 		0A717AD32A08C77800072F6D /* UITableView+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UITableView+Extensions.swift"; sourceTree = "<group>"; };
+		0A8262A42A1DD77A00632FA8 /* QuickUnlockProtection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuickUnlockProtection.swift; sourceTree = "<group>"; };
 		0A8D3E372938F515005D4435 /* CredentialsSelectionManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CredentialsSelectionManager.swift; sourceTree = "<group>"; };
 		0AD29C4F293FCE55007A9061 /* BarButtonItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BarButtonItem.swift; sourceTree = "<group>"; };
 		0AD616CB29EA46AD00BCE3AD /* QRCodeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QRCodeViewController.swift; sourceTree = "<group>"; };
@@ -208,6 +217,8 @@
 		A3CFA4C5279289740020F82F /* UIImage+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIImage+Extensions.swift"; sourceTree = "<group>"; };
 		A3CFA4C7279349370020F82F /* GroupsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GroupsViewController.swift; sourceTree = "<group>"; };
 		A3CFA4C92795F9650020F82F /* KeychainManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeychainManager.swift; sourceTree = "<group>"; };
+		A3D32C822A1CEEC700C37981 /* DatabaseSettingsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DatabaseSettingsViewController.swift; sourceTree = "<group>"; };
+		A3D32C852A1CF80700C37981 /* Optional+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Optional+Extensions.swift"; sourceTree = "<group>"; };
 		A3D767FA2A09139800BC8ABA /* PasscodeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PasscodeView.swift; sourceTree = "<group>"; };
 		A3F034442A028CF300277ED2 /* ProgressNavigationBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProgressNavigationBar.swift; sourceTree = "<group>"; };
 		A3F3DA27260CA5FC0057AF24 /* PassItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PassItem.swift; sourceTree = "<group>"; };
@@ -256,6 +267,15 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		0A3836E22A1FB86C00FBB33F /* Recovered References */ = {
+			isa = PBXGroup;
+			children = (
+				A3D32C852A1CF80700C37981 /* Optional+Extensions.swift */,
+				A3D32C822A1CEEC700C37981 /* DatabaseSettingsViewController.swift */,
+			);
+			name = "Recovered References";
+			sourceTree = "<group>";
+		};
 		168E9655F2F473A54AE91AA6 /* Pods */ = {
 			isa = PBXGroup;
 			children = (
@@ -294,6 +314,7 @@
 				A32C6546260C557200DC6653 /* Products */,
 				168E9655F2F473A54AE91AA6 /* Pods */,
 				5FB1834A3E031CBCCDD4B639 /* Frameworks */,
+				0A3836E22A1FB86C00FBB33F /* Recovered References */,
 			);
 			sourceTree = "<group>";
 		};
@@ -381,6 +402,7 @@
 				0A52EDC929FFEF32003463EF /* UIView+Extensions.swift */,
 				0A717ACC2A06716700072F6D /* UIColor+Extensions.swift */,
 				0A717AD32A08C77800072F6D /* UITableView+Extensions.swift */,
+				0A3836E62A1FB9B100FBB33F /* Optional+Extension.swift */,
 			);
 			path = Common;
 			sourceTree = "<group>";
@@ -409,6 +431,7 @@
 				A3F3DA29260CA8440057AF24 /* PassItem+KeePassKit.swift */,
 				0A4FA0A129EF1832004E9906 /* PassItem+SFSymbols.swift */,
 				A3FF57D527BFED1E00D41659 /* UnlockData.swift */,
+				0A8262A42A1DD77A00632FA8 /* QuickUnlockProtection.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -434,6 +457,7 @@
 		A3F4959D261E241300E4AA7E /* Controller */ = {
 			isa = PBXGroup;
 			children = (
+				0A3836E32A1FB93700FBB33F /* DatabaseSettingsViewController.swift */,
 				A32C654C260C557300DC6653 /* PasswordsViewController.swift */,
 				A3F4959E261E242700E4AA7E /* DatabaseListViewController.swift */,
 				A3CFA4C7279349370020F82F /* GroupsViewController.swift */,
@@ -706,6 +730,7 @@
 				A35A8B1F27BEB3FE00216C24 /* SelectKeyButtonCell.swift in Sources */,
 				A343496C2A0519DC000D42C4 /* AppSwitcherOverlayViewController.swift in Sources */,
 				A3CFA4C8279349370020F82F /* GroupsViewController.swift in Sources */,
+				0A3836E72A1FB9B100FBB33F /* Optional+Extension.swift in Sources */,
 				A3F3DA36260DC1D10057AF24 /* PassDatabaseManager.swift in Sources */,
 				A3F4959F261E242700E4AA7E /* DatabaseListViewController.swift in Sources */,
 				A3B5E32627AD9EE40061CAC6 /* UIViewController+Extensions.swift in Sources */,
@@ -724,12 +749,14 @@
 				0A717AD42A08C77800072F6D /* UITableView+Extensions.swift in Sources */,
 				A3F4959C261E22F700E4AA7E /* DatabasesProvider.swift in Sources */,
 				A3B5E34027B16E620061CAC6 /* QuickUnlockManager.swift in Sources */,
+				0A8262A52A1DD77A00632FA8 /* QuickUnlockProtection.swift in Sources */,
 				0A717ACD2A06716700072F6D /* UIColor+Extensions.swift in Sources */,
 				A3FF57D627BFED1E00D41659 /* UnlockData.swift in Sources */,
 				0AD616CE29EA4C8500BCE3AD /* QRCodeManager.swift in Sources */,
 				A318424F2721DB5F00786744 /* Constants.swift in Sources */,
 				A392D9CA27C66FA500206161 /* SettingsManager.swift in Sources */,
 				A35A8B1827BCDE1500216C24 /* SwitchCell.swift in Sources */,
+				0A3836E42A1FB93700FBB33F /* DatabaseSettingsViewController.swift in Sources */,
 				A35A8B0E27B56B8E00216C24 /* UIButton+Extensions.swift in Sources */,
 				0A1EF7EE2937A99200F9DEC3 /* UIFont+Extensions.swift in Sources */,
 				A32C6549260C557300DC6653 /* AppDelegate.swift in Sources */,
@@ -760,9 +787,11 @@
 				0A4FA0A329EF1832004E9906 /* PassItem+SFSymbols.swift in Sources */,
 				0A1EF7FC2937D57400F9DEC3 /* UserDefaults+Extensions.swift in Sources */,
 				0AD616CF29EA4DB600BCE3AD /* QRCodeManager.swift in Sources */,
+				0A3836E52A1FB93700FBB33F /* DatabaseSettingsViewController.swift in Sources */,
 				0A717ACE2A06716700072F6D /* UIColor+Extensions.swift in Sources */,
 				0A1EF7FB2937D57400F9DEC3 /* UIButton+Extensions.swift in Sources */,
 				A3B5E33027AEA7340061CAC6 /* CredentialProviderViewController.swift in Sources */,
+				0A3836E82A1FB9B100FBB33F /* Optional+Extension.swift in Sources */,
 				0A1EF7F62937D56F00F9DEC3 /* SwitchCell.swift in Sources */,
 				0A1EF7FA2937D56F00F9DEC3 /* SubtitleTableViewCell.swift in Sources */,
 				0A1EF7FE2937D57400F9DEC3 /* UIViewController+Extensions.swift in Sources */,
@@ -789,6 +818,7 @@
 				0A1EF7F72937D56F00F9DEC3 /* TextFieldCell.swift in Sources */,
 				0A850A112937F9EF00754CC9 /* PassItem+KeePassKit.swift in Sources */,
 				0A1EF8062937D57D00F9DEC3 /* PassDatabaseManager.swift in Sources */,
+				0A8262A62A1DD77A00632FA8 /* QuickUnlockProtection.swift in Sources */,
 				A3D767FC2A09139800BC8ABA /* PasscodeView.swift in Sources */,
 				0A1EF7F82937D56F00F9DEC3 /* ColoredTableViewHeaderFooterView.swift in Sources */,
 				0A850A102937F99E00754CC9 /* PassItem.swift in Sources */,

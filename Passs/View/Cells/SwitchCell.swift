@@ -22,7 +22,7 @@ class SwitchCell: UITableViewCell {
         get {
             `switch`.isOn
         } set {
-            `switch`.isOn = newValue
+            `switch`.setOn(newValue, animated: true)
         }
     }
 

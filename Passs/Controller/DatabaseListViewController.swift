@@ -255,7 +255,7 @@ extension DatabaseListViewController: DatabasesProviderDelegate {
     }
 
     func didDeleteDatabase(at databaseURL: URL, name: String) {
-        try? localAuthManager.clearUnlockData(for: name)
+        try? localAuthManager.deleteUnlockData(for: name)
         updateDataSource()
         updateNoDatabasesLabelVisibility()
     }

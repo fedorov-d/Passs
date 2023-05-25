@@ -8,29 +8,23 @@
 import Foundation
 import LocalAuthentication
 
-struct QuickUnlockProtection: Codable {
-    let passcode: String?
-    let biometry: Bool
-
-    init?(passcode: String?, biometry: Bool) {
-        guard passcode != nil || biometry == true else { return nil }
-        self.passcode = passcode
-        self.biometry = biometry
-    }
-}
-
 protocol QuickUnlockManager: AnyObject {
     var biomeryType: LABiometryType { get }
     @discardableResult
     func isLocalAuthAvailable() -> Bool
-    func savedPasscode(for database: String) -> String?
-    func saveUnlockData(_ unlockData: UnlockData,
-                        protection: QuickUnlockProtection,
-                        for database: String) throws
-    func clearUnlockData(for database: String) throws
+
+    func protection(for database: String) -> QuickUnlockProtection?
+    func setProtection(_ protection: QuickUnlockProtection, for database: String) throws
+    func deleteProtection(for database: String) throws
+
     func unlockData(for database: String,
                     passcodeCheckPassed: @escaping (String, @escaping (Bool) -> Void) -> Void,
                     completion: @escaping (Result<UnlockData, Error>) -> Void)
+    func setUnlockData(_ unlockData: UnlockData,
+                       protection: QuickUnlockProtection,
+                       for database: String) throws
+    func deleteUnlockData(for database: String) throws
+    
     var isFetchingUnlockData: Bool { get }
 }
 
@@ -51,11 +45,7 @@ final class QuickUnlockManagerImp: QuickUnlockManager {
         return LAContext().canEvaluatePolicy(.deviceOwnerAuthenticationWithBiometrics, error: nil)
     }
 
-    func savedPasscode(for database: String) -> String? {
-        return protection(for: database)?.passcode
-    }
-
-    func saveUnlockData(_ unlockData: UnlockData, protection: QuickUnlockProtection, for database: String) throws {
+    func setUnlockData(_ unlockData: UnlockData, protection: QuickUnlockProtection, for database: String) throws {
         let jsonEncoder = JSONEncoder()
         let data = try jsonEncoder.encode(unlockData)
         if let string = String(data: data, encoding: .utf8) {
@@ -67,7 +57,7 @@ final class QuickUnlockManagerImp: QuickUnlockManager {
         }
     }
 
-    func clearUnlockData(for database: String) throws {
+    func deleteUnlockData(for database: String) throws {
         try keychainManager.deleteItem(for: database)
         try? keychainManager.deleteItem(for: "\(database)_protection")
     }
@@ -122,7 +112,7 @@ final class QuickUnlockManagerImp: QuickUnlockManager {
         }
     }
 
-    private func protection(for database: String) -> QuickUnlockProtection? {
+    func protection(for database: String) -> QuickUnlockProtection? {
         guard let protectionString = try? keychainManager.item(for: "\(database)_protection"),
               let data = protectionString.data(using: .utf8),
               let protection = try? JSONDecoder().decode(QuickUnlockProtection.self,
@@ -130,6 +120,18 @@ final class QuickUnlockManagerImp: QuickUnlockManager {
             return nil
         }
         return protection
+    }
+
+    func setProtection(_ protection: QuickUnlockProtection, for database: String) throws {
+        let jsonEncoder = JSONEncoder()
+        let protectionData = try jsonEncoder.encode(protection)
+        if let protectionString = String(data: protectionData, encoding: .utf8) {
+            try keychainManager.setItem(protectionString, for: "\(database)_protection")
+        }
+    }
+
+    func deleteProtection(for database: String) throws {
+        try keychainManager.deleteItem(for: "\(database)_protection")
     }
 
     private func evaluatePolicy(completion: @escaping (Bool, Error?) -> Void) {

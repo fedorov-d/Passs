@@ -118,3 +118,16 @@ extension UIViewController {
         self.navigationItem.rightBarButtonItem = barButtonItem
     }
 }
+
+extension UIViewController {
+    func makeCancelBarButtonItem() -> UIBarButtonItem {
+        UIBarButtonItem(barButtonSystemItem: .cancel,
+                        target: self,
+                        action: #selector(dismissSelf))
+    }
+
+    @objc
+    func dismissSelf() {
+        dismiss(animated: true, completion: nil)
+    }
+}

@@ -88,6 +88,15 @@ final class UnlockViewController: UIViewController {
         return cell
     }()
 
+    private lazy var selectKeyCell: SelectKeyButtonCell = {
+        let cell = SelectKeyButtonCell(style: .default, reuseIdentifier: selectKeyCellId)
+        cell.onButtonTap = { [weak self] in
+            self?.openKeyfile()
+        }
+        cell.title = "Select key"
+        return cell
+    }()
+
     private lazy var biometryCell: SwitchCell = {
         let isLocalAuthAvailable = localAuthManager.isLocalAuthAvailable()
         var text = ""
@@ -102,15 +111,6 @@ final class UnlockViewController: UIViewController {
         }
         let cell = SwitchCell(style: .default, reuseIdentifier: biometryCellId)
         cell.textLabel?.text = text
-        return cell
-    }()
-
-    private lazy var selectKeyCell: SelectKeyButtonCell = {
-        let cell = SelectKeyButtonCell(style: .default, reuseIdentifier: selectKeyCellId)
-        cell.onButtonTap = { [weak self] in
-            self?.openKeyfile()
-        }
-        cell.title = "Select key"
         return cell
     }()
 
@@ -132,11 +132,7 @@ final class UnlockViewController: UIViewController {
         return footer
     }()
 
-    private lazy var cancelButton = UIBarButtonItem(
-        barButtonSystemItem: .cancel,
-        target: self,
-        action: #selector(dismissViewController)
-    )
+    private lazy var cancelButton = makeCancelBarButtonItem()
 
     private lazy var unlockButton: UIBarButtonItem = {
         let button = UIBarButtonItem(
@@ -265,11 +261,6 @@ extension UnlockViewController: UITableViewDelegate  {
 // MARK: - target/action
 extension UnlockViewController {
     @objc
-    private func dismissViewController() {
-        dismiss(animated: true, completion: nil)
-    }
-
-    @objc
     private func unlockTapped() {
         tryUnlock()
     }
@@ -294,7 +285,7 @@ extension UnlockViewController {
                 keyFileData: unlockData.keyFileData
             )
             if let protection = QuickUnlockProtection(passcode: passcode, biometry: biometryCell.isOn) {
-                try localAuthManager.saveUnlockData(unlockData,
+                try localAuthManager.setUnlockData(unlockData,
                                                     protection: protection,
                                                     for: databaseURL.lastPathComponent)
             }
@@ -366,13 +357,13 @@ private extension UnlockViewController {
                 guard let self else { return UITableViewCell() }
                 switch element {
                 case .password:
-                    return passwordCell
+                    return self.passwordCell
                 case .keyFile:
-                    return selectKeyCell
+                    return self.selectKeyCell
                 case .faceID:
-                    return biometryCell
+                    return self.biometryCell
                 case .passcode:
-                    return passcodeCell
+                    return self.passcodeCell
                 }
             }
         )

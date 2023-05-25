@@ -84,6 +84,15 @@ final class RootCoordinator {
         )
         navigationController.pushViewController(passwordDetailsViewController, animated: true)
     }
+
+    private func showDatabaseSettingsViewController(for database: String) {
+        let databaseSettingsViewController = DatabaseSettingsViewController(
+            quickUnlockManager: serviceLocator.quickUnlockManager(),
+            database: database
+        )
+        let modalNavigationController = UINavigationController(rootViewController: databaseSettingsViewController)
+        navigationController.present(modalNavigationController, animated: true)
+    }
 }
 
 extension RootCoordinator {
@@ -138,11 +147,13 @@ extension RootCoordinator {
                     recentPasswordsManager: recentPasswordsManager,
                     credentialsSelectionManager: self.serviceLocator.credentialsSelectionManager
                 )
-            }) { [weak self] group in
+            }, groupSelected: { [weak self] group in
                 self?.showPasswordsViewController(title: group.title,
                                                   items: group.items,
                                                   recentPasswordsManager: recentPasswordsManager)
-            }
+            }, settingsSelected: { [weak self] in
+                self?.showDatabaseSettingsViewController(for: databaseURL.lastPathComponent)
+            })
     }
 
     private func passwordsViewController(title: String? = nil,

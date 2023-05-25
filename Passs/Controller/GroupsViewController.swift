@@ -13,6 +13,7 @@ class GroupsViewController: UIViewController {
     private let recentPasswordsManager: RecentPasswordsManager
     private let credentialsSelectionManager: CredentialsSelectionManager?
     private let groupSelected: (PassGroup) -> Void
+    private let settingsSelected: () -> Void
     private let searchResultsControllerProvider: () -> PasswordsSeachResultsDispalyController & UIViewController
 
     private var cancellables = Set<AnyCancellable>()
@@ -21,12 +22,14 @@ class GroupsViewController: UIViewController {
          recentPasswordsManager: RecentPasswordsManager,
          credentialsSelectionManager: CredentialsSelectionManager?,
          searchResultsControllerProvider: @escaping () -> PasswordsSeachResultsDispalyController & UIViewController,
-         groupSelected: @escaping (PassGroup) -> Void) {
+         groupSelected: @escaping (PassGroup) -> Void,
+         settingsSelected: @escaping () -> Void) {
         precondition(databaseManager.passwordGroups?.count ?? 0 > 0)
         self.databaseManager = databaseManager
         self.recentPasswordsManager = recentPasswordsManager
         self.credentialsSelectionManager = credentialsSelectionManager
         self.groupSelected = groupSelected
+        self.settingsSelected = settingsSelected
         self.searchResultsControllerProvider = searchResultsControllerProvider
         super.init(nibName: nil, bundle: nil)
     }
@@ -63,6 +66,12 @@ class GroupsViewController: UIViewController {
         super.viewDidLoad()
         self.navigationItem.largeTitleDisplayMode = .never
         self.navigationItem.title = self.databaseManager.databaseName
+        self.navigationItem.rightBarButtonItem = UIBarButtonItem(
+            image: UIImage(systemName: "gearshape"),
+            style: .plain,
+            target: self,
+            action: #selector(presentDatabaseSettings)
+        )
 
         setCancelNavigationItemIfNeeded(with: credentialsSelectionManager)
 
@@ -112,6 +121,11 @@ extension GroupsViewController: UISearchResultsUpdating {
         }
         passwordsViewController?.sectionTitle = (matchingItems.isEmpty ? "No matching entries" : "Matching entries").uppercased()
         passwordsViewController?.items = matchingItems
+    }
+
+    @objc
+    func presentDatabaseSettings() {
+        settingsSelected()
     }
 }
 
