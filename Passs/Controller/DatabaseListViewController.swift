@@ -18,7 +18,7 @@ protocol DefaultDatabaseUnlock: AnyObject {
 
 class DatabaseListViewController: UIViewController {
     private let databasesProvider: DatabasesProvider
-    private let localAuthManager: QuickUnlockManager
+    private let quickUnlockManager: QuickUnlockManager
     private let passDatabaseManager: PassDatabaseManager
     private let credentialsSelectionManager: CredentialsSelectionManager?
     fileprivate let settingsManager: SettingsManager
@@ -61,14 +61,14 @@ class DatabaseListViewController: UIViewController {
     
     init(databasesProvider: DatabasesProvider,
          passDatabaseManager: PassDatabaseManager,
-         localAuthManager: QuickUnlockManager,
+         quickUnlockManager: QuickUnlockManager,
          credentialsSelectionManager: CredentialsSelectionManager?,
          settingsManager: SettingsManager,
          onAskForPassword: @escaping (_: URL) -> Void,
          onDatabaseOpened: @escaping () -> Void) {
         self.databasesProvider = databasesProvider
         self.passDatabaseManager = passDatabaseManager
-        self.localAuthManager = localAuthManager
+        self.quickUnlockManager = quickUnlockManager
         self.credentialsSelectionManager = credentialsSelectionManager
         self.settingsManager = settingsManager
         self.onAskForPassword = onAskForPassword
@@ -255,7 +255,7 @@ extension DatabaseListViewController: DatabasesProviderDelegate {
     }
 
     func didDeleteDatabase(at databaseURL: URL, name: String) {
-        try? localAuthManager.deleteUnlockData(for: name)
+        try? quickUnlockManager.deleteUnlockData(for: name)
         updateDataSource()
         updateNoDatabasesLabelVisibility()
     }
@@ -329,7 +329,7 @@ extension DatabaseListViewController: DefaultDatabaseUnlock {
     func unlockDatabaseIfNeeded() {
         guard presentedViewController == nil,
               let defaultDatabase = settingsManager.defaultDatabaseURL,
-              !localAuthManager.isFetchingUnlockData,
+              !quickUnlockManager.isFetchingUnlockData,
               !passDatabaseManager.isDatabaseUnlocked else { return }
         DispatchQueue.main.asyncAfter(deadline: .now() + .milliseconds(100)) {
             self.unlockDatabase(at: defaultDatabase)
@@ -344,7 +344,7 @@ extension DatabaseListViewController: DefaultDatabaseUnlock {
             return
         }
 
-        self.localAuthManager.unlockData(
+        self.quickUnlockManager.unlockData(
             for: url.lastPathComponent,
             passcodeCheckPassed: presentPasscodeCheckView(passcode:completion:),
             completion: { [weak self] in self?.handleUnlockResult($0, url: url) }

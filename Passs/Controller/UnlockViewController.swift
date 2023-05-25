@@ -12,7 +12,7 @@ import SwiftUI
 final class UnlockViewController: UIViewController {
     private let passDatabaseManager: PassDatabaseManager
     private let databaseURL: URL
-    private let localAuthManager: QuickUnlockManager
+    private let quickUnlockManager: QuickUnlockManager
     private let completion: () -> Void
 
     private var cancellables = Set<AnyCancellable>()
@@ -45,11 +45,11 @@ final class UnlockViewController: UIViewController {
     }
 
     init(passDatabaseManager: PassDatabaseManager,
-         localAuthManager: QuickUnlockManager,
+         quickUnlockManager: QuickUnlockManager,
          forDatabaseAt url: URL,
          completion: @escaping () -> Void) {
         self.passDatabaseManager = passDatabaseManager
-        self.localAuthManager = localAuthManager
+        self.quickUnlockManager = quickUnlockManager
         self.databaseURL = url
         self.completion = completion
         super.init(nibName: nil, bundle: nil)
@@ -98,10 +98,10 @@ final class UnlockViewController: UIViewController {
     }()
 
     private lazy var biometryCell: SwitchCell = {
-        let isLocalAuthAvailable = localAuthManager.isLocalAuthAvailable()
+        let isLocalAuthAvailable = quickUnlockManager.isLocalAuthAvailable()
         var text = ""
 
-        switch (isLocalAuthAvailable, localAuthManager.biomeryType) {
+        switch (isLocalAuthAvailable, quickUnlockManager.biomeryType) {
         case (true, .touchID):
             text = "Use Touch id"
         case (true, .faceID):
@@ -273,7 +273,7 @@ extension UnlockViewController {
         if newText.count == 0 {
             self.biometryCell.isOn = false
         }
-        self.biometryCell.isEnabled = newText.count > 0 && localAuthManager.isLocalAuthAvailable()
+        self.biometryCell.isEnabled = newText.count > 0 && quickUnlockManager.isLocalAuthAvailable()
         self.errorFoorterView.label.isHidden = true
     }
 
@@ -285,7 +285,7 @@ extension UnlockViewController {
                 keyFileData: unlockData.keyFileData
             )
             if let protection = QuickUnlockProtection(passcode: passcode, biometry: biometryCell.isOn) {
-                try localAuthManager.setUnlockData(unlockData,
+                try quickUnlockManager.setUnlockData(unlockData,
                                                     protection: protection,
                                                     for: databaseURL.lastPathComponent)
             }

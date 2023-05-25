@@ -1,5 +1,5 @@
 //
-//  LocalAuthManager.swift
+//  QuickUnlockManager.swift
 //  Passs
 //
 //  Created by Dmitry Fedorov on 07.02.2022.
