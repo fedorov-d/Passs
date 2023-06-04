@@ -99,7 +99,7 @@ final class DatabaseSettingsViewController: UIViewController {
                     .init(type: .repeat)
                 ], onComplete: { [weak self] passcode in
                     guard let self else { return }
-                    if let currentProtection {
+                    if let currentProtection = self.currentProtection {
                         self.currentProtection = currentProtection.withPasscode(passcode)
                     } else {
                         self.currentProtection = QuickUnlockProtection(passcode: passcode, biometry: false)
@@ -154,11 +154,6 @@ private extension DatabaseSettingsViewController {
         snapshot.appendItems([.biometricAuth, .passcode],
                              toSection: section)
         dataSource.apply(snapshot, animatingDifferences: true)
-    }
-
-    @objc
-    private func dismissViewController() {
-        dismiss(animated: true)
     }
 
     @objc

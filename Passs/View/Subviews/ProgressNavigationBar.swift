@@ -26,7 +26,7 @@ final class ProgressNavigationBar: UINavigationBar {
 
     override init(frame: CGRect) {
         super.init(frame: frame)
-        addSubview(progressView.embeddedInContainerView(containerView: progressViewContainer, withEdges: .zero))
+        addSubview(progressView.embedded(in: progressViewContainer, edges: .zero))
         updateApperance()
     }
 

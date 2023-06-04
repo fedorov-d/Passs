@@ -84,7 +84,7 @@ final class QuickUnlockManagerImp: QuickUnlockManager {
                     completion(.success(unlockData))
                     return
                 }
-                evaluatePolicy { [weak self] success, error in
+                self.evaluatePolicy { [weak self] success, error in
                     guard let self else { return }
                     self.isFetchingUnlockData = false
                     if success {

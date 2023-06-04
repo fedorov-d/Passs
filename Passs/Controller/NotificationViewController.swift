@@ -81,10 +81,10 @@ final class NotificationViewController: UIViewController {
             make.edges.equalToSuperview()
         }
         contentStackView.addArrangedSubview(
-            iconImageView.embeddedInContainerView(withEdges: .init(top: 10, leading: 16, bottom: 10, trailing: 0))
+            iconImageView.embedded(edges: .init(top: 10, leading: 16, bottom: 10, trailing: 0))
         )
         contentStackView.addArrangedSubview(
-            textLabel.embeddedInContainerView(withEdges: .init(top: 10, leading: 0, bottom: 10, trailing: 16))
+            textLabel.embedded(edges: .init(top: 10, leading: 0, bottom: 10, trailing: 16))
         )
     }
 

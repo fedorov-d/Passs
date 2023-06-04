@@ -368,7 +368,6 @@ fileprivate extension DatabaseListViewController {
             })
         let passcodeView = PasscodeView(scenario: passcodeCheckScenario)
         let hostingController = UIHostingController(rootView: passcodeView)
-        hostingController.isModalInPresentation = true
         self.navigationController?.present(hostingController, animated: true)
     }
 

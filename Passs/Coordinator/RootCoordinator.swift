@@ -12,17 +12,27 @@ final class RootCoordinator {
     private let serviceLocator: ServiceLocator
 
 #if !CREDENTIALS_PROVIDER_EXTENSION
-    private var appSwitcherViewController: AppSwitcherOverlayViewController?
-    func showAppSwitcherOverlayViewController() {
-        guard navigationController.viewControllers.count > 1 else { return }
-        let appSwitcherViewController = AppSwitcherOverlayViewController()
-        navigationController.present(appSwitcherViewController, animated: true)
-        self.appSwitcherViewController = appSwitcherViewController
+    private weak var appSwitcherView: AppSwitcherOverlayView?
+    func showAppSwitcherOverlayView() {
+        guard appSwitcherView == nil,
+              let window = navigationController.view.window,
+              navigationController.viewControllers.count > 1 else { return }
+        guard appSwitcherView == nil else { return }
+        let appSwitcherView = AppSwitcherOverlayView()
+        appSwitcherView.alpha = 0
+        appSwitcherView.embedded(in: window, edges: .zero)
+        UIView.animate(withDuration: 0.25) {
+            appSwitcherView.alpha = 1
+        }
+        self.appSwitcherView = appSwitcherView
     }
 
-    func hideAppSwithcherOverlayViewController() {
-        appSwitcherViewController?.dismiss(animated: true)
-        appSwitcherViewController = nil
+    func hideAppSwithcherOverlayView() {
+        UIView.animate(withDuration: 0.25) {
+            self.appSwitcherView?.alpha = 0
+        } completion: { _ in
+            self.appSwitcherView?.removeFromSuperview()
+        }
     }
 #endif
 
@@ -42,6 +52,7 @@ final class RootCoordinator {
             navigationController.viewControllers = [databaseListViewController()]
         case 1..<Int.max:
             navigationController.popToRootViewController(animated: animated)
+            if navigationController.presentedViewController is UIHostingController<PasscodeView> { return }
             navigationController.presentedViewController?.dismiss(animated: animated)
         default: break
         }
