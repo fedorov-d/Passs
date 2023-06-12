@@ -23,6 +23,9 @@ struct PasscodeView: View {
             .background(Color(UIColor.systemBackground))
         }
         .ignoresSafeArea(.keyboard)
+        .onDisappear {
+            scenario.onDismiss?()
+        }
     }
 
     private let passcodeLenght = 6
@@ -140,6 +143,7 @@ struct PasscodeView: View {
     private var dismissButton: some View {
         Button("Dismiss") {
             scenario.onDismiss?()
+            scenario.onDismiss = nil
         }
         .foregroundColor(Color(UIColor.keepCyan))
     }
