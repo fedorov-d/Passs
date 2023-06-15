@@ -96,9 +96,10 @@ final class RootCoordinator {
         navigationController.pushViewController(passwordDetailsViewController, animated: true)
     }
 
-    private func showDatabaseSettingsViewController(for database: String) {
+    private func showDatabaseSettingsViewController(for database: URL) {
         let databaseSettingsViewController = DatabaseSettingsViewController(
             quickUnlockManager: serviceLocator.quickUnlockManager(),
+            settingsManager: serviceLocator.settingsManager(),
             database: database
         )
         let modalNavigationController = UINavigationController(rootViewController: databaseSettingsViewController)
@@ -163,7 +164,7 @@ extension RootCoordinator {
                                                   items: group.items,
                                                   recentPasswordsManager: recentPasswordsManager)
             }, settingsSelected: { [weak self] in
-                self?.showDatabaseSettingsViewController(for: databaseURL.lastPathComponent)
+                self?.showDatabaseSettingsViewController(for: databaseURL)
             })
     }
 

@@ -229,11 +229,11 @@ extension DatabaseListViewController: UITableViewDelegate {
                 guard let self else { return }
                 self.deleteDatabase(at: databaseURL)
             }
-            guard self.databasesProvider.databaseURLs.count > 1, sectionID != .default else {
+            guard self.databasesProvider.databaseURLs.count > 1, sectionID != .openOnStartup else {
                 return UIMenu(title: "", children: [unlockAction, deleteAction])
             }
             let makeDefaultAction = UIAction(
-                title: "Make default",
+                title: "Open on startup",
                 image: UIImage(systemName: "externaldrive.badge.checkmark")
             ) { [weak self] action in
                 guard let self else { return }
@@ -314,8 +314,8 @@ fileprivate extension DatabaseListViewController {
             if let index = urls.firstIndex(of: defaultDatabaseURL) {
                 urls.remove(at: index)
             }
-            snapshot.appendSections([.default])
-            snapshot.appendItems([defaultDatabaseURL], toSection: .default)
+            snapshot.appendSections([.openOnStartup])
+            snapshot.appendItems([defaultDatabaseURL], toSection: .openOnStartup)
         }
         if !urls.isEmpty {
             snapshot.appendSections([.other])
@@ -392,13 +392,22 @@ fileprivate extension DatabaseListViewController {
 
 private extension DatabaseListViewController {
     enum Section: String {
-        case `default`
+        case openOnStartup
         case other
+
+        var localizedDescription: String {
+            switch self {
+            case .openOnStartup:
+                return "Open on startup"
+            case .other:
+                return "Other"
+            }
+        }
     }
 
     final class DiffableDataSource: UITableViewDiffableDataSource<Section, URL> {
         override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
-            snapshot().sectionIdentifiers[section].rawValue.capitalized
+            snapshot().sectionIdentifiers[section].localizedDescription.capitalized
         }
     }
 

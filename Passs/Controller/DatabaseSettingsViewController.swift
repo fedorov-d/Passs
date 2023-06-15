@@ -7,24 +7,79 @@
 
 import SwiftUI
 
+
 final class DatabaseSettingsViewController: UIViewController {
-    private let quickUnlockManager: QuickUnlockManager
-    private var initialProtection: QuickUnlockProtection?
-    private var currentProtection: QuickUnlockProtection? {
-        didSet {
-            saveButton.isEnabled = currentProtection != initialProtection
-            biometryCell.isOn = currentProtection?.biometry ?? false
+    struct SettingsState {
+        private let initialProtection: QuickUnlockProtection?
+        private(set) var currentProtection: QuickUnlockProtection?
+        private let initialOpenOnStartup: Bool
+        private(set) var currentOpenOnStartup: Bool
+
+        init(protection: QuickUnlockProtection?, openOnStartup: Bool) {
+            self.initialProtection = protection
+            self.currentProtection = protection
+            self.initialOpenOnStartup = openOnStartup
+            self.currentOpenOnStartup = openOnStartup
+        }
+
+        var hasChanges: Bool {
+            openOnStartupChanged || protectionChanged
+        }
+
+        var protectionChanged: Bool {
+            currentProtection != initialProtection
+        }
+
+        var openOnStartupChanged: Bool {
+            initialOpenOnStartup != currentOpenOnStartup
+        }
+
+        var hasBiometry: Bool {
+            currentProtection?.biometry == true
+        }
+
+        var hasPasscode: Bool {
+            currentProtection?.passcode != nil
+        }
+
+        mutating func setBiometryOn(_ isOn: Bool) {
+            if let currentProtection {
+                self.currentProtection = currentProtection.withBiometry(isOn)
+            } else {
+                self.currentProtection = QuickUnlockProtection(biometry: isOn)
+            }
+        }
+
+        mutating func setPasscode(_ passcode: String?) {
+            if let currentProtection {
+                self.currentProtection = currentProtection.withPasscode(passcode)
+            } else {
+                self.currentProtection = QuickUnlockProtection(passcode: passcode, biometry: false)
+            }
+        }
+
+        mutating func setOpenOnStartup(_ open: Bool) {
+            currentOpenOnStartup = open
         }
     }
-    private let database: String
+    private let quickUnlockManager: QuickUnlockManager
+    private let settingsManager: SettingsManager
+    private var settingsState: SettingsState {
+        didSet {
+            saveButton.isEnabled = settingsState.hasChanges
+            biometryCell.isOn = settingsState.hasBiometry
+        }
+    }
+    private let database: URL
 
     private lazy var dataSource = makeDataSource()
 
-    init(quickUnlockManager: QuickUnlockManager, database: String) {
+    init(quickUnlockManager: QuickUnlockManager, settingsManager: SettingsManager, database: URL) {
         self.quickUnlockManager = quickUnlockManager
+        self.settingsManager = settingsManager
         self.database = database
-        self.currentProtection = quickUnlockManager.protection(for: database)
-        self.initialProtection = currentProtection
+        self.settingsState = SettingsState(protection: quickUnlockManager.protection(for: database.lastPathComponent),
+                                           openOnStartup: database == settingsManager.defaultDatabaseURL)
         super.init(nibName: nil, bundle: nil)
     }
 
@@ -68,53 +123,49 @@ final class DatabaseSettingsViewController: UIViewController {
         default:
             text = "Biometric auth is disabled"
         }
-        let cell = SwitchCell(style: .default, reuseIdentifier: String())
-        cell.onSwitchValueChanged = { [weak self] biometry in
-            guard let self else { return }
-            guard var currentProtection = self.currentProtection else {
-                if biometry {
-                    self.currentProtection = QuickUnlockProtection(biometry: true)
-                }
-                return
-            }
-            if !biometry && currentProtection.passcode.isNilOrEmpty {
-                self.currentProtection = nil
-            } else {
-                self.currentProtection = currentProtection.withBiometry(biometry)
-            }
+        let cell = SwitchCell(style: .default, reuseIdentifier: nil)
+        cell.onSwitchValueChanged = { [weak self] isBiometryOn in
+            self?.settingsState.setBiometryOn(isBiometryOn)
         }
-        cell.isOn = currentProtection?.biometry ?? false
+        cell.isOn = settingsState.hasBiometry
         cell.isEnabled = true
         cell.textLabel?.text = text
         return cell
     }()
 
     private lazy var passcodeCell: SwitchCell = {
-        let cell = SwitchCell(style: .default, reuseIdentifier: String())
+        let cell = SwitchCell(style: .default, reuseIdentifier: nil)
         cell.onSwitchValueChanged = { [weak self] isOn in
             guard let self else { return }
-            if isOn {
-                let passcodeView = PasscodeView(scenario: .init(steps: [
-                    .init(type: .create),
-                    .init(type: .repeat)
-                ], onComplete: { [weak self] passcode in
-                    guard let self else { return }
-                    if let currentProtection = self.currentProtection {
-                        self.currentProtection = currentProtection.withPasscode(passcode)
-                    } else {
-                        self.currentProtection = QuickUnlockProtection(passcode: passcode, biometry: false)
-                    }
-                    self.navigationController?.popViewController(animated: true)
-                }))
-                let controller = UIHostingController(rootView: passcodeView)
-                self.navigationController?.pushViewController(controller, animated: true)
-            } else {
-                self.currentProtection = self.currentProtection?.withPasscode(nil)
+            guard isOn else {
+                self.settingsState.setPasscode(nil)
+                return
             }
+            let passcodeView = PasscodeView(scenario: .init(steps: [
+                .init(type: .create),
+                .init(type: .repeat)
+            ], onComplete: { [weak self] passcode in
+                guard let self else { return }
+                self.settingsState.setPasscode(passcode)
+                self.navigationController?.popViewController(animated: true)
+            }))
+            let controller = UIHostingController(rootView: passcodeView)
+            self.navigationController?.pushViewController(controller, animated: true)
         }
-        cell.isOn = currentProtection?.passcode != nil
+        cell.isOn = settingsState.hasPasscode
         cell.isEnabled = true
         cell.textLabel?.text = "Passcode"
+        return cell
+    }()
+
+    private lazy var openOnStartupCell: SwitchCell = {
+        let cell = SwitchCell(style: .default, reuseIdentifier: nil)
+        cell.onSwitchValueChanged = { [weak self] openOnStartup in
+            self?.settingsState.setOpenOnStartup(openOnStartup)
+        }
+        cell.isOn = settingsManager.defaultDatabaseURL == database
+        cell.isEnabled = true
+        cell.textLabel?.text = "Open on startup"
         return cell
     }()
 }
@@ -136,7 +187,7 @@ extension DatabaseSettingsViewController {
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        passcodeCell.isOn = currentProtection?.passcode != nil
+        passcodeCell.isOn = settingsState.hasPasscode
     }
 }
 
@@ -149,20 +200,30 @@ extension DatabaseSettingsViewController: UITableViewDelegate {
 private extension DatabaseSettingsViewController {
     private func updateDataSource() {
         var snapshot = NSDiffableDataSourceSnapshot<Section, Element>()
-        let section: Section = .main
-        snapshot.appendSections([section])
-        snapshot.appendItems([.biometricAuth, .passcode],
-                             toSection: section)
+
+        let sectionProtection: Section = .protection
+        snapshot.appendSections([sectionProtection])
+        snapshot.appendItems([.biometricAuth, .passcode], toSection: sectionProtection)
+
+        let sectionOpenOnStartup: Section = .openOnStartup
+        snapshot.appendSections([sectionOpenOnStartup])
+        snapshot.appendItems([.openOnStartup], toSection: sectionOpenOnStartup)
+
         dataSource.apply(snapshot, animatingDifferences: true)
     }
 
     @objc
     private func saveTapped() {
         do {
-            if let currentProtection {
-                try quickUnlockManager.setProtection(currentProtection, for: database)
-            } else {
-                try quickUnlockManager.deleteProtection(for: database)
+            if settingsState.protectionChanged {
+                if let currentProtection = settingsState.currentProtection {
+                    try quickUnlockManager.setProtection(currentProtection, for: database.lastPathComponent)
+                } else {
+                    try quickUnlockManager.deleteProtection(for: database.lastPathComponent)
+                }
+            }
+            if settingsState.openOnStartupChanged {
+                self.settingsManager.defaultDatabaseURL = settingsState.currentOpenOnStartup ? self.database : nil
             }
             dismiss(animated: true)
         } catch {
@@ -174,24 +235,26 @@ private extension DatabaseSettingsViewController {
 
 private extension DatabaseSettingsViewController {
     enum Section: String {
-        case main
+        case protection
+        case openOnStartup
     }
 
     enum Element: String {
-        case biometricAuth, passcode
+        case biometricAuth, passcode, openOnStartup
     }
 
     final class DiffableDataSource: UITableViewDiffableDataSource<Section, Element> {
         override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
             let section = snapshot().sectionIdentifiers[section]
             switch section {
-            case .main:
+            case .protection:
                 return "Quick unlock"
-            default:
+            case .openOnStartup:
                 return nil
             }
         }
     }
+
 
     func makeDataSource() -> UITableViewDiffableDataSource<Section, Element> {
         return DiffableDataSource(
@@ -203,6 +266,8 @@ private extension DatabaseSettingsViewController {
                     return self.biometryCell
                 case .passcode:
                     return self.passcodeCell
+                case .openOnStartup:
+                    return self.openOnStartupCell
                 }
             }
         )
