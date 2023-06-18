@@ -271,14 +271,14 @@ private extension DatabaseSettingsViewController {
         dataSource.sectionFooterProvider = { [weak self] section in
             guard let self else { return nil }
             let section = self.dataSource.snapshot().sectionIdentifiers[section]
-            let localAuthenticationDisplayString = quickUnlockManager
+            let localAuthenticationDisplayString = self.quickUnlockManager
                 .localAuthenticationDisplayString ?? ""
             if case .protection = section {
                 if self.settingsState.currentProtection?.biometry == true &&
                     self.settingsState.currentProtection?.passcode != nil {
                     return "Both passcode and \(localAuthenticationDisplayString) will be asked to unlock database."
                 } else if self.settingsState.currentProtection?.biometry == true {
-                    return "\(localAuthenticationDisplayString) will be asked to unlock database.".capitalized
+                    return "\(localAuthenticationDisplayString.capitalized) will be asked to unlock database."
                 } else if self.settingsState.currentProtection?.passcode != nil {
                     return "Passcode will be asked to unlock database."
                 } else if self.settingsState.currentProtection == nil {
