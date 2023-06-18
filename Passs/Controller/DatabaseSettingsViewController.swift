@@ -68,6 +68,7 @@ final class DatabaseSettingsViewController: UIViewController {
     private var settingsState: SettingsState {
         didSet {
             tableView.reloadData()
+            saveButton.isEnabled = settingsState.hasChanges
         }
     }
     private let database: URL
