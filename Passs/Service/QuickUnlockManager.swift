@@ -13,6 +13,8 @@ protocol QuickUnlockManager: AnyObject {
     @discardableResult
     func isLocalAuthAvailable() -> Bool
 
+    var localAuthenticationDisplayString: String? { get }
+
     func protection(for database: String) -> QuickUnlockProtection?
     func setProtection(_ protection: QuickUnlockProtection, for database: String) throws
     func deleteProtection(for database: String) throws
@@ -43,6 +45,21 @@ final class QuickUnlockManagerImp: QuickUnlockManager {
     @discardableResult
     func isLocalAuthAvailable() -> Bool {
         return LAContext().canEvaluatePolicy(.deviceOwnerAuthenticationWithBiometrics, error: nil)
+    }
+
+    var localAuthenticationDisplayString: String? {
+        let isLocalAuthAvailable = isLocalAuthAvailable()
+        var result: String?
+
+        switch (isLocalAuthAvailable, biomeryType) {
+        case (true, .touchID):
+            result = "Touch id"
+        case (true, .faceID):
+            result = "Face id"
+        default:
+            break
+        }
+        return result
     }
 
     func setUnlockData(_ unlockData: UnlockData, protection: QuickUnlockProtection, for database: String) throws {

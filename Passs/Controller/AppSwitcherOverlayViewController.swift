@@ -12,10 +12,28 @@ final class AppSwitcherOverlayView: UIView {
     override init(frame: CGRect) {
         super.init(frame: frame)
 
-        let visualEffectView = UIVisualEffectView(effect: UIBlurEffect(style: .systemUltraThinMaterial))
-        addSubview(visualEffectView)
+        let imageView = UIImageView(image: UIImage(named: "lock"))
+        imageView.contentMode = .scaleAspectFit
 
-        visualEffectView.snp.makeConstraints { make in
+        let blurEffect = UIBlurEffect(style: .systemUltraThinMaterial)
+        let blurredEffectView = UIVisualEffectView(effect: blurEffect)
+        addSubview(blurredEffectView)
+
+        let vibrancyEffect = UIVibrancyEffect(blurEffect: blurEffect)
+        let vibrancyEffectView = UIVisualEffectView(effect: vibrancyEffect)
+
+        vibrancyEffectView.contentView.addSubview(imageView)
+        imageView.snp.makeConstraints { make in
+            make.horizontalEdges.equalToSuperview().inset(80)
+            make.centerY.equalToSuperview()
+        }
+
+        blurredEffectView.contentView.addSubview(vibrancyEffectView)
+        vibrancyEffectView.snp.makeConstraints { make in
+            make.edges.equalToSuperview()
+        }
+
+        blurredEffectView.snp.makeConstraints { make in
             make.edges.equalToSuperview()
         }
     }

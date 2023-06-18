@@ -62,12 +62,12 @@ final class DatabaseSettingsViewController: UIViewController {
             currentOpenOnStartup = open
         }
     }
+
     private let quickUnlockManager: QuickUnlockManager
     private let settingsManager: SettingsManager
     private var settingsState: SettingsState {
         didSet {
-            saveButton.isEnabled = settingsState.hasChanges
-            biometryCell.isOn = settingsState.hasBiometry
+            tableView.reloadData()
         }
     }
     private let database: URL
@@ -112,24 +112,16 @@ final class DatabaseSettingsViewController: UIViewController {
     }()
 
     private lazy var biometryCell: SwitchCell = {
-        let isLocalAuthAvailable = quickUnlockManager.isLocalAuthAvailable()
-        var text = ""
+        let localAuthenticationDisplayString = quickUnlockManager
+            .localAuthenticationDisplayString ?? "Biometry is not available"
 
-        switch (isLocalAuthAvailable, quickUnlockManager.biomeryType) {
-        case (true, .touchID):
-            text = "Use Touch id"
-        case (true, .faceID):
-            text = "Use Face id"
-        default:
-            text = "Biometric auth is disabled"
-        }
         let cell = SwitchCell(style: .default, reuseIdentifier: nil)
         cell.onSwitchValueChanged = { [weak self] isBiometryOn in
             self?.settingsState.setBiometryOn(isBiometryOn)
         }
         cell.isOn = settingsState.hasBiometry
         cell.isEnabled = true
-        cell.textLabel?.text = text
+        cell.textLabel?.text = localAuthenticationDisplayString
         return cell
     }()
 
@@ -244,6 +236,8 @@ private extension DatabaseSettingsViewController {
     }
 
     final class DiffableDataSource: UITableViewDiffableDataSource<Section, Element> {
+        var sectionFooterProvider: ((Int) -> String?)?
+
         override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
             let section = snapshot().sectionIdentifiers[section]
             switch section {
@@ -253,11 +247,14 @@ private extension DatabaseSettingsViewController {
                 return nil
             }
         }
+
+        override func tableView(_ tableView: UITableView, titleForFooterInSection section: Int) -> String? {
+            sectionFooterProvider?(section)
+        }
     }
 
-
     func makeDataSource() -> UITableViewDiffableDataSource<Section, Element> {
-        return DiffableDataSource(
+        let dataSource = DiffableDataSource(
             tableView: tableView,
             cellProvider: { [weak self]  tableView, indexPath, element in
                 guard let self else { return UITableViewCell() }
@@ -271,5 +268,25 @@ private extension DatabaseSettingsViewController {
                 }
             }
         )
+        dataSource.sectionFooterProvider = { [weak self] section in
+            guard let self else { return nil }
+            let section = self.dataSource.snapshot().sectionIdentifiers[section]
+            let localAuthenticationDisplayString = quickUnlockManager
+                .localAuthenticationDisplayString ?? ""
+            if case .protection = section {
+                if self.settingsState.currentProtection?.biometry == true &&
+                    self.settingsState.currentProtection?.passcode != nil {
+                    return "Both passcode and \(localAuthenticationDisplayString) will be asked to unlock database."
+                } else if self.settingsState.currentProtection?.biometry == true {
+                    return "\(localAuthenticationDisplayString) will be asked to unlock database.".capitalized
+                } else if self.settingsState.currentProtection?.passcode != nil {
+                    return "Passcode will be asked to unlock database."
+                } else if self.settingsState.currentProtection == nil {
+                    return "Database password or (and) master key file will be asked to unlock database."
+                }
+            }
+            return nil
+        }
+        return dataSource
     }
 }

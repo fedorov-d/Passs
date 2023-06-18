@@ -98,19 +98,10 @@ final class UnlockViewController: UIViewController {
     }()
 
     private lazy var biometryCell: SwitchCell = {
-        let isLocalAuthAvailable = quickUnlockManager.isLocalAuthAvailable()
-        var text = ""
-
-        switch (isLocalAuthAvailable, quickUnlockManager.biomeryType) {
-        case (true, .touchID):
-            text = "Use Touch id"
-        case (true, .faceID):
-            text = "Use Face id"
-        default:
-            text = "Biometric auth is disabled"
-        }
+        let localAuthenticationDisplayString = quickUnlockManager
+            .localAuthenticationDisplayString ?? "Biometry is not available"
         let cell = SwitchCell(style: .default, reuseIdentifier: biometryCellId)
-        cell.textLabel?.text = text
+        cell.textLabel?.text = localAuthenticationDisplayString
         return cell
     }()
 
