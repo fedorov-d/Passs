@@ -25,6 +25,7 @@ final class ServiceLocatorImp: ServiceLocator {
     private let _databasesProvider = DatabasesProviderImp()
     private let _pasteboardManager = PasteboardManagerImp()
     private let _passDatabaseManager = PassDatabaseManagerImp()
+    private let _settingsManager = SettingsManager()
     private(set) var _credentialsSelectionManager: CredentialsSelectionManagerImp?
 
     var databasesProvider: DatabasesProvider {
@@ -56,7 +57,7 @@ final class ServiceLocatorImp: ServiceLocator {
     }
 
     func settingsManager() -> SettingsManager {
-        SettingsManager()
+        _settingsManager
     }
 
     func qrCodeManager() -> QRCodeManager {

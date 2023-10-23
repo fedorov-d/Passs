@@ -97,6 +97,7 @@ class DatabaseListViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        settingsManager.defaultDatabaseObserver = self
         tableView.dataSource = dataSource
         updateDataSource()
 
@@ -229,18 +230,25 @@ extension DatabaseListViewController: UITableViewDelegate {
                 guard let self else { return }
                 self.deleteDatabase(at: databaseURL)
             }
-            guard self.databasesProvider.databaseURLs.count > 1, sectionID != .openOnStartup else {
-                return UIMenu(title: "", children: [unlockAction, deleteAction])
+            let startupAction: UIAction
+            if databaseURL == self.settingsManager.defaultDatabaseURL {
+                startupAction = UIAction(
+                    title: "Dont open on startup",
+                    image: UIImage(systemName: "externaldrive.badge.checkmark")
+                ) { [weak self] action in
+                    guard let self else { return }
+                    self.settingsManager.defaultDatabaseURL = nil
+                }
+            } else {
+                startupAction = UIAction(
+                    title: "Open on startup",
+                    image: UIImage(systemName: "externaldrive.badge.checkmark")
+                ) { [weak self] action in
+                    guard let self else { return }
+                    self.settingsManager.defaultDatabaseURL = databaseURL
+                }
             }
-            let makeDefaultAction = UIAction(
-                title: "Open on startup",
-                image: UIImage(systemName: "externaldrive.badge.checkmark")
-            ) { [weak self] action in
-                guard let self else { return }
-                self.settingsManager.defaultDatabaseURL = databaseURL
-                self.updateDataSource()
-            }
-            return UIMenu(title: "", children: [unlockAction, makeDefaultAction, deleteAction])
+            return UIMenu(title: "", children: [unlockAction, startupAction, deleteAction])
         })
     }
 }
@@ -325,6 +333,12 @@ fileprivate extension DatabaseListViewController {
     }
 }
 
+extension DatabaseListViewController: DefaultDatabaseObserver {
+    func defaultDataBaseDidChange() {
+        updateDataSource()
+    }
+}
+
 extension DatabaseListViewController: DefaultDatabaseUnlock {
     func unlockDatabaseIfNeeded() {
         guard presentedViewController == nil,
@@ -347,8 +361,28 @@ extension DatabaseListViewController: DefaultDatabaseUnlock {
         self.quickUnlockManager.unlockData(
             for: url.lastPathComponent,
             passcodeCheckPassed: presentPasscodeCheckView(passcode:completion:),
-            completion: { [weak self] in self?.handleUnlockResult($0, url: url) }
+            completion: { [weak self] result in
+                switch result {
+                case .success(let success):
+                    self?.performUnlock(for: url, with: success)
+                case .failure(let failure):
+                    self?.handlePasswordError(failure, forDatabaseAt: url)
+                }
+            }
         )
+    }
+
+    func performUnlock(for databaseURL: URL, with unlockData: UnlockData) {
+        do {
+            try self.passDatabaseManager.unlockDatabase(
+                with: databaseURL,
+                password: unlockData.password,
+                keyFileData: unlockData.keyFileData
+            )
+            self.onDatabaseOpened()
+        } catch (let error) {
+            self.handlePasswordError(error, forDatabaseAt: databaseURL)
+        }
     }
 }
 
@@ -369,24 +403,6 @@ fileprivate extension DatabaseListViewController {
         let passcodeView = PasscodeView(scenario: passcodeCheckScenario)
         let hostingController = UIHostingController(rootView: passcodeView)
         self.navigationController?.present(hostingController, animated: true)
-    }
-
-    func handleUnlockResult(_ result: Result<UnlockData, Error>, url: URL) {
-        switch result {
-        case .success(let unlockData):
-            do {
-                try self.passDatabaseManager.unlockDatabase(
-                    with: url,
-                    password: unlockData.password,
-                    keyFileData: unlockData.keyFileData
-                )
-                self.onDatabaseOpened()
-            } catch (let error) {
-                self.handlePasswordError(error, forDatabaseAt: url)
-            }
-        case .failure(let error):
-            self.handlePasswordError(error, forDatabaseAt: url)
-        }
     }
 }
 

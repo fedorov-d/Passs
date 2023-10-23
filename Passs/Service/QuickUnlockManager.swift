@@ -20,6 +20,7 @@ protocol QuickUnlockManager: AnyObject {
     func deleteProtection(for database: String) throws
 
     func unlockData(for database: String,
+                    skipChecks: Bool,
                     passcodeCheckPassed: @escaping (String, @escaping (Bool) -> Void) -> Void,
                     completion: @escaping (Result<UnlockData, Error>) -> Void)
     func setUnlockData(_ unlockData: UnlockData,
@@ -28,6 +29,14 @@ protocol QuickUnlockManager: AnyObject {
     func deleteUnlockData(for database: String) throws
     
     var isFetchingUnlockData: Bool { get }
+}
+
+extension QuickUnlockManager {
+    func unlockData(for database: String,
+                    passcodeCheckPassed: @escaping (String, @escaping (Bool) -> Void) -> Void,
+                    completion: @escaping (Result<UnlockData, Error>) -> Void) {
+        unlockData(for: database, skipChecks: false, passcodeCheckPassed: passcodeCheckPassed, completion: completion)
+    }
 }
 
 final class QuickUnlockManagerImp: QuickUnlockManager {
@@ -80,6 +89,7 @@ final class QuickUnlockManagerImp: QuickUnlockManager {
     }
 
     func unlockData(for database: String,
+                    skipChecks: Bool,
                     passcodeCheckPassed: @escaping (String, @escaping (Bool) -> Void) -> Void,
                     completion: @escaping (Result<UnlockData, Error>) -> Void) {
         guard !isFetchingUnlockData else { return }
@@ -91,6 +101,11 @@ final class QuickUnlockManagerImp: QuickUnlockManager {
                   let unlockData = try? JSONDecoder().decode(UnlockData.self, from: data) else {
                 isFetchingUnlockData = false
                 completion(.failure(KeychainError.itemNotFound))
+                return
+            }
+
+            guard !skipChecks else {
+                completion(.success(unlockData))
                 return
             }
 

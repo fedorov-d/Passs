@@ -7,7 +7,13 @@
 
 import Foundation
 
+protocol DefaultDatabaseObserver: AnyObject {
+    func defaultDataBaseDidChange()
+}
+
 final class SettingsManager {
+    weak var defaultDatabaseObserver: DefaultDatabaseObserver?
+
     @UserDefaultsBacked<TimeInterval>(key: "clearPasteboardTimeInterval")
     var clearPasteboardTimeInterval
 
@@ -22,6 +28,9 @@ final class SettingsManager {
 
     var defaultDatabaseURL: URL? {
         get { defaultDatabaseURLString.flatMap { URL(string: $0) }}
-        set { defaultDatabaseURLString = newValue?.absoluteString }
+        set {
+            defaultDatabaseURLString = newValue?.absoluteString
+            defaultDatabaseObserver?.defaultDataBaseDidChange()
+        }
     }
 }

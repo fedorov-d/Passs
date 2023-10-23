@@ -15,6 +15,7 @@ final class ProgressNavigationBar: UINavigationBar {
         let progressView = UIProgressView(progressViewStyle: .bar)
         progressView.tintColor = .keepCyan.withAlphaComponent(0.6)
         progressView.progress = 0
+        progressView.isAccessibilityElement = false
         return progressView
     }()
 
