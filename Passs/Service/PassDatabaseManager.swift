@@ -55,8 +55,8 @@ final class PassDatabaseManagerImp: PassDatabaseManager {
                                                             user: username,
                                                             recordIdentifier: item.uuid.uuidString)
                     }
-                store.replaceCredentialIdentities(with: credentialIdentities) { success, error in
-                    Swift.debugPrint("credentials replaced \(success), \(String(describing: error))")
+                store.saveCredentialIdentities(credentialIdentities) { success, error in
+                    Swift.debugPrint("credentials saved \(success), error: \(String(describing: error))")
                 }
             }
         }
@@ -80,12 +80,11 @@ final class PassDatabaseManagerImp: PassDatabaseManager {
     }
 
     func unlockDatabase(with url: URL, password: String? = nil, keyFileData: Data? = nil) throws {
-        guard url.startAccessingSecurityScopedResource() else {
-            lockDatabase()
-            throw PassDatabaseManagerError.cantAccessURL
-        }
+        let secured = url.startAccessingSecurityScopedResource()
         defer {
-            url.stopAccessingSecurityScopedResource()
+            if secured {
+                url.stopAccessingSecurityScopedResource()
+            }
         }
         var keys = [KPKKey]()
         if let password = password {
@@ -98,6 +97,15 @@ final class PassDatabaseManagerImp: PassDatabaseManager {
         let tree = try KPKTree(contentsOf: url, key: compositeKey)
         databaseName = url.lastPathComponent
         databaseURL = url
+
+#if !CREDENTIALS_PROVIDER_EXTENSION
+        if let sharedContainerURL = FileManager.sharedContainerURL {
+            let fileURL = sharedContainerURL.kp_appendingPathComponent(url.lastPathComponent)
+            try? FileManager.default.removeItem(at: fileURL)
+            try FileManager.default.copyItem(at: url, to: fileURL)
+        }
+#endif
+
         passwordGroups = tree.root?.groups.sorted {
             $0.title?.localizedCaseInsensitiveCompare($1.title ?? "") == .orderedAscending
         }

@@ -15,6 +15,7 @@ final class ProgressNavigationBar: UINavigationBar {
         let progressView = UIProgressView(progressViewStyle: .bar)
         progressView.tintColor = .keepCyan.withAlphaComponent(0.6)
         progressView.progress = 0
+        progressView.isAccessibilityElement = false
         return progressView
     }()
 
@@ -26,7 +27,7 @@ final class ProgressNavigationBar: UINavigationBar {
 
     override init(frame: CGRect) {
         super.init(frame: frame)
-        addSubview(progressView.embeddedInContainerView(containerView: progressViewContainer, withEdges: .zero))
+        addSubview(progressView.embedded(in: progressViewContainer, edges: .zero))
         updateApperance()
     }
 

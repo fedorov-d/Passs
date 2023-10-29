@@ -12,17 +12,19 @@ final class RootCoordinator {
     private let serviceLocator: ServiceLocator
 
 #if !CREDENTIALS_PROVIDER_EXTENSION
-    private var appSwitcherViewController: AppSwitcherOverlayViewController?
-    func showAppSwitcherOverlayViewController() {
-        guard navigationController.viewControllers.count > 1 else { return }
-        let appSwitcherViewController = AppSwitcherOverlayViewController()
-        navigationController.present(appSwitcherViewController, animated: true)
-        self.appSwitcherViewController = appSwitcherViewController
+    private weak var appSwitcherView: AppSwitcherOverlayView?
+    func showAppSwitcherOverlayView() {
+        guard appSwitcherView == nil,
+              let window = navigationController.view.window,
+              navigationController.viewControllers.count > 1 else { return }
+        guard appSwitcherView == nil else { return }
+        let appSwitcherView = AppSwitcherOverlayView()
+        appSwitcherView.embedded(in: window, edges: .zero)
+        self.appSwitcherView = appSwitcherView
     }
 
-    func hideAppSwithcherOverlayViewController() {
-        appSwitcherViewController?.dismiss(animated: true)
-        appSwitcherViewController = nil
+    func hideAppSwithcherOverlayView() {
+        self.appSwitcherView?.removeFromSuperview()
     }
 #endif
 
@@ -42,6 +44,7 @@ final class RootCoordinator {
             navigationController.viewControllers = [databaseListViewController()]
         case 1..<Int.max:
             navigationController.popToRootViewController(animated: animated)
+            if navigationController.presentedViewController is UIHostingController<PasscodeView> { return }
             navigationController.presentedViewController?.dismiss(animated: animated)
         default: break
         }
@@ -51,7 +54,7 @@ final class RootCoordinator {
         let unlockViewController = self.unlockViewController(
             forDatabaseAt: url,
             passDatabaseManager: passDatabaseManager,
-            localAuthManager: self.serviceLocator.quickUnlockManager()
+            quickUnlockManager: self.serviceLocator.quickUnlockManager()
         )
         let navigationController = UINavigationController(navigationBarClass: ProgressNavigationBar.self,
                                                           toolbarClass: nil)
@@ -84,6 +87,16 @@ final class RootCoordinator {
         )
         navigationController.pushViewController(passwordDetailsViewController, animated: true)
     }
+
+    private func showDatabaseSettingsViewController(for database: URL) {
+        let databaseSettingsViewController = DatabaseSettingsViewController(
+            quickUnlockManager: serviceLocator.quickUnlockManager(),
+            settingsManager: serviceLocator.settingsManager(),
+            database: database
+        )
+        let modalNavigationController = UINavigationController(rootViewController: databaseSettingsViewController)
+        navigationController.present(modalNavigationController, animated: true)
+    }
 }
 
 extension RootCoordinator {
@@ -92,7 +105,7 @@ extension RootCoordinator {
         return DatabaseListViewController(
             databasesProvider: serviceLocator.databasesProvider,
             passDatabaseManager: passDatabaseManager,
-            localAuthManager: serviceLocator.quickUnlockManager(),
+            quickUnlockManager: serviceLocator.quickUnlockManager(),
             credentialsSelectionManager: serviceLocator.credentialsSelectionManager,
             settingsManager: serviceLocator.settingsManager(),
             onAskForPassword: { [weak self] url in
@@ -106,10 +119,10 @@ extension RootCoordinator {
 
     private func unlockViewController(forDatabaseAt url: URL,
                                       passDatabaseManager: PassDatabaseManager,
-                                      localAuthManager: QuickUnlockManager) -> UnlockViewController {
+                                      quickUnlockManager: QuickUnlockManager) -> UnlockViewController {
         let enterPasswordController = UnlockViewController(
             passDatabaseManager: passDatabaseManager,
-            localAuthManager: localAuthManager,
+            quickUnlockManager: quickUnlockManager,
             forDatabaseAt: url
         ) { [weak self] in
             guard let self else { return }
@@ -138,11 +151,13 @@ extension RootCoordinator {
                     recentPasswordsManager: recentPasswordsManager,
                     credentialsSelectionManager: self.serviceLocator.credentialsSelectionManager
                 )
-            }) { [weak self] group in
+            }, groupSelected: { [weak self] group in
                 self?.showPasswordsViewController(title: group.title,
                                                   items: group.items,
                                                   recentPasswordsManager: recentPasswordsManager)
-            }
+            }, settingsSelected: { [weak self] in
+                self?.showDatabaseSettingsViewController(for: databaseURL)
+            })
     }
 
     private func passwordsViewController(title: String? = nil,

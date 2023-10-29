@@ -8,7 +8,8 @@
 import UIKit
 
 extension UIView {
-    func embeddedInContainerView(containerView: UIView = UIView(), withEdges edges: NSDirectionalEdgeInsets) -> UIView {
+    @discardableResult
+    func embedded(in containerView: UIView = UIView(), edges: NSDirectionalEdgeInsets) -> UIView {
         containerView.addSubview(self)
         self.snp.makeConstraints { make in
             make.edges.equalToSuperview().inset(edges)
@@ -16,9 +17,10 @@ extension UIView {
         return containerView
     }
 
-    func embeddedInContainerView(containerView: UIView = UIView(),
-                                 alignedWithReadableContentGuide: Bool,
-                                 withEdges edges: NSDirectionalEdgeInsets) -> UIView {
+    @discardableResult
+    func embedded(in containerView: UIView = UIView(),
+                  alignedWithReadableContentGuide: Bool,
+                  edges: NSDirectionalEdgeInsets) -> UIView {
         containerView.addSubview(self)
         self.snp.makeConstraints { make in
             if alignedWithReadableContentGuide {

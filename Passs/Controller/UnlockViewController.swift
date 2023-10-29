@@ -12,7 +12,7 @@ import SwiftUI
 final class UnlockViewController: UIViewController {
     private let passDatabaseManager: PassDatabaseManager
     private let databaseURL: URL
-    private let localAuthManager: QuickUnlockManager
+    private let quickUnlockManager: QuickUnlockManager
     private let completion: () -> Void
 
     private var cancellables = Set<AnyCancellable>()
@@ -45,11 +45,11 @@ final class UnlockViewController: UIViewController {
     }
 
     init(passDatabaseManager: PassDatabaseManager,
-         localAuthManager: QuickUnlockManager,
+         quickUnlockManager: QuickUnlockManager,
          forDatabaseAt url: URL,
          completion: @escaping () -> Void) {
         self.passDatabaseManager = passDatabaseManager
-        self.localAuthManager = localAuthManager
+        self.quickUnlockManager = quickUnlockManager
         self.databaseURL = url
         self.completion = completion
         super.init(nibName: nil, bundle: nil)
@@ -88,29 +88,20 @@ final class UnlockViewController: UIViewController {
         return cell
     }()
 
-    private lazy var biometryCell: SwitchCell = {
-        let isLocalAuthAvailable = localAuthManager.isLocalAuthAvailable()
-        var text = ""
-
-        switch (isLocalAuthAvailable, localAuthManager.biomeryType) {
-        case (true, .touchID):
-            text = "Use Touch id"
-        case (true, .faceID):
-            text = "Use Face id"
-        default:
-            text = "Biometric auth is disabled"
-        }
-        let cell = SwitchCell(style: .default, reuseIdentifier: biometryCellId)
-        cell.textLabel?.text = text
-        return cell
-    }()
-
     private lazy var selectKeyCell: SelectKeyButtonCell = {
         let cell = SelectKeyButtonCell(style: .default, reuseIdentifier: selectKeyCellId)
         cell.onButtonTap = { [weak self] in
             self?.openKeyfile()
         }
         cell.title = "Select key"
+        return cell
+    }()
+
+    private lazy var biometryCell: SwitchCell = {
+        let localAuthenticationDisplayString = quickUnlockManager
+            .localAuthenticationDisplayString ?? "Biometry is not available"
+        let cell = SwitchCell(style: .default, reuseIdentifier: biometryCellId)
+        cell.textLabel?.text = localAuthenticationDisplayString
         return cell
     }()
 
@@ -132,11 +123,7 @@ final class UnlockViewController: UIViewController {
         return footer
     }()
 
-    private lazy var cancelButton = UIBarButtonItem(
-        barButtonSystemItem: .cancel,
-        target: self,
-        action: #selector(dismissViewController)
-    )
+    private lazy var cancelButton = makeCancelBarButtonItem()
 
     private lazy var unlockButton: UIBarButtonItem = {
         let button = UIBarButtonItem(
@@ -265,11 +252,6 @@ extension UnlockViewController: UITableViewDelegate  {
 // MARK: - target/action
 extension UnlockViewController {
     @objc
-    private func dismissViewController() {
-        dismiss(animated: true, completion: nil)
-    }
-
-    @objc
     private func unlockTapped() {
         tryUnlock()
     }
@@ -282,7 +264,7 @@ extension UnlockViewController {
         if newText.count == 0 {
             self.biometryCell.isOn = false
         }
-        self.biometryCell.isEnabled = newText.count > 0 && localAuthManager.isLocalAuthAvailable()
+        self.biometryCell.isEnabled = newText.count > 0 && quickUnlockManager.isLocalAuthAvailable()
         self.errorFoorterView.label.isHidden = true
     }
 
@@ -294,7 +276,7 @@ extension UnlockViewController {
                 keyFileData: unlockData.keyFileData
             )
             if let protection = QuickUnlockProtection(passcode: passcode, biometry: biometryCell.isOn) {
-                try localAuthManager.saveUnlockData(unlockData,
+                try quickUnlockManager.setUnlockData(unlockData,
                                                     protection: protection,
                                                     for: databaseURL.lastPathComponent)
             }
@@ -366,13 +348,13 @@ private extension UnlockViewController {
                 guard let self else { return UITableViewCell() }
                 switch element {
                 case .password:
-                    return passwordCell
+                    return self.passwordCell
                 case .keyFile:
-                    return selectKeyCell
+                    return self.selectKeyCell
                 case .faceID:
-                    return biometryCell
+                    return self.biometryCell
                 case .passcode:
-                    return passcodeCell
+                    return self.passcodeCell
                 }
             }
         )

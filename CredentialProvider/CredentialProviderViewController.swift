@@ -7,16 +7,27 @@
 
 import AuthenticationServices
 import SnapKit
+import OSLog
 
 class CredentialProviderViewController: ASCredentialProviderViewController {
     private let serviceLocator = ServiceLocatorImp()
     private lazy var coordinator = RootCoordinator(serviceLocator: serviceLocator)
 
     override func prepareInterfaceForExtensionConfiguration() {
+        let logger = Logger(subsystem: "Keep", category: "usugub")
+        logger.log("prepareInterfaceForExtensionConfiguration")
         let store = ASCredentialIdentityStore.shared
-        store.getState { state in
+        store.getState { [weak self] state in
+            logger.log("prepareInterfaceForExtensionConfiguration \(state)")
+            guard let self else { return }
             if state.isEnabled {
                 // Add, remove, or update identities.
+                let childViewController = coordinator.navigationController
+                let string = String(describing: childViewController)
+                logger.log("\(string)")
+                childViewController.embed(in: self)
+                childViewController.view.snp.makeConstraints { $0.edges.equalToSuperview() }
+                coordinator.showDatabasesViewController()
             }
         }
     }
@@ -63,7 +74,7 @@ class CredentialProviderViewController: ASCredentialProviderViewController {
      Provide the password by completing the extension request with the associated ASPasswordCredential.
      If using the credential would require showing custom UI for authenticating the user, cancel
      the request with error code ASExtensionError.userInteractionRequired.
-
+     */
 
     override func provideCredentialWithoutUserInteraction(for credentialIdentity: ASPasswordCredentialIdentity) {
         let userInteractionRequiredFallback = {
@@ -78,44 +89,58 @@ class CredentialProviderViewController: ASCredentialProviderViewController {
             forKey: UserDefaults.Keys.openedDatabaseURL.rawValue
         ).flatMap({ urlString -> URL? in
             guard let urlString = urlString as? String else { return nil }
-            return URL(string: urlString)
-        }),
-            let enterBackgroundTimestamp = UserDefaults.standard.value(
+            return URL(fileURLWithPath: urlString)
+        }) else {
+            userInteractionRequiredFallback()
+            return
+        }
+
+        guard let enterBackgroundTimestamp = UserDefaults.shared.value(
             forKey: UserDefaults.Keys.enterBackgroundTimestamp.rawValue
-        ) as? TimeInterval, (currentTimestamp - enterBackgroundTimestamp) < Constants.closeDatabaseTimeInterval else {
+        ) as? TimeInterval,
+              currentTimestamp - enterBackgroundTimestamp < Constants.closeDatabaseTimeInterval else {
             userInteractionRequiredFallback()
             return
         }
         let quickUnlockManager = serviceLocator.quickUnlockManager()
         let passDatabaseManager = serviceLocator.passDatabaseManager()
-        quickUnlockManager.unlockData(for: openedDatabaseURL.lastPathComponent) { result in
-            switch result {
-            case .success(let success):
-                do {
-                    try passDatabaseManager.unlockDatabase(with: openedDatabaseURL,
-                                                           password: success.password,
-                                                           keyFileData: success.keyFileData)
-                    let items = passDatabaseManager.passwordGroups?.flatMap { $0.items }
-                    if let matchingItem = items?.first(
-                        where: { $0.uuid.uuidString == credentialIdentity.recordIdentifier }
-                    ), let password = matchingItem.password {
-                        let passwordCredential = ASPasswordCredential(user: credentialIdentity.user,
-                                                                      password: password)
+        quickUnlockManager.unlockData(
+            for: openedDatabaseURL.lastPathComponent,
+            skipChecks: true,
+            passcodeCheckPassed: { $1(true) }) { result in
+                switch result {
+                case .success(let success):
+                    do {
+                        let localURL = FileManager.sharedContainerURL?.kp_appendingPathComponent(
+                            openedDatabaseURL.lastPathComponent
+                        )
+                        guard let localURL else {
+                            userInteractionRequiredFallback()
+                            return
+                        }
+                        try passDatabaseManager.unlockDatabase(with: localURL,
+                                                               password: success.password,
+                                                               keyFileData: success.keyFileData)
+                        let items = passDatabaseManager.passwordGroups?.flatMap { $0.items }
+                        if let matchingItem = items?.first(
+                            where: { $0.uuid.uuidString == credentialIdentity.recordIdentifier }
+                        ), let password = matchingItem.password {
+                            let passwordCredential = ASPasswordCredential(user: credentialIdentity.user,
+                                                                          password: password)
 
-                        self.extensionContext.completeRequest(withSelectedCredential: passwordCredential,
-                                                              completionHandler: nil)
-                    } else {
+                            self.extensionContext.completeRequest(withSelectedCredential: passwordCredential,
+                                                                  completionHandler: nil)
+                        } else {
+                            userInteractionRequiredFallback()
+                        }
+                    } catch {
                         userInteractionRequiredFallback()
                     }
-                } catch {
+                case .failure:
                     userInteractionRequiredFallback()
                 }
-            case .failure(let failure):
-                userInteractionRequiredFallback()
             }
-        }
     }
-     */
 
     /*
      Implement this method if provideCredentialWithoutUserInteraction(for:) can fail with

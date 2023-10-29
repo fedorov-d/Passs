@@ -20,12 +20,14 @@ protocol KeychainManager: AnyObject {
     func deleteItem(for key: String) throws
 }
 
+let applicationGroupIdentifier = "3YK694S6H3.com.sw1.dftest.shared"
+
 final class KeychainManagerImp: KeychainManager {
     func setItem(_ item: String, for key: String) throws {
         var query: [AnyHashable: Any] = [
             kSecClass: kSecClassInternetPassword,
             kSecAttrServer: "",
-            kSecAttrAccessGroup: accessGroup,
+            kSecAttrAccessGroup: applicationGroupIdentifier,
             kSecAttrAccount: key
         ]
         let status: OSStatus
@@ -51,7 +53,7 @@ final class KeychainManagerImp: KeychainManager {
         let query = [
             kSecClass: kSecClassInternetPassword,
             kSecAttrServer: "",
-            kSecAttrAccessGroup: accessGroup,
+            kSecAttrAccessGroup: applicationGroupIdentifier,
             kSecAttrAccount: key
         ] as [String: Any]
         let status = SecItemDelete(query as CFDictionary)
@@ -75,13 +77,37 @@ final class KeychainManagerImp: KeychainManager {
     private func query(for key: String) -> [AnyHashable: Any] {
         [
             kSecClass: kSecClassInternetPassword,
-            kSecAttrAccessGroup: accessGroup,
+            kSecAttrAccessGroup: applicationGroupIdentifier,
             kSecAttrServer: "",
             kSecAttrAccount: key,
             kSecMatchLimit: kSecMatchLimitOne,
             kSecReturnData: true
         ]
     }
+}
 
-    let accessGroup = "3YK694S6H3.com.sw1.dftest.shared"
+extension KeychainManagerImp: ProtectionStorage {
+    var protectionStorageSuffix: String { "_protection" }
+
+    func protection(for database: String) -> QuickUnlockProtection? {
+        guard let protectionString = try? item(for: "\(database)\(protectionStorageSuffix)"),
+              let data = protectionString.data(using: .utf8),
+              let protection = try? JSONDecoder().decode(QuickUnlockProtection.self,
+                                                         from: data) else {
+            return nil
+        }
+        return protection
+    }
+
+    func setProtection(_ protection: QuickUnlockProtection, for database: String) throws {
+        let jsonEncoder = JSONEncoder()
+        let protectionData = try jsonEncoder.encode(protection)
+        if let protectionString = String(data: protectionData, encoding: .utf8) {
+            try setItem(protectionString, for: "\(database)\(protectionStorageSuffix)")
+        }
+    }
+
+    func deleteProtection(for database: String) throws {
+        try deleteItem(for: "\(database)\(protectionStorageSuffix)")
+    }
 }

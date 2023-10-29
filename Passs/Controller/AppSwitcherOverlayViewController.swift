@@ -8,27 +8,37 @@
 import UIKit
 import SnapKit
 
-final class AppSwitcherOverlayViewController: UIViewController {
-    override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: Bundle?) {
-        super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
-        modalPresentationStyle = .overCurrentContext
-        modalTransitionStyle = .crossDissolve
-    }
+final class AppSwitcherOverlayView: UIView {
+    override init(frame: CGRect) {
+        super.init(frame: frame)
 
-    @available(*, unavailable)
-    required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
+        let imageView = UIImageView(image: UIImage(named: "lock"))
+        imageView.contentMode = .scaleAspectFit
 
-    override func loadView() {
-        view = UIView()
-        view.alpha = 0
+        let blurEffect = UIBlurEffect(style: .systemUltraThinMaterial)
+        let blurredEffectView = UIVisualEffectView(effect: blurEffect)
+        addSubview(blurredEffectView)
 
-        let visualEffectView = UIVisualEffectView(effect: UIBlurEffect(style: .systemUltraThinMaterial))
-        view.addSubview(visualEffectView)
+        let vibrancyEffect = UIVibrancyEffect(blurEffect: blurEffect)
+        let vibrancyEffectView = UIVisualEffectView(effect: vibrancyEffect)
 
-        visualEffectView.snp.makeConstraints { make in
+        vibrancyEffectView.contentView.addSubview(imageView)
+        imageView.snp.makeConstraints { make in
+            make.horizontalEdges.equalToSuperview().inset(80)
+            make.centerY.equalToSuperview()
+        }
+
+        blurredEffectView.contentView.addSubview(vibrancyEffectView)
+        vibrancyEffectView.snp.makeConstraints { make in
             make.edges.equalToSuperview()
         }
+
+        blurredEffectView.snp.makeConstraints { make in
+            make.edges.equalToSuperview()
+        }
+    }
+
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
     }
 }

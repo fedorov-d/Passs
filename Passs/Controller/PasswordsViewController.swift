@@ -137,7 +137,7 @@ extension PasswordsViewController: UITableViewDataSource {
         label.font = .preferredFont(forTextStyle: .footnote)
         label.setContentCompressionResistancePriority(.defaultLow, for: .horizontal)
         label.setContentCompressionResistancePriority(.required, for: .vertical)
-        return label.embeddedInContainerView(withEdges: .init(top: 4, leading: 16, bottom: 8, trailing: 16))
+        return label.embedded(edges: .init(top: 4, leading: 16, bottom: 8, trailing: 16))
     }
 }
 
