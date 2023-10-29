@@ -7,24 +7,19 @@
 
 import AuthenticationServices
 import SnapKit
-import OSLog
 
 class CredentialProviderViewController: ASCredentialProviderViewController {
     private let serviceLocator = ServiceLocatorImp()
     private lazy var coordinator = RootCoordinator(serviceLocator: serviceLocator)
 
     override func prepareInterfaceForExtensionConfiguration() {
-        let logger = Logger(subsystem: "Keep", category: "usugub")
-        logger.log("prepareInterfaceForExtensionConfiguration")
         let store = ASCredentialIdentityStore.shared
         store.getState { [weak self] state in
-            logger.log("prepareInterfaceForExtensionConfiguration \(state)")
             guard let self else { return }
             if state.isEnabled {
                 // Add, remove, or update identities.
                 let childViewController = coordinator.navigationController
                 let string = String(describing: childViewController)
-                logger.log("\(string)")
                 childViewController.embed(in: self)
                 childViewController.view.snp.makeConstraints { $0.edges.equalToSuperview() }
                 coordinator.showDatabasesViewController()

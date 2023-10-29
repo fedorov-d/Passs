@@ -8,9 +8,11 @@
 import Foundation
 
 protocol DatabasesProvider: AnyObject {
+    var databaseURLs: [URL] { get }
+    
     func addDatabase(from url: URL) throws
     func deleteDatabase(at databaseURL: URL)
-    var databaseURLs: [URL] { get }
+    
     var delegate: DatabasesProviderDelegate? { get set }
 }
 
