@@ -3,121 +3,122 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 53;
+	objectVersion = 54;
 	objects = {
 
 /* Begin PBXBuildFile section */
-		0A1EF7EE2937A99200F9DEC3 /* UIFont+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A1EF7ED2937A99200F9DEC3 /* UIFont+Extensions.swift */; };
 		0A1EF7F52937D55700F9DEC3 /* RootCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = A365CAB027B4F0F2009877D1 /* RootCoordinator.swift */; };
-		0A1EF7F62937D56F00F9DEC3 /* SwitchCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A35A8B1727BCDE1500216C24 /* SwitchCell.swift */; };
-		0A1EF7F72937D56F00F9DEC3 /* TextFieldCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A35A8B1527BC33B000216C24 /* TextFieldCell.swift */; };
-		0A1EF7F82937D56F00F9DEC3 /* ColoredTableViewHeaderFooterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A35A8B1C27BE2C8200216C24 /* ColoredTableViewHeaderFooterView.swift */; };
-		0A1EF7F92937D56F00F9DEC3 /* SelectKeyButtonCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A35A8B1E27BEB3FE00216C24 /* SelectKeyButtonCell.swift */; };
-		0A1EF7FA2937D56F00F9DEC3 /* SubtitleTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3CAA30A27A9B93D00330FAC /* SubtitleTableViewCell.swift */; };
-		0A1EF7FB2937D57400F9DEC3 /* UIButton+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = A35A8B0D27B56B8E00216C24 /* UIButton+Extensions.swift */; };
-		0A1EF7FC2937D57400F9DEC3 /* UserDefaults+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = A392D9CB27C79D2F00206161 /* UserDefaults+Extensions.swift */; };
-		0A1EF7FD2937D57400F9DEC3 /* UIImage+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3CFA4C5279289740020F82F /* UIImage+Extensions.swift */; };
-		0A1EF7FE2937D57400F9DEC3 /* UIViewController+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3B5E32527AD9EE40061CAC6 /* UIViewController+Extensions.swift */; };
-		0A1EF7FF2937D57400F9DEC3 /* UIDocumentPickerController+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3FF57D327BFD6F400D41659 /* UIDocumentPickerController+Extensions.swift */; };
-		0A1EF8002937D57400F9DEC3 /* UIFont+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A1EF7ED2937A99200F9DEC3 /* UIFont+Extensions.swift */; };
-		0A1EF8012937D57700F9DEC3 /* PasswordsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A32C654C260C557300DC6653 /* PasswordsViewController.swift */; };
-		0A1EF8022937D57700F9DEC3 /* DatabaseListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3F4959E261E242700E4AA7E /* DatabaseListViewController.swift */; };
-		0A1EF8032937D57700F9DEC3 /* UnlockViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A35A8B1127BC2F1500216C24 /* UnlockViewController.swift */; };
-		0A1EF8042937D57700F9DEC3 /* GroupsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3CFA4C7279349370020F82F /* GroupsViewController.swift */; };
-		0A1EF8052937D57D00F9DEC3 /* RecentPasswordsManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3CAA31227ABCFB000330FAC /* RecentPasswordsManager.swift */; };
-		0A1EF8062937D57D00F9DEC3 /* PassDatabaseManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3F3DA35260DC1D10057AF24 /* PassDatabaseManager.swift */; };
-		0A1EF8072937D57D00F9DEC3 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = A318424E2721DB5F00786744 /* Constants.swift */; };
-		0A1EF8082937D57D00F9DEC3 /* DatabasesProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3F4959B261E22F700E4AA7E /* DatabasesProvider.swift */; };
-		0A1EF8092937D57D00F9DEC3 /* PasteboardManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3F3DA33260DBEB50057AF24 /* PasteboardManager.swift */; };
-		0A1EF80A2937D57D00F9DEC3 /* KeychainManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3CFA4C92795F9650020F82F /* KeychainManager.swift */; };
-		0A1EF80B2937D57D00F9DEC3 /* QuickUnlockManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3B5E33F27B16E620061CAC6 /* QuickUnlockManager.swift */; };
-		0A1EF80C2937D57D00F9DEC3 /* ServiceLocator.swift in Sources */ = {isa = PBXBuildFile; fileRef = A365CAB227B4FAE9009877D1 /* ServiceLocator.swift */; };
-		0A1EF80D2937D57D00F9DEC3 /* SettingsManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = A392D9C927C66FA500206161 /* SettingsManager.swift */; };
-		0A2503342ACC7B5C009789B4 /* ProtectionStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A2503332ACC7B5B009789B4 /* ProtectionStorage.swift */; };
-		0A2503352ACC7B5C009789B4 /* ProtectionStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A2503332ACC7B5B009789B4 /* ProtectionStorage.swift */; };
-		0A3836E42A1FB93700FBB33F /* DatabaseSettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A3836E32A1FB93700FBB33F /* DatabaseSettingsViewController.swift */; };
-		0A3836E52A1FB93700FBB33F /* DatabaseSettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A3836E32A1FB93700FBB33F /* DatabaseSettingsViewController.swift */; };
-		0A3836E72A1FB9B100FBB33F /* Optional+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A3836E62A1FB9B100FBB33F /* Optional+Extension.swift */; };
-		0A3836E82A1FB9B100FBB33F /* Optional+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A3836E62A1FB9B100FBB33F /* Optional+Extension.swift */; };
-		0A4FA0A229EF1832004E9906 /* PassItem+SFSymbols.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A4FA0A129EF1832004E9906 /* PassItem+SFSymbols.swift */; };
-		0A4FA0A329EF1832004E9906 /* PassItem+SFSymbols.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A4FA0A129EF1832004E9906 /* PassItem+SFSymbols.swift */; };
-		0A52EDC429FE6CD2003463EF /* BrowseDatabaseTableHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A52EDC329FE6CD2003463EF /* BrowseDatabaseTableHeaderView.swift */; };
-		0A52EDC529FE6CD2003463EF /* BrowseDatabaseTableHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A52EDC329FE6CD2003463EF /* BrowseDatabaseTableHeaderView.swift */; };
-		0A52EDC729FFE8B7003463EF /* PasswordDetailsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A52EDC629FFE8B7003463EF /* PasswordDetailsViewController.swift */; };
-		0A52EDC829FFE8B7003463EF /* PasswordDetailsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A52EDC629FFE8B7003463EF /* PasswordDetailsViewController.swift */; };
-		0A52EDCA29FFEF32003463EF /* UIView+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A52EDC929FFEF32003463EF /* UIView+Extensions.swift */; };
-		0A52EDCB29FFEF32003463EF /* UIView+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A52EDC929FFEF32003463EF /* UIView+Extensions.swift */; };
-		0A717ACD2A06716700072F6D /* UIColor+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A717ACC2A06716700072F6D /* UIColor+Extensions.swift */; };
-		0A717ACE2A06716700072F6D /* UIColor+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A717ACC2A06716700072F6D /* UIColor+Extensions.swift */; };
 		0A717ACF2A067A5B00072F6D /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A32C6551260C557700DC6653 /* Assets.xcassets */; };
-		0A717AD12A08A1D200072F6D /* GenericContentTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A717AD02A08A1D200072F6D /* GenericContentTableViewCell.swift */; };
-		0A717AD22A08A1D200072F6D /* GenericContentTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A717AD02A08A1D200072F6D /* GenericContentTableViewCell.swift */; };
-		0A717AD42A08C77800072F6D /* UITableView+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A717AD32A08C77800072F6D /* UITableView+Extensions.swift */; };
-		0A717AD52A08C77900072F6D /* UITableView+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A717AD32A08C77800072F6D /* UITableView+Extensions.swift */; };
-		0A8262A52A1DD77A00632FA8 /* QuickUnlockProtection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A8262A42A1DD77A00632FA8 /* QuickUnlockProtection.swift */; };
-		0A8262A62A1DD77A00632FA8 /* QuickUnlockProtection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A8262A42A1DD77A00632FA8 /* QuickUnlockProtection.swift */; };
-		0A850A0F2937F98E00754CC9 /* UnlockData.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3FF57D527BFED1E00D41659 /* UnlockData.swift */; };
-		0A850A102937F99E00754CC9 /* PassItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3F3DA27260CA5FC0057AF24 /* PassItem.swift */; };
-		0A850A112937F9EF00754CC9 /* PassItem+KeePassKit.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3F3DA29260CA8440057AF24 /* PassItem+KeePassKit.swift */; };
-		0A8D3E382938F515005D4435 /* CredentialsSelectionManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A8D3E372938F515005D4435 /* CredentialsSelectionManager.swift */; };
-		0A8D3E392938F515005D4435 /* CredentialsSelectionManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A8D3E372938F515005D4435 /* CredentialsSelectionManager.swift */; };
-		0ACA1C502AE63DE10054AB5D /* FileManager+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0ACA1C4F2AE63DE10054AB5D /* FileManager+Extensions.swift */; };
-		0ACA1C512AE63DE10054AB5D /* FileManager+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0ACA1C4F2AE63DE10054AB5D /* FileManager+Extensions.swift */; };
-		0ACA1C532AE63DF30054AB5D /* URL+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0ACA1C522AE63DF30054AB5D /* URL+Extensions.swift */; };
-		0ACA1C542AE63DF30054AB5D /* URL+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0ACA1C522AE63DF30054AB5D /* URL+Extensions.swift */; };
-		0AD29C50293FCE55007A9061 /* BarButtonItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AD29C4F293FCE55007A9061 /* BarButtonItem.swift */; };
-		0AD29C51293FCF38007A9061 /* BarButtonItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AD29C4F293FCE55007A9061 /* BarButtonItem.swift */; };
-		0AD616CC29EA46AD00BCE3AD /* QRCodeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AD616CB29EA46AD00BCE3AD /* QRCodeViewController.swift */; };
-		0AD616CE29EA4C8500BCE3AD /* QRCodeManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AD616CD29EA4C8500BCE3AD /* QRCodeManager.swift */; };
-		0AD616CF29EA4DB600BCE3AD /* QRCodeManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AD616CD29EA4C8500BCE3AD /* QRCodeManager.swift */; };
-		0AD616D029EA4ED000BCE3AD /* QRCodeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AD616CB29EA46AD00BCE3AD /* QRCodeViewController.swift */; };
 		5FA9B582CA5206136403FC59 /* Pods_KeepTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BFDBC265809D486E45D94319 /* Pods_KeepTests.framework */; };
 		8136E27CDE0CD3DA3ABEC034 /* Pods_CredentialProvider.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BBF18EB9167ADB17B2C12082 /* Pods_CredentialProvider.framework */; };
-		A318424F2721DB5F00786744 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = A318424E2721DB5F00786744 /* Constants.swift */; };
 		A32C6549260C557300DC6653 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A32C6548260C557300DC6653 /* AppDelegate.swift */; };
-		A32C654D260C557300DC6653 /* PasswordsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A32C654C260C557300DC6653 /* PasswordsViewController.swift */; };
 		A32C6552260C557700DC6653 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A32C6551260C557700DC6653 /* Assets.xcassets */; };
 		A32C6555260C557700DC6653 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A32C6553260C557700DC6653 /* LaunchScreen.storyboard */; };
-		A343496C2A0519DC000D42C4 /* AppSwitcherOverlayViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A343496B2A0519DC000D42C4 /* AppSwitcherOverlayViewController.swift */; };
 		A34349742A052EE2000D42C4 /* KeepTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A34349732A052EE2000D42C4 /* KeepTests.swift */; };
 		A343497A2A052EF7000D42C4 /* PasteboardManagerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A31842462721D69200786744 /* PasteboardManagerTests.swift */; };
-		A35A8B0E27B56B8E00216C24 /* UIButton+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = A35A8B0D27B56B8E00216C24 /* UIButton+Extensions.swift */; };
-		A35A8B1227BC2F1500216C24 /* UnlockViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A35A8B1127BC2F1500216C24 /* UnlockViewController.swift */; };
-		A35A8B1627BC33B000216C24 /* TextFieldCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A35A8B1527BC33B000216C24 /* TextFieldCell.swift */; };
-		A35A8B1827BCDE1500216C24 /* SwitchCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A35A8B1727BCDE1500216C24 /* SwitchCell.swift */; };
-		A35A8B1D27BE2C8200216C24 /* ColoredTableViewHeaderFooterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A35A8B1C27BE2C8200216C24 /* ColoredTableViewHeaderFooterView.swift */; };
-		A35A8B1F27BEB3FE00216C24 /* SelectKeyButtonCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A35A8B1E27BEB3FE00216C24 /* SelectKeyButtonCell.swift */; };
 		A365CAB127B4F0F2009877D1 /* RootCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = A365CAB027B4F0F2009877D1 /* RootCoordinator.swift */; };
-		A365CAB327B4FAE9009877D1 /* ServiceLocator.swift in Sources */ = {isa = PBXBuildFile; fileRef = A365CAB227B4FAE9009877D1 /* ServiceLocator.swift */; };
-		A377A6F22A00EFE000213490 /* NotificationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A377A6F12A00EFE000213490 /* NotificationViewController.swift */; };
-		A377A6F32A00EFE000213490 /* NotificationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A377A6F12A00EFE000213490 /* NotificationViewController.swift */; };
-		A392D9CA27C66FA500206161 /* SettingsManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = A392D9C927C66FA500206161 /* SettingsManager.swift */; };
-		A392D9CC27C79D2F00206161 /* UserDefaults+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = A392D9CB27C79D2F00206161 /* UserDefaults+Extensions.swift */; };
-		A3B5E32627AD9EE40061CAC6 /* UIViewController+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3B5E32527AD9EE40061CAC6 /* UIViewController+Extensions.swift */; };
 		A3B5E32D27AEA7340061CAC6 /* AuthenticationServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A3B5E32C27AEA7340061CAC6 /* AuthenticationServices.framework */; };
 		A3B5E33027AEA7340061CAC6 /* CredentialProviderViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3B5E32F27AEA7340061CAC6 /* CredentialProviderViewController.swift */; };
 		A3B5E33827AEA7340061CAC6 /* CredentialProvider.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = A3B5E32B27AEA7330061CAC6 /* CredentialProvider.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		A3B5E33E27AEACEF0061CAC6 /* AuthenticationServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A3B5E32C27AEA7340061CAC6 /* AuthenticationServices.framework */; };
-		A3B5E34027B16E620061CAC6 /* QuickUnlockManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3B5E33F27B16E620061CAC6 /* QuickUnlockManager.swift */; };
-		A3CAA30B27A9B93D00330FAC /* SubtitleTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3CAA30A27A9B93D00330FAC /* SubtitleTableViewCell.swift */; };
 		A3CAA30D27AB060300330FAC /* Application.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3CAA30C27AB060200330FAC /* Application.swift */; };
 		A3CAA30F27AB06CF00330FAC /* main.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3CAA30E27AB06CF00330FAC /* main.swift */; };
-		A3CAA31327ABCFB000330FAC /* RecentPasswordsManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3CAA31227ABCFB000330FAC /* RecentPasswordsManager.swift */; };
-		A3CFA4C6279289740020F82F /* UIImage+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3CFA4C5279289740020F82F /* UIImage+Extensions.swift */; };
-		A3CFA4C8279349370020F82F /* GroupsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3CFA4C7279349370020F82F /* GroupsViewController.swift */; };
-		A3CFA4CA2795F9650020F82F /* KeychainManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3CFA4C92795F9650020F82F /* KeychainManager.swift */; };
-		A3D767FB2A09139800BC8ABA /* PasscodeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3D767FA2A09139800BC8ABA /* PasscodeView.swift */; };
-		A3D767FC2A09139800BC8ABA /* PasscodeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3D767FA2A09139800BC8ABA /* PasscodeView.swift */; };
-		A3F034452A028CF300277ED2 /* ProgressNavigationBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3F034442A028CF300277ED2 /* ProgressNavigationBar.swift */; };
-		A3F034462A028CF300277ED2 /* ProgressNavigationBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3F034442A028CF300277ED2 /* ProgressNavigationBar.swift */; };
-		A3F3DA28260CA5FC0057AF24 /* PassItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3F3DA27260CA5FC0057AF24 /* PassItem.swift */; };
-		A3F3DA2A260CA8440057AF24 /* PassItem+KeePassKit.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3F3DA29260CA8440057AF24 /* PassItem+KeePassKit.swift */; };
-		A3F3DA34260DBEB60057AF24 /* PasteboardManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3F3DA33260DBEB50057AF24 /* PasteboardManager.swift */; };
-		A3F3DA36260DC1D10057AF24 /* PassDatabaseManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3F3DA35260DC1D10057AF24 /* PassDatabaseManager.swift */; };
-		A3F4959C261E22F700E4AA7E /* DatabasesProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3F4959B261E22F700E4AA7E /* DatabasesProvider.swift */; };
-		A3F4959F261E242700E4AA7E /* DatabaseListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3F4959E261E242700E4AA7E /* DatabaseListViewController.swift */; };
-		A3FF57D427BFD6F400D41659 /* UIDocumentPickerController+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3FF57D327BFD6F400D41659 /* UIDocumentPickerController+Extensions.swift */; };
-		A3FF57D627BFED1E00D41659 /* UnlockData.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3FF57D527BFED1E00D41659 /* UnlockData.swift */; };
+		A3E8F2232AFBD10500F5E630 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3E8F1E52AFBD10400F5E630 /* Constants.swift */; };
+		A3E8F2242AFBD10500F5E630 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3E8F1E52AFBD10400F5E630 /* Constants.swift */; };
+		A3E8F2252AFBD10500F5E630 /* QRCodeManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3E8F1E62AFBD10400F5E630 /* QRCodeManager.swift */; };
+		A3E8F2262AFBD10500F5E630 /* QRCodeManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3E8F1E62AFBD10400F5E630 /* QRCodeManager.swift */; };
+		A3E8F2272AFBD10500F5E630 /* ServiceLocator.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3E8F1E72AFBD10400F5E630 /* ServiceLocator.swift */; };
+		A3E8F2282AFBD10500F5E630 /* ServiceLocator.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3E8F1E72AFBD10400F5E630 /* ServiceLocator.swift */; };
+		A3E8F2292AFBD10500F5E630 /* KeychainManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3E8F1E82AFBD10400F5E630 /* KeychainManager.swift */; };
+		A3E8F22A2AFBD10500F5E630 /* KeychainManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3E8F1E82AFBD10400F5E630 /* KeychainManager.swift */; };
+		A3E8F22B2AFBD10500F5E630 /* RecentPasswordsManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3E8F1E92AFBD10400F5E630 /* RecentPasswordsManager.swift */; };
+		A3E8F22C2AFBD10500F5E630 /* RecentPasswordsManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3E8F1E92AFBD10400F5E630 /* RecentPasswordsManager.swift */; };
+		A3E8F22D2AFBD10500F5E630 /* ProtectionStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3E8F1EA2AFBD10400F5E630 /* ProtectionStorage.swift */; };
+		A3E8F22E2AFBD10500F5E630 /* ProtectionStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3E8F1EA2AFBD10400F5E630 /* ProtectionStorage.swift */; };
+		A3E8F22F2AFBD10500F5E630 /* QuickUnlockManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3E8F1EB2AFBD10400F5E630 /* QuickUnlockManager.swift */; };
+		A3E8F2302AFBD10500F5E630 /* QuickUnlockManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3E8F1EB2AFBD10400F5E630 /* QuickUnlockManager.swift */; };
+		A3E8F2312AFBD10500F5E630 /* CredentialsSelectionManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3E8F1EC2AFBD10400F5E630 /* CredentialsSelectionManager.swift */; };
+		A3E8F2322AFBD10500F5E630 /* CredentialsSelectionManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3E8F1EC2AFBD10400F5E630 /* CredentialsSelectionManager.swift */; };
+		A3E8F2332AFBD10500F5E630 /* PasteboardManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3E8F1ED2AFBD10400F5E630 /* PasteboardManager.swift */; };
+		A3E8F2342AFBD10500F5E630 /* PasteboardManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3E8F1ED2AFBD10400F5E630 /* PasteboardManager.swift */; };
+		A3E8F2352AFBD10500F5E630 /* DatabasesProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3E8F1EE2AFBD10400F5E630 /* DatabasesProvider.swift */; };
+		A3E8F2362AFBD10500F5E630 /* DatabasesProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3E8F1EE2AFBD10400F5E630 /* DatabasesProvider.swift */; };
+		A3E8F2372AFBD10500F5E630 /* PassDatabaseManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3E8F1EF2AFBD10400F5E630 /* PassDatabaseManager.swift */; };
+		A3E8F2382AFBD10500F5E630 /* PassDatabaseManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3E8F1EF2AFBD10400F5E630 /* PassDatabaseManager.swift */; };
+		A3E8F2392AFBD10500F5E630 /* SettingsManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3E8F1F02AFBD10400F5E630 /* SettingsManager.swift */; };
+		A3E8F23A2AFBD10500F5E630 /* SettingsManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3E8F1F02AFBD10400F5E630 /* SettingsManager.swift */; };
+		A3E8F23B2AFBD10500F5E630 /* PasswordDetailsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3E8F1F32AFBD10400F5E630 /* PasswordDetailsViewController.swift */; };
+		A3E8F23C2AFBD10500F5E630 /* PasswordDetailsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3E8F1F32AFBD10400F5E630 /* PasswordDetailsViewController.swift */; };
+		A3E8F23D2AFBD10500F5E630 /* GroupsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3E8F1F52AFBD10400F5E630 /* GroupsViewController.swift */; };
+		A3E8F23E2AFBD10500F5E630 /* GroupsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3E8F1F52AFBD10400F5E630 /* GroupsViewController.swift */; };
+		A3E8F23F2AFBD10500F5E630 /* PasswordsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3E8F1F72AFBD10400F5E630 /* PasswordsViewController.swift */; };
+		A3E8F2402AFBD10500F5E630 /* PasswordsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3E8F1F72AFBD10400F5E630 /* PasswordsViewController.swift */; };
+		A3E8F2412AFBD10500F5E630 /* DatabaseListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3E8F1F92AFBD10400F5E630 /* DatabaseListViewController.swift */; };
+		A3E8F2422AFBD10500F5E630 /* DatabaseListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3E8F1F92AFBD10400F5E630 /* DatabaseListViewController.swift */; };
+		A3E8F2432AFBD10500F5E630 /* QRCodeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3E8F1FB2AFBD10400F5E630 /* QRCodeViewController.swift */; };
+		A3E8F2442AFBD10500F5E630 /* QRCodeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3E8F1FB2AFBD10400F5E630 /* QRCodeViewController.swift */; };
+		A3E8F2452AFBD10500F5E630 /* DatabaseSettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3E8F1FD2AFBD10500F5E630 /* DatabaseSettingsViewController.swift */; };
+		A3E8F2462AFBD10500F5E630 /* DatabaseSettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3E8F1FD2AFBD10500F5E630 /* DatabaseSettingsViewController.swift */; };
+		A3E8F2472AFBD10500F5E630 /* UnlockViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3E8F1FF2AFBD10500F5E630 /* UnlockViewController.swift */; };
+		A3E8F2482AFBD10500F5E630 /* UnlockViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3E8F1FF2AFBD10500F5E630 /* UnlockViewController.swift */; };
+		A3E8F2492AFBD10500F5E630 /* PasscodeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3E8F2012AFBD10500F5E630 /* PasscodeView.swift */; };
+		A3E8F24A2AFBD10500F5E630 /* PasscodeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3E8F2012AFBD10500F5E630 /* PasscodeView.swift */; };
+		A3E8F24B2AFBD10500F5E630 /* PassItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3E8F2042AFBD10500F5E630 /* PassItem.swift */; };
+		A3E8F24C2AFBD10500F5E630 /* PassItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3E8F2042AFBD10500F5E630 /* PassItem.swift */; };
+		A3E8F24D2AFBD10500F5E630 /* QuickUnlockProtection.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3E8F2052AFBD10500F5E630 /* QuickUnlockProtection.swift */; };
+		A3E8F24E2AFBD10500F5E630 /* QuickUnlockProtection.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3E8F2052AFBD10500F5E630 /* QuickUnlockProtection.swift */; };
+		A3E8F24F2AFBD10500F5E630 /* PassItem+KeePassKit.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3E8F2062AFBD10500F5E630 /* PassItem+KeePassKit.swift */; };
+		A3E8F2502AFBD10500F5E630 /* PassItem+KeePassKit.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3E8F2062AFBD10500F5E630 /* PassItem+KeePassKit.swift */; };
+		A3E8F2512AFBD10500F5E630 /* PassItem+SFSymbols.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3E8F2072AFBD10500F5E630 /* PassItem+SFSymbols.swift */; };
+		A3E8F2522AFBD10500F5E630 /* PassItem+SFSymbols.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3E8F2072AFBD10500F5E630 /* PassItem+SFSymbols.swift */; };
+		A3E8F2532AFBD10500F5E630 /* UnlockData.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3E8F2082AFBD10500F5E630 /* UnlockData.swift */; };
+		A3E8F2542AFBD10500F5E630 /* UnlockData.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3E8F2082AFBD10500F5E630 /* UnlockData.swift */; };
+		A3E8F2552AFBD10500F5E630 /* UIViewController+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3E8F20A2AFBD10500F5E630 /* UIViewController+Extensions.swift */; };
+		A3E8F2562AFBD10500F5E630 /* UIViewController+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3E8F20A2AFBD10500F5E630 /* UIViewController+Extensions.swift */; };
+		A3E8F2572AFBD10500F5E630 /* UIButton+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3E8F20B2AFBD10500F5E630 /* UIButton+Extensions.swift */; };
+		A3E8F2582AFBD10500F5E630 /* UIButton+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3E8F20B2AFBD10500F5E630 /* UIButton+Extensions.swift */; };
+		A3E8F2592AFBD10500F5E630 /* UIView+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3E8F20C2AFBD10500F5E630 /* UIView+Extensions.swift */; };
+		A3E8F25A2AFBD10500F5E630 /* UIView+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3E8F20C2AFBD10500F5E630 /* UIView+Extensions.swift */; };
+		A3E8F25B2AFBD10500F5E630 /* Optional+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3E8F20D2AFBD10500F5E630 /* Optional+Extension.swift */; };
+		A3E8F25C2AFBD10500F5E630 /* Optional+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3E8F20D2AFBD10500F5E630 /* Optional+Extension.swift */; };
+		A3E8F25D2AFBD10500F5E630 /* UIFont+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3E8F20E2AFBD10500F5E630 /* UIFont+Extensions.swift */; };
+		A3E8F25E2AFBD10500F5E630 /* UIFont+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3E8F20E2AFBD10500F5E630 /* UIFont+Extensions.swift */; };
+		A3E8F25F2AFBD10500F5E630 /* UIColor+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3E8F20F2AFBD10500F5E630 /* UIColor+Extensions.swift */; };
+		A3E8F2602AFBD10500F5E630 /* UIColor+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3E8F20F2AFBD10500F5E630 /* UIColor+Extensions.swift */; };
+		A3E8F2612AFBD10500F5E630 /* UIImage+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3E8F2102AFBD10500F5E630 /* UIImage+Extensions.swift */; };
+		A3E8F2622AFBD10500F5E630 /* UIImage+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3E8F2102AFBD10500F5E630 /* UIImage+Extensions.swift */; };
+		A3E8F2632AFBD10500F5E630 /* UIDocumentPickerController+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3E8F2112AFBD10500F5E630 /* UIDocumentPickerController+Extensions.swift */; };
+		A3E8F2642AFBD10500F5E630 /* UIDocumentPickerController+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3E8F2112AFBD10500F5E630 /* UIDocumentPickerController+Extensions.swift */; };
+		A3E8F2652AFBD10500F5E630 /* FileManager+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3E8F2122AFBD10500F5E630 /* FileManager+Extensions.swift */; };
+		A3E8F2662AFBD10500F5E630 /* FileManager+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3E8F2122AFBD10500F5E630 /* FileManager+Extensions.swift */; };
+		A3E8F2672AFBD10500F5E630 /* UITableView+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3E8F2132AFBD10500F5E630 /* UITableView+Extensions.swift */; };
+		A3E8F2682AFBD10500F5E630 /* UITableView+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3E8F2132AFBD10500F5E630 /* UITableView+Extensions.swift */; };
+		A3E8F2692AFBD10500F5E630 /* UserDefaults+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3E8F2142AFBD10500F5E630 /* UserDefaults+Extensions.swift */; };
+		A3E8F26A2AFBD10500F5E630 /* UserDefaults+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3E8F2142AFBD10500F5E630 /* UserDefaults+Extensions.swift */; };
+		A3E8F26B2AFBD10500F5E630 /* URL+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3E8F2152AFBD10500F5E630 /* URL+Extensions.swift */; };
+		A3E8F26C2AFBD10500F5E630 /* URL+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3E8F2152AFBD10500F5E630 /* URL+Extensions.swift */; };
+		A3E8F26D2AFBD10500F5E630 /* AppSwitcherOverlayViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3E8F2172AFBD10500F5E630 /* AppSwitcherOverlayViewController.swift */; };
+		A3E8F26E2AFBD10500F5E630 /* AppSwitcherOverlayViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3E8F2172AFBD10500F5E630 /* AppSwitcherOverlayViewController.swift */; };
+		A3E8F26F2AFBD10500F5E630 /* NotificationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3E8F2182AFBD10500F5E630 /* NotificationViewController.swift */; };
+		A3E8F2702AFBD10500F5E630 /* NotificationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3E8F2182AFBD10500F5E630 /* NotificationViewController.swift */; };
+		A3E8F2712AFBD10500F5E630 /* SelectKeyButtonCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3E8F21A2AFBD10500F5E630 /* SelectKeyButtonCell.swift */; };
+		A3E8F2722AFBD10500F5E630 /* SelectKeyButtonCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3E8F21A2AFBD10500F5E630 /* SelectKeyButtonCell.swift */; };
+		A3E8F2732AFBD10500F5E630 /* ProgressNavigationBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3E8F21B2AFBD10500F5E630 /* ProgressNavigationBar.swift */; };
+		A3E8F2742AFBD10500F5E630 /* ProgressNavigationBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3E8F21B2AFBD10500F5E630 /* ProgressNavigationBar.swift */; };
+		A3E8F2752AFBD10500F5E630 /* ColoredTableViewHeaderFooterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3E8F21C2AFBD10500F5E630 /* ColoredTableViewHeaderFooterView.swift */; };
+		A3E8F2762AFBD10500F5E630 /* ColoredTableViewHeaderFooterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3E8F21C2AFBD10500F5E630 /* ColoredTableViewHeaderFooterView.swift */; };
+		A3E8F2772AFBD10500F5E630 /* TextFieldCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3E8F21D2AFBD10500F5E630 /* TextFieldCell.swift */; };
+		A3E8F2782AFBD10500F5E630 /* TextFieldCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3E8F21D2AFBD10500F5E630 /* TextFieldCell.swift */; };
+		A3E8F2792AFBD10500F5E630 /* BarButtonItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3E8F21E2AFBD10500F5E630 /* BarButtonItem.swift */; };
+		A3E8F27A2AFBD10500F5E630 /* BarButtonItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3E8F21E2AFBD10500F5E630 /* BarButtonItem.swift */; };
+		A3E8F27B2AFBD10500F5E630 /* GenericContentTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3E8F21F2AFBD10500F5E630 /* GenericContentTableViewCell.swift */; };
+		A3E8F27C2AFBD10500F5E630 /* GenericContentTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3E8F21F2AFBD10500F5E630 /* GenericContentTableViewCell.swift */; };
+		A3E8F27D2AFBD10500F5E630 /* SubtitleTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3E8F2202AFBD10500F5E630 /* SubtitleTableViewCell.swift */; };
+		A3E8F27E2AFBD10500F5E630 /* SubtitleTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3E8F2202AFBD10500F5E630 /* SubtitleTableViewCell.swift */; };
+		A3E8F27F2AFBD10500F5E630 /* SwitchCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3E8F2212AFBD10500F5E630 /* SwitchCell.swift */; };
+		A3E8F2802AFBD10500F5E630 /* SwitchCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3E8F2212AFBD10500F5E630 /* SwitchCell.swift */; };
+		A3E8F2812AFBD10500F5E630 /* BrowseDatabaseTableHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3E8F2222AFBD10500F5E630 /* BrowseDatabaseTableHeaderView.swift */; };
+		A3E8F2822AFBD10500F5E630 /* BrowseDatabaseTableHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3E8F2222AFBD10500F5E630 /* BrowseDatabaseTableHeaderView.swift */; };
 		B653F71337F4EBCD629F9FCC /* Pods_Keep.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = ADB79A128448B2460381FEE8 /* Pods_Keep.framework */; };
 /* End PBXBuildFile section */
 
@@ -164,24 +165,6 @@
 
 /* Begin PBXFileReference section */
 		088B9A2D32312B860C9A219C /* Pods-KeepTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-KeepTests.debug.xcconfig"; path = "Target Support Files/Pods-KeepTests/Pods-KeepTests.debug.xcconfig"; sourceTree = "<group>"; };
-		0A1EF7ED2937A99200F9DEC3 /* UIFont+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIFont+Extensions.swift"; sourceTree = "<group>"; };
-		0A2503332ACC7B5B009789B4 /* ProtectionStorage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProtectionStorage.swift; sourceTree = "<group>"; };
-		0A3836E32A1FB93700FBB33F /* DatabaseSettingsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DatabaseSettingsViewController.swift; sourceTree = "<group>"; };
-		0A3836E62A1FB9B100FBB33F /* Optional+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Optional+Extension.swift"; sourceTree = "<group>"; };
-		0A4FA0A129EF1832004E9906 /* PassItem+SFSymbols.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "PassItem+SFSymbols.swift"; sourceTree = "<group>"; };
-		0A52EDC329FE6CD2003463EF /* BrowseDatabaseTableHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BrowseDatabaseTableHeaderView.swift; sourceTree = "<group>"; };
-		0A52EDC629FFE8B7003463EF /* PasswordDetailsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PasswordDetailsViewController.swift; sourceTree = "<group>"; };
-		0A52EDC929FFEF32003463EF /* UIView+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIView+Extensions.swift"; sourceTree = "<group>"; };
-		0A717ACC2A06716700072F6D /* UIColor+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIColor+Extensions.swift"; sourceTree = "<group>"; };
-		0A717AD02A08A1D200072F6D /* GenericContentTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GenericContentTableViewCell.swift; sourceTree = "<group>"; };
-		0A717AD32A08C77800072F6D /* UITableView+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UITableView+Extensions.swift"; sourceTree = "<group>"; };
-		0A8262A42A1DD77A00632FA8 /* QuickUnlockProtection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuickUnlockProtection.swift; sourceTree = "<group>"; };
-		0A8D3E372938F515005D4435 /* CredentialsSelectionManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CredentialsSelectionManager.swift; sourceTree = "<group>"; };
-		0ACA1C4F2AE63DE10054AB5D /* FileManager+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "FileManager+Extensions.swift"; sourceTree = "<group>"; };
-		0ACA1C522AE63DF30054AB5D /* URL+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "URL+Extensions.swift"; sourceTree = "<group>"; };
-		0AD29C4F293FCE55007A9061 /* BarButtonItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BarButtonItem.swift; sourceTree = "<group>"; };
-		0AD616CB29EA46AD00BCE3AD /* QRCodeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QRCodeViewController.swift; sourceTree = "<group>"; };
-		0AD616CD29EA4C8500BCE3AD /* QRCodeManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QRCodeManager.swift; sourceTree = "<group>"; };
 		13A64537A3000B5371F2173C /* Pods-KeepTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-KeepTests.release.xcconfig"; path = "Target Support Files/Pods-KeepTests/Pods-KeepTests.release.xcconfig"; sourceTree = "<group>"; };
 		3DBED3956B7666EBE5677B9B /* Pods-PasssTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PasssTests.release.xcconfig"; path = "Target Support Files/Pods-PasssTests/Pods-PasssTests.release.xcconfig"; sourceTree = "<group>"; };
 		61C958F420CCDECE8DEC67FD /* Pods_PasssTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_PasssTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -190,54 +173,72 @@
 		984E7C4E3E0B69E504BC960D /* Pods-Keep.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Keep.release.xcconfig"; path = "Target Support Files/Pods-Keep/Pods-Keep.release.xcconfig"; sourceTree = "<group>"; };
 		A1BE885742778874F9F7BB11 /* Pods-Passs.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Passs.release.xcconfig"; path = "Target Support Files/Pods-Passs/Pods-Passs.release.xcconfig"; sourceTree = "<group>"; };
 		A31842462721D69200786744 /* PasteboardManagerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PasteboardManagerTests.swift; sourceTree = "<group>"; };
-		A318424E2721DB5F00786744 /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 		A32C6545260C557200DC6653 /* Keep.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Keep.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		A32C6548260C557300DC6653 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		A32C654C260C557300DC6653 /* PasswordsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PasswordsViewController.swift; sourceTree = "<group>"; };
 		A32C6551260C557700DC6653 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		A32C6554260C557700DC6653 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		A32C6556260C557700DC6653 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		A343496B2A0519DC000D42C4 /* AppSwitcherOverlayViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppSwitcherOverlayViewController.swift; sourceTree = "<group>"; };
 		A34349712A052EE2000D42C4 /* KeepTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = KeepTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		A34349732A052EE2000D42C4 /* KeepTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeepTests.swift; sourceTree = "<group>"; };
-		A35A8B0D27B56B8E00216C24 /* UIButton+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIButton+Extensions.swift"; sourceTree = "<group>"; };
-		A35A8B1127BC2F1500216C24 /* UnlockViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UnlockViewController.swift; sourceTree = "<group>"; };
-		A35A8B1527BC33B000216C24 /* TextFieldCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextFieldCell.swift; sourceTree = "<group>"; };
-		A35A8B1727BCDE1500216C24 /* SwitchCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwitchCell.swift; sourceTree = "<group>"; };
-		A35A8B1C27BE2C8200216C24 /* ColoredTableViewHeaderFooterView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColoredTableViewHeaderFooterView.swift; sourceTree = "<group>"; };
-		A35A8B1E27BEB3FE00216C24 /* SelectKeyButtonCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectKeyButtonCell.swift; sourceTree = "<group>"; };
 		A365CAB027B4F0F2009877D1 /* RootCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RootCoordinator.swift; sourceTree = "<group>"; };
-		A365CAB227B4FAE9009877D1 /* ServiceLocator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ServiceLocator.swift; sourceTree = "<group>"; };
-		A377A6F12A00EFE000213490 /* NotificationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationViewController.swift; sourceTree = "<group>"; };
-		A392D9C927C66FA500206161 /* SettingsManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsManager.swift; sourceTree = "<group>"; };
-		A392D9CB27C79D2F00206161 /* UserDefaults+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UserDefaults+Extensions.swift"; sourceTree = "<group>"; };
-		A3B5E32527AD9EE40061CAC6 /* UIViewController+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewController+Extensions.swift"; sourceTree = "<group>"; };
 		A3B5E32B27AEA7330061CAC6 /* CredentialProvider.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = CredentialProvider.appex; sourceTree = BUILT_PRODUCTS_DIR; };
 		A3B5E32C27AEA7340061CAC6 /* AuthenticationServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AuthenticationServices.framework; path = System/Library/Frameworks/AuthenticationServices.framework; sourceTree = SDKROOT; };
 		A3B5E32F27AEA7340061CAC6 /* CredentialProviderViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CredentialProviderViewController.swift; sourceTree = "<group>"; };
 		A3B5E33427AEA7340061CAC6 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		A3B5E33527AEA7340061CAC6 /* CredentialProvider.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = CredentialProvider.entitlements; sourceTree = "<group>"; };
 		A3B5E33D27AEACEF0061CAC6 /* Passs.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Passs.entitlements; sourceTree = "<group>"; };
-		A3B5E33F27B16E620061CAC6 /* QuickUnlockManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuickUnlockManager.swift; sourceTree = "<group>"; };
-		A3CAA30A27A9B93D00330FAC /* SubtitleTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubtitleTableViewCell.swift; sourceTree = "<group>"; };
 		A3CAA30C27AB060200330FAC /* Application.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Application.swift; sourceTree = "<group>"; };
 		A3CAA30E27AB06CF00330FAC /* main.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = main.swift; sourceTree = "<group>"; };
-		A3CAA31227ABCFB000330FAC /* RecentPasswordsManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecentPasswordsManager.swift; sourceTree = "<group>"; };
-		A3CFA4C5279289740020F82F /* UIImage+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIImage+Extensions.swift"; sourceTree = "<group>"; };
-		A3CFA4C7279349370020F82F /* GroupsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GroupsViewController.swift; sourceTree = "<group>"; };
-		A3CFA4C92795F9650020F82F /* KeychainManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeychainManager.swift; sourceTree = "<group>"; };
 		A3D32C822A1CEEC700C37981 /* DatabaseSettingsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DatabaseSettingsViewController.swift; sourceTree = "<group>"; };
 		A3D32C852A1CF80700C37981 /* Optional+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Optional+Extensions.swift"; sourceTree = "<group>"; };
-		A3D767FA2A09139800BC8ABA /* PasscodeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PasscodeView.swift; sourceTree = "<group>"; };
-		A3F034442A028CF300277ED2 /* ProgressNavigationBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProgressNavigationBar.swift; sourceTree = "<group>"; };
-		A3F3DA27260CA5FC0057AF24 /* PassItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PassItem.swift; sourceTree = "<group>"; };
-		A3F3DA29260CA8440057AF24 /* PassItem+KeePassKit.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "PassItem+KeePassKit.swift"; sourceTree = "<group>"; };
-		A3F3DA33260DBEB50057AF24 /* PasteboardManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PasteboardManager.swift; sourceTree = "<group>"; };
-		A3F3DA35260DC1D10057AF24 /* PassDatabaseManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PassDatabaseManager.swift; sourceTree = "<group>"; };
-		A3F4959B261E22F700E4AA7E /* DatabasesProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DatabasesProvider.swift; sourceTree = "<group>"; };
-		A3F4959E261E242700E4AA7E /* DatabaseListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DatabaseListViewController.swift; sourceTree = "<group>"; };
-		A3FF57D327BFD6F400D41659 /* UIDocumentPickerController+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIDocumentPickerController+Extensions.swift"; sourceTree = "<group>"; };
-		A3FF57D527BFED1E00D41659 /* UnlockData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UnlockData.swift; sourceTree = "<group>"; };
+		A3E8F1E52AFBD10400F5E630 /* Constants.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
+		A3E8F1E62AFBD10400F5E630 /* QRCodeManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = QRCodeManager.swift; sourceTree = "<group>"; };
+		A3E8F1E72AFBD10400F5E630 /* ServiceLocator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ServiceLocator.swift; sourceTree = "<group>"; };
+		A3E8F1E82AFBD10400F5E630 /* KeychainManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KeychainManager.swift; sourceTree = "<group>"; };
+		A3E8F1E92AFBD10400F5E630 /* RecentPasswordsManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RecentPasswordsManager.swift; sourceTree = "<group>"; };
+		A3E8F1EA2AFBD10400F5E630 /* ProtectionStorage.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProtectionStorage.swift; sourceTree = "<group>"; };
+		A3E8F1EB2AFBD10400F5E630 /* QuickUnlockManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = QuickUnlockManager.swift; sourceTree = "<group>"; };
+		A3E8F1EC2AFBD10400F5E630 /* CredentialsSelectionManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CredentialsSelectionManager.swift; sourceTree = "<group>"; };
+		A3E8F1ED2AFBD10400F5E630 /* PasteboardManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PasteboardManager.swift; sourceTree = "<group>"; };
+		A3E8F1EE2AFBD10400F5E630 /* DatabasesProvider.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DatabasesProvider.swift; sourceTree = "<group>"; };
+		A3E8F1EF2AFBD10400F5E630 /* PassDatabaseManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PassDatabaseManager.swift; sourceTree = "<group>"; };
+		A3E8F1F02AFBD10400F5E630 /* SettingsManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingsManager.swift; sourceTree = "<group>"; };
+		A3E8F1F32AFBD10400F5E630 /* PasswordDetailsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PasswordDetailsViewController.swift; sourceTree = "<group>"; };
+		A3E8F1F52AFBD10400F5E630 /* GroupsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GroupsViewController.swift; sourceTree = "<group>"; };
+		A3E8F1F72AFBD10400F5E630 /* PasswordsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PasswordsViewController.swift; sourceTree = "<group>"; };
+		A3E8F1F92AFBD10400F5E630 /* DatabaseListViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DatabaseListViewController.swift; sourceTree = "<group>"; };
+		A3E8F1FB2AFBD10400F5E630 /* QRCodeViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = QRCodeViewController.swift; sourceTree = "<group>"; };
+		A3E8F1FD2AFBD10500F5E630 /* DatabaseSettingsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DatabaseSettingsViewController.swift; sourceTree = "<group>"; };
+		A3E8F1FF2AFBD10500F5E630 /* UnlockViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UnlockViewController.swift; sourceTree = "<group>"; };
+		A3E8F2012AFBD10500F5E630 /* PasscodeView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PasscodeView.swift; sourceTree = "<group>"; };
+		A3E8F2042AFBD10500F5E630 /* PassItem.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PassItem.swift; sourceTree = "<group>"; };
+		A3E8F2052AFBD10500F5E630 /* QuickUnlockProtection.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = QuickUnlockProtection.swift; sourceTree = "<group>"; };
+		A3E8F2062AFBD10500F5E630 /* PassItem+KeePassKit.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "PassItem+KeePassKit.swift"; sourceTree = "<group>"; };
+		A3E8F2072AFBD10500F5E630 /* PassItem+SFSymbols.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "PassItem+SFSymbols.swift"; sourceTree = "<group>"; };
+		A3E8F2082AFBD10500F5E630 /* UnlockData.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UnlockData.swift; sourceTree = "<group>"; };
+		A3E8F20A2AFBD10500F5E630 /* UIViewController+Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIViewController+Extensions.swift"; sourceTree = "<group>"; };
+		A3E8F20B2AFBD10500F5E630 /* UIButton+Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIButton+Extensions.swift"; sourceTree = "<group>"; };
+		A3E8F20C2AFBD10500F5E630 /* UIView+Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIView+Extensions.swift"; sourceTree = "<group>"; };
+		A3E8F20D2AFBD10500F5E630 /* Optional+Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Optional+Extension.swift"; sourceTree = "<group>"; };
+		A3E8F20E2AFBD10500F5E630 /* UIFont+Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIFont+Extensions.swift"; sourceTree = "<group>"; };
+		A3E8F20F2AFBD10500F5E630 /* UIColor+Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIColor+Extensions.swift"; sourceTree = "<group>"; };
+		A3E8F2102AFBD10500F5E630 /* UIImage+Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIImage+Extensions.swift"; sourceTree = "<group>"; };
+		A3E8F2112AFBD10500F5E630 /* UIDocumentPickerController+Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIDocumentPickerController+Extensions.swift"; sourceTree = "<group>"; };
+		A3E8F2122AFBD10500F5E630 /* FileManager+Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "FileManager+Extensions.swift"; sourceTree = "<group>"; };
+		A3E8F2132AFBD10500F5E630 /* UITableView+Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UITableView+Extensions.swift"; sourceTree = "<group>"; };
+		A3E8F2142AFBD10500F5E630 /* UserDefaults+Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UserDefaults+Extensions.swift"; sourceTree = "<group>"; };
+		A3E8F2152AFBD10500F5E630 /* URL+Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "URL+Extensions.swift"; sourceTree = "<group>"; };
+		A3E8F2172AFBD10500F5E630 /* AppSwitcherOverlayViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppSwitcherOverlayViewController.swift; sourceTree = "<group>"; };
+		A3E8F2182AFBD10500F5E630 /* NotificationViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NotificationViewController.swift; sourceTree = "<group>"; };
+		A3E8F21A2AFBD10500F5E630 /* SelectKeyButtonCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SelectKeyButtonCell.swift; sourceTree = "<group>"; };
+		A3E8F21B2AFBD10500F5E630 /* ProgressNavigationBar.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProgressNavigationBar.swift; sourceTree = "<group>"; };
+		A3E8F21C2AFBD10500F5E630 /* ColoredTableViewHeaderFooterView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ColoredTableViewHeaderFooterView.swift; sourceTree = "<group>"; };
+		A3E8F21D2AFBD10500F5E630 /* TextFieldCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TextFieldCell.swift; sourceTree = "<group>"; };
+		A3E8F21E2AFBD10500F5E630 /* BarButtonItem.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BarButtonItem.swift; sourceTree = "<group>"; };
+		A3E8F21F2AFBD10500F5E630 /* GenericContentTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GenericContentTableViewCell.swift; sourceTree = "<group>"; };
+		A3E8F2202AFBD10500F5E630 /* SubtitleTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SubtitleTableViewCell.swift; sourceTree = "<group>"; };
+		A3E8F2212AFBD10500F5E630 /* SwitchCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SwitchCell.swift; sourceTree = "<group>"; };
+		A3E8F2222AFBD10500F5E630 /* BrowseDatabaseTableHeaderView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BrowseDatabaseTableHeaderView.swift; sourceTree = "<group>"; };
 		A5FA10701D7AA8184255F37D /* Pods-CredentialProvider.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-CredentialProvider.release.xcconfig"; path = "Target Support Files/Pods-CredentialProvider/Pods-CredentialProvider.release.xcconfig"; sourceTree = "<group>"; };
 		ADB79A128448B2460381FEE8 /* Pods_Keep.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Keep.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		BBF18EB9167ADB17B2C12082 /* Pods_CredentialProvider.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_CredentialProvider.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -340,12 +341,10 @@
 		A32C6547260C557200DC6653 /* Passs */ = {
 			isa = PBXGroup;
 			children = (
-				A3F3DA26260CA5E00057AF24 /* Model */,
-				A3F034422A028AAB00277ED2 /* View */,
-				A3F4959D261E241300E4AA7E /* Controller */,
+				A3E8F1F12AFBD10400F5E630 /* Modules */,
+				A3E8F1E42AFBD10400F5E630 /* Services */,
 				A365CAAF27B4F0D6009877D1 /* Coordinator */,
-				A3CFA4C42792895B0020F82F /* Common */,
-				A3F3DA32260DBEAA0057AF24 /* Service */,
+				A3E8F2022AFBD10500F5E630 /* Common */,
 				A32C6548260C557300DC6653 /* AppDelegate.swift */,
 				A3CAA30C27AB060200330FAC /* Application.swift */,
 				A3CAA30E27AB06CF00330FAC /* main.swift */,
@@ -384,103 +383,169 @@
 			path = CredentialProvider;
 			sourceTree = "<group>";
 		};
-		A3CAA30927A9B91A00330FAC /* Cells */ = {
+		A3E8F1E42AFBD10400F5E630 /* Services */ = {
 			isa = PBXGroup;
 			children = (
-				A3CAA30A27A9B93D00330FAC /* SubtitleTableViewCell.swift */,
-				A35A8B1527BC33B000216C24 /* TextFieldCell.swift */,
-				A35A8B1727BCDE1500216C24 /* SwitchCell.swift */,
-				A35A8B1C27BE2C8200216C24 /* ColoredTableViewHeaderFooterView.swift */,
-				A35A8B1E27BEB3FE00216C24 /* SelectKeyButtonCell.swift */,
-				0A52EDC329FE6CD2003463EF /* BrowseDatabaseTableHeaderView.swift */,
-				0A717AD02A08A1D200072F6D /* GenericContentTableViewCell.swift */,
+				A3E8F1E52AFBD10400F5E630 /* Constants.swift */,
+				A3E8F1E62AFBD10400F5E630 /* QRCodeManager.swift */,
+				A3E8F1E72AFBD10400F5E630 /* ServiceLocator.swift */,
+				A3E8F1E82AFBD10400F5E630 /* KeychainManager.swift */,
+				A3E8F1E92AFBD10400F5E630 /* RecentPasswordsManager.swift */,
+				A3E8F1EA2AFBD10400F5E630 /* ProtectionStorage.swift */,
+				A3E8F1EB2AFBD10400F5E630 /* QuickUnlockManager.swift */,
+				A3E8F1EC2AFBD10400F5E630 /* CredentialsSelectionManager.swift */,
+				A3E8F1ED2AFBD10400F5E630 /* PasteboardManager.swift */,
+				A3E8F1EE2AFBD10400F5E630 /* DatabasesProvider.swift */,
+				A3E8F1EF2AFBD10400F5E630 /* PassDatabaseManager.swift */,
+				A3E8F1F02AFBD10400F5E630 /* SettingsManager.swift */,
 			);
-			path = Cells;
+			path = Services;
 			sourceTree = "<group>";
 		};
-		A3CFA4C42792895B0020F82F /* Common */ = {
+		A3E8F1F12AFBD10400F5E630 /* Modules */ = {
 			isa = PBXGroup;
 			children = (
-				A3CFA4C5279289740020F82F /* UIImage+Extensions.swift */,
-				A35A8B0D27B56B8E00216C24 /* UIButton+Extensions.swift */,
-				A3B5E32527AD9EE40061CAC6 /* UIViewController+Extensions.swift */,
-				A3FF57D327BFD6F400D41659 /* UIDocumentPickerController+Extensions.swift */,
-				A392D9CB27C79D2F00206161 /* UserDefaults+Extensions.swift */,
-				0A1EF7ED2937A99200F9DEC3 /* UIFont+Extensions.swift */,
-				0AD29C4F293FCE55007A9061 /* BarButtonItem.swift */,
-				0A52EDC929FFEF32003463EF /* UIView+Extensions.swift */,
-				0A717ACC2A06716700072F6D /* UIColor+Extensions.swift */,
-				0A717AD32A08C77800072F6D /* UITableView+Extensions.swift */,
-				0A3836E62A1FB9B100FBB33F /* Optional+Extension.swift */,
-				0ACA1C4F2AE63DE10054AB5D /* FileManager+Extensions.swift */,
-				0ACA1C522AE63DF30054AB5D /* URL+Extensions.swift */,
+				A3E8F1F22AFBD10400F5E630 /* Password details */,
+				A3E8F1F42AFBD10400F5E630 /* Password groups */,
+				A3E8F1F62AFBD10400F5E630 /* Passwords */,
+				A3E8F1F82AFBD10400F5E630 /* Database list */,
+				A3E8F1FA2AFBD10400F5E630 /* QRCode */,
+				A3E8F1FC2AFBD10400F5E630 /* Database settings */,
+				A3E8F1FE2AFBD10500F5E630 /* Unlock */,
+				A3E8F2002AFBD10500F5E630 /* Passcode */,
+			);
+			path = Modules;
+			sourceTree = "<group>";
+		};
+		A3E8F1F22AFBD10400F5E630 /* Password details */ = {
+			isa = PBXGroup;
+			children = (
+				A3E8F1F32AFBD10400F5E630 /* PasswordDetailsViewController.swift */,
+			);
+			path = "Password details";
+			sourceTree = "<group>";
+		};
+		A3E8F1F42AFBD10400F5E630 /* Password groups */ = {
+			isa = PBXGroup;
+			children = (
+				A3E8F1F52AFBD10400F5E630 /* GroupsViewController.swift */,
+			);
+			path = "Password groups";
+			sourceTree = "<group>";
+		};
+		A3E8F1F62AFBD10400F5E630 /* Passwords */ = {
+			isa = PBXGroup;
+			children = (
+				A3E8F1F72AFBD10400F5E630 /* PasswordsViewController.swift */,
+			);
+			path = Passwords;
+			sourceTree = "<group>";
+		};
+		A3E8F1F82AFBD10400F5E630 /* Database list */ = {
+			isa = PBXGroup;
+			children = (
+				A3E8F1F92AFBD10400F5E630 /* DatabaseListViewController.swift */,
+			);
+			path = "Database list";
+			sourceTree = "<group>";
+		};
+		A3E8F1FA2AFBD10400F5E630 /* QRCode */ = {
+			isa = PBXGroup;
+			children = (
+				A3E8F1FB2AFBD10400F5E630 /* QRCodeViewController.swift */,
+			);
+			path = QRCode;
+			sourceTree = "<group>";
+		};
+		A3E8F1FC2AFBD10400F5E630 /* Database settings */ = {
+			isa = PBXGroup;
+			children = (
+				A3E8F1FD2AFBD10500F5E630 /* DatabaseSettingsViewController.swift */,
+			);
+			path = "Database settings";
+			sourceTree = "<group>";
+		};
+		A3E8F1FE2AFBD10500F5E630 /* Unlock */ = {
+			isa = PBXGroup;
+			children = (
+				A3E8F1FF2AFBD10500F5E630 /* UnlockViewController.swift */,
+			);
+			path = Unlock;
+			sourceTree = "<group>";
+		};
+		A3E8F2002AFBD10500F5E630 /* Passcode */ = {
+			isa = PBXGroup;
+			children = (
+				A3E8F2012AFBD10500F5E630 /* PasscodeView.swift */,
+			);
+			path = Passcode;
+			sourceTree = "<group>";
+		};
+		A3E8F2022AFBD10500F5E630 /* Common */ = {
+			isa = PBXGroup;
+			children = (
+				A3E8F2032AFBD10500F5E630 /* Models */,
+				A3E8F2092AFBD10500F5E630 /* Extensions */,
+				A3E8F2162AFBD10500F5E630 /* Controllers */,
+				A3E8F2192AFBD10500F5E630 /* Views */,
 			);
 			path = Common;
 			sourceTree = "<group>";
 		};
-		A3F034422A028AAB00277ED2 /* View */ = {
+		A3E8F2032AFBD10500F5E630 /* Models */ = {
 			isa = PBXGroup;
 			children = (
-				A3F034432A028CCF00277ED2 /* Subviews */,
-				A3CAA30927A9B91A00330FAC /* Cells */,
+				A3E8F2042AFBD10500F5E630 /* PassItem.swift */,
+				A3E8F2052AFBD10500F5E630 /* QuickUnlockProtection.swift */,
+				A3E8F2062AFBD10500F5E630 /* PassItem+KeePassKit.swift */,
+				A3E8F2072AFBD10500F5E630 /* PassItem+SFSymbols.swift */,
+				A3E8F2082AFBD10500F5E630 /* UnlockData.swift */,
 			);
-			path = View;
+			path = Models;
 			sourceTree = "<group>";
 		};
-		A3F034432A028CCF00277ED2 /* Subviews */ = {
+		A3E8F2092AFBD10500F5E630 /* Extensions */ = {
 			isa = PBXGroup;
 			children = (
-				A3F034442A028CF300277ED2 /* ProgressNavigationBar.swift */,
+				A3E8F20A2AFBD10500F5E630 /* UIViewController+Extensions.swift */,
+				A3E8F20B2AFBD10500F5E630 /* UIButton+Extensions.swift */,
+				A3E8F20C2AFBD10500F5E630 /* UIView+Extensions.swift */,
+				A3E8F20D2AFBD10500F5E630 /* Optional+Extension.swift */,
+				A3E8F20E2AFBD10500F5E630 /* UIFont+Extensions.swift */,
+				A3E8F20F2AFBD10500F5E630 /* UIColor+Extensions.swift */,
+				A3E8F2102AFBD10500F5E630 /* UIImage+Extensions.swift */,
+				A3E8F2112AFBD10500F5E630 /* UIDocumentPickerController+Extensions.swift */,
+				A3E8F2122AFBD10500F5E630 /* FileManager+Extensions.swift */,
+				A3E8F2132AFBD10500F5E630 /* UITableView+Extensions.swift */,
+				A3E8F2142AFBD10500F5E630 /* UserDefaults+Extensions.swift */,
+				A3E8F2152AFBD10500F5E630 /* URL+Extensions.swift */,
 			);
-			path = Subviews;
+			path = Extensions;
 			sourceTree = "<group>";
 		};
-		A3F3DA26260CA5E00057AF24 /* Model */ = {
+		A3E8F2162AFBD10500F5E630 /* Controllers */ = {
 			isa = PBXGroup;
 			children = (
-				A3F3DA27260CA5FC0057AF24 /* PassItem.swift */,
-				A3F3DA29260CA8440057AF24 /* PassItem+KeePassKit.swift */,
-				0A4FA0A129EF1832004E9906 /* PassItem+SFSymbols.swift */,
-				A3FF57D527BFED1E00D41659 /* UnlockData.swift */,
-				0A8262A42A1DD77A00632FA8 /* QuickUnlockProtection.swift */,
+				A3E8F2172AFBD10500F5E630 /* AppSwitcherOverlayViewController.swift */,
+				A3E8F2182AFBD10500F5E630 /* NotificationViewController.swift */,
 			);
-			path = Model;
+			path = Controllers;
 			sourceTree = "<group>";
 		};
-		A3F3DA32260DBEAA0057AF24 /* Service */ = {
+		A3E8F2192AFBD10500F5E630 /* Views */ = {
 			isa = PBXGroup;
 			children = (
-				A365CAB227B4FAE9009877D1 /* ServiceLocator.swift */,
-				A3F3DA33260DBEB50057AF24 /* PasteboardManager.swift */,
-				A3F3DA35260DC1D10057AF24 /* PassDatabaseManager.swift */,
-				A3F4959B261E22F700E4AA7E /* DatabasesProvider.swift */,
-				A318424E2721DB5F00786744 /* Constants.swift */,
-				A392D9C927C66FA500206161 /* SettingsManager.swift */,
-				A3CFA4C92795F9650020F82F /* KeychainManager.swift */,
-				A3B5E33F27B16E620061CAC6 /* QuickUnlockManager.swift */,
-				A3CAA31227ABCFB000330FAC /* RecentPasswordsManager.swift */,
-				0A8D3E372938F515005D4435 /* CredentialsSelectionManager.swift */,
-				0AD616CD29EA4C8500BCE3AD /* QRCodeManager.swift */,
-				0A2503332ACC7B5B009789B4 /* ProtectionStorage.swift */,
+				A3E8F21A2AFBD10500F5E630 /* SelectKeyButtonCell.swift */,
+				A3E8F21B2AFBD10500F5E630 /* ProgressNavigationBar.swift */,
+				A3E8F21C2AFBD10500F5E630 /* ColoredTableViewHeaderFooterView.swift */,
+				A3E8F21D2AFBD10500F5E630 /* TextFieldCell.swift */,
+				A3E8F21E2AFBD10500F5E630 /* BarButtonItem.swift */,
+				A3E8F21F2AFBD10500F5E630 /* GenericContentTableViewCell.swift */,
+				A3E8F2202AFBD10500F5E630 /* SubtitleTableViewCell.swift */,
+				A3E8F2212AFBD10500F5E630 /* SwitchCell.swift */,
+				A3E8F2222AFBD10500F5E630 /* BrowseDatabaseTableHeaderView.swift */,
 			);
-			path = Service;
-			sourceTree = "<group>";
-		};
-		A3F4959D261E241300E4AA7E /* Controller */ = {
-			isa = PBXGroup;
-			children = (
-				0A3836E32A1FB93700FBB33F /* DatabaseSettingsViewController.swift */,
-				A32C654C260C557300DC6653 /* PasswordsViewController.swift */,
-				A3F4959E261E242700E4AA7E /* DatabaseListViewController.swift */,
-				A3CFA4C7279349370020F82F /* GroupsViewController.swift */,
-				A35A8B1127BC2F1500216C24 /* UnlockViewController.swift */,
-				0AD616CB29EA46AD00BCE3AD /* QRCodeViewController.swift */,
-				A377A6F12A00EFE000213490 /* NotificationViewController.swift */,
-				0A52EDC629FFE8B7003463EF /* PasswordDetailsViewController.swift */,
-				A343496B2A0519DC000D42C4 /* AppSwitcherOverlayViewController.swift */,
-				A3D767FA2A09139800BC8ABA /* PasscodeView.swift */,
-			);
-			path = Controller;
+			path = Views;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -723,58 +788,58 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				A3D767FB2A09139800BC8ABA /* PasscodeView.swift in Sources */,
-				A35A8B1227BC2F1500216C24 /* UnlockViewController.swift in Sources */,
-				0A52EDC429FE6CD2003463EF /* BrowseDatabaseTableHeaderView.swift in Sources */,
-				0A8D3E382938F515005D4435 /* CredentialsSelectionManager.swift in Sources */,
+				A3E8F2232AFBD10500F5E630 /* Constants.swift in Sources */,
+				A3E8F2252AFBD10500F5E630 /* QRCodeManager.swift in Sources */,
+				A3E8F2512AFBD10500F5E630 /* PassItem+SFSymbols.swift in Sources */,
+				A3E8F2752AFBD10500F5E630 /* ColoredTableViewHeaderFooterView.swift in Sources */,
+				A3E8F22B2AFBD10500F5E630 /* RecentPasswordsManager.swift in Sources */,
+				A3E8F24B2AFBD10500F5E630 /* PassItem.swift in Sources */,
+				A3E8F2772AFBD10500F5E630 /* TextFieldCell.swift in Sources */,
+				A3E8F26F2AFBD10500F5E630 /* NotificationViewController.swift in Sources */,
+				A3E8F24D2AFBD10500F5E630 /* QuickUnlockProtection.swift in Sources */,
+				A3E8F2592AFBD10500F5E630 /* UIView+Extensions.swift in Sources */,
+				A3E8F2332AFBD10500F5E630 /* PasteboardManager.swift in Sources */,
+				A3E8F2452AFBD10500F5E630 /* DatabaseSettingsViewController.swift in Sources */,
 				A3CAA30D27AB060300330FAC /* Application.swift in Sources */,
-				0AD29C50293FCE55007A9061 /* BarButtonItem.swift in Sources */,
-				A3F3DA28260CA5FC0057AF24 /* PassItem.swift in Sources */,
+				A3E8F23B2AFBD10500F5E630 /* PasswordDetailsViewController.swift in Sources */,
+				A3E8F25F2AFBD10500F5E630 /* UIColor+Extensions.swift in Sources */,
+				A3E8F2712AFBD10500F5E630 /* SelectKeyButtonCell.swift in Sources */,
+				A3E8F2412AFBD10500F5E630 /* DatabaseListViewController.swift in Sources */,
+				A3E8F27D2AFBD10500F5E630 /* SubtitleTableViewCell.swift in Sources */,
+				A3E8F2352AFBD10500F5E630 /* DatabasesProvider.swift in Sources */,
+				A3E8F2372AFBD10500F5E630 /* PassDatabaseManager.swift in Sources */,
+				A3E8F2612AFBD10500F5E630 /* UIImage+Extensions.swift in Sources */,
+				A3E8F25D2AFBD10500F5E630 /* UIFont+Extensions.swift in Sources */,
+				A3E8F23D2AFBD10500F5E630 /* GroupsViewController.swift in Sources */,
+				A3E8F2692AFBD10500F5E630 /* UserDefaults+Extensions.swift in Sources */,
 				A3CAA30F27AB06CF00330FAC /* main.swift in Sources */,
-				A3F3DA2A260CA8440057AF24 /* PassItem+KeePassKit.swift in Sources */,
-				A3F034452A028CF300277ED2 /* ProgressNavigationBar.swift in Sources */,
-				0A717AD12A08A1D200072F6D /* GenericContentTableViewCell.swift in Sources */,
-				A3CAA31327ABCFB000330FAC /* RecentPasswordsManager.swift in Sources */,
-				A3CFA4C6279289740020F82F /* UIImage+Extensions.swift in Sources */,
-				A3F3DA34260DBEB60057AF24 /* PasteboardManager.swift in Sources */,
-				0ACA1C502AE63DE10054AB5D /* FileManager+Extensions.swift in Sources */,
-				A3CAA30B27A9B93D00330FAC /* SubtitleTableViewCell.swift in Sources */,
-				A377A6F22A00EFE000213490 /* NotificationViewController.swift in Sources */,
-				0ACA1C532AE63DF30054AB5D /* URL+Extensions.swift in Sources */,
-				A35A8B1F27BEB3FE00216C24 /* SelectKeyButtonCell.swift in Sources */,
-				A343496C2A0519DC000D42C4 /* AppSwitcherOverlayViewController.swift in Sources */,
-				A3CFA4C8279349370020F82F /* GroupsViewController.swift in Sources */,
-				0A3836E72A1FB9B100FBB33F /* Optional+Extension.swift in Sources */,
-				A3F3DA36260DC1D10057AF24 /* PassDatabaseManager.swift in Sources */,
-				A3F4959F261E242700E4AA7E /* DatabaseListViewController.swift in Sources */,
-				A3B5E32627AD9EE40061CAC6 /* UIViewController+Extensions.swift in Sources */,
-				A32C654D260C557300DC6653 /* PasswordsViewController.swift in Sources */,
-				0A52EDCA29FFEF32003463EF /* UIView+Extensions.swift in Sources */,
+				A3E8F26D2AFBD10500F5E630 /* AppSwitcherOverlayViewController.swift in Sources */,
+				A3E8F2732AFBD10500F5E630 /* ProgressNavigationBar.swift in Sources */,
+				A3E8F25B2AFBD10500F5E630 /* Optional+Extension.swift in Sources */,
+				A3E8F2312AFBD10500F5E630 /* CredentialsSelectionManager.swift in Sources */,
+				A3E8F2672AFBD10500F5E630 /* UITableView+Extensions.swift in Sources */,
+				A3E8F2432AFBD10500F5E630 /* QRCodeViewController.swift in Sources */,
+				A3E8F2792AFBD10500F5E630 /* BarButtonItem.swift in Sources */,
+				A3E8F27F2AFBD10500F5E630 /* SwitchCell.swift in Sources */,
 				A365CAB127B4F0F2009877D1 /* RootCoordinator.swift in Sources */,
-				0A4FA0A229EF1832004E9906 /* PassItem+SFSymbols.swift in Sources */,
-				A3FF57D427BFD6F400D41659 /* UIDocumentPickerController+Extensions.swift in Sources */,
-				A365CAB327B4FAE9009877D1 /* ServiceLocator.swift in Sources */,
-				0A52EDC729FFE8B7003463EF /* PasswordDetailsViewController.swift in Sources */,
-				0AD616CC29EA46AD00BCE3AD /* QRCodeViewController.swift in Sources */,
-				A3CFA4CA2795F9650020F82F /* KeychainManager.swift in Sources */,
-				A35A8B1627BC33B000216C24 /* TextFieldCell.swift in Sources */,
-				A35A8B1D27BE2C8200216C24 /* ColoredTableViewHeaderFooterView.swift in Sources */,
-				A392D9CC27C79D2F00206161 /* UserDefaults+Extensions.swift in Sources */,
-				0A717AD42A08C77800072F6D /* UITableView+Extensions.swift in Sources */,
-				A3F4959C261E22F700E4AA7E /* DatabasesProvider.swift in Sources */,
-				A3B5E34027B16E620061CAC6 /* QuickUnlockManager.swift in Sources */,
-				0A2503342ACC7B5C009789B4 /* ProtectionStorage.swift in Sources */,
-				0A8262A52A1DD77A00632FA8 /* QuickUnlockProtection.swift in Sources */,
-				0A717ACD2A06716700072F6D /* UIColor+Extensions.swift in Sources */,
-				A3FF57D627BFED1E00D41659 /* UnlockData.swift in Sources */,
-				0AD616CE29EA4C8500BCE3AD /* QRCodeManager.swift in Sources */,
-				A318424F2721DB5F00786744 /* Constants.swift in Sources */,
-				A392D9CA27C66FA500206161 /* SettingsManager.swift in Sources */,
-				A35A8B1827BCDE1500216C24 /* SwitchCell.swift in Sources */,
-				0A3836E42A1FB93700FBB33F /* DatabaseSettingsViewController.swift in Sources */,
-				A35A8B0E27B56B8E00216C24 /* UIButton+Extensions.swift in Sources */,
-				0A1EF7EE2937A99200F9DEC3 /* UIFont+Extensions.swift in Sources */,
+				A3E8F2652AFBD10500F5E630 /* FileManager+Extensions.swift in Sources */,
+				A3E8F22F2AFBD10500F5E630 /* QuickUnlockManager.swift in Sources */,
 				A32C6549260C557300DC6653 /* AppDelegate.swift in Sources */,
+				A3E8F2392AFBD10500F5E630 /* SettingsManager.swift in Sources */,
+				A3E8F2492AFBD10500F5E630 /* PasscodeView.swift in Sources */,
+				A3E8F2552AFBD10500F5E630 /* UIViewController+Extensions.swift in Sources */,
+				A3E8F24F2AFBD10500F5E630 /* PassItem+KeePassKit.swift in Sources */,
+				A3E8F2632AFBD10500F5E630 /* UIDocumentPickerController+Extensions.swift in Sources */,
+				A3E8F2272AFBD10500F5E630 /* ServiceLocator.swift in Sources */,
+				A3E8F2532AFBD10500F5E630 /* UnlockData.swift in Sources */,
+				A3E8F26B2AFBD10500F5E630 /* URL+Extensions.swift in Sources */,
+				A3E8F2812AFBD10500F5E630 /* BrowseDatabaseTableHeaderView.swift in Sources */,
+				A3E8F27B2AFBD10500F5E630 /* GenericContentTableViewCell.swift in Sources */,
+				A3E8F22D2AFBD10500F5E630 /* ProtectionStorage.swift in Sources */,
+				A3E8F23F2AFBD10500F5E630 /* PasswordsViewController.swift in Sources */,
+				A3E8F2292AFBD10500F5E630 /* KeychainManager.swift in Sources */,
+				A3E8F2472AFBD10500F5E630 /* UnlockViewController.swift in Sources */,
+				A3E8F2572AFBD10500F5E630 /* UIButton+Extensions.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -791,55 +856,56 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				0A1EF8092937D57D00F9DEC3 /* PasteboardManager.swift in Sources */,
-				0A1EF80B2937D57D00F9DEC3 /* QuickUnlockManager.swift in Sources */,
-				0A52EDC829FFE8B7003463EF /* PasswordDetailsViewController.swift in Sources */,
-				0A1EF8032937D57700F9DEC3 /* UnlockViewController.swift in Sources */,
-				0A1EF7FF2937D57400F9DEC3 /* UIDocumentPickerController+Extensions.swift in Sources */,
-				0A1EF8022937D57700F9DEC3 /* DatabaseListViewController.swift in Sources */,
+				A3E8F2342AFBD10500F5E630 /* PasteboardManager.swift in Sources */,
 				0A1EF7F52937D55700F9DEC3 /* RootCoordinator.swift in Sources */,
-				0A52EDCB29FFEF32003463EF /* UIView+Extensions.swift in Sources */,
-				0A4FA0A329EF1832004E9906 /* PassItem+SFSymbols.swift in Sources */,
-				0A1EF7FC2937D57400F9DEC3 /* UserDefaults+Extensions.swift in Sources */,
-				0AD616CF29EA4DB600BCE3AD /* QRCodeManager.swift in Sources */,
-				0A2503352ACC7B5C009789B4 /* ProtectionStorage.swift in Sources */,
-				0A3836E52A1FB93700FBB33F /* DatabaseSettingsViewController.swift in Sources */,
-				0A717ACE2A06716700072F6D /* UIColor+Extensions.swift in Sources */,
-				0A1EF7FB2937D57400F9DEC3 /* UIButton+Extensions.swift in Sources */,
+				A3E8F25E2AFBD10500F5E630 /* UIFont+Extensions.swift in Sources */,
+				A3E8F2742AFBD10500F5E630 /* ProgressNavigationBar.swift in Sources */,
+				A3E8F2502AFBD10500F5E630 /* PassItem+KeePassKit.swift in Sources */,
+				A3E8F26C2AFBD10500F5E630 /* URL+Extensions.swift in Sources */,
+				A3E8F2582AFBD10500F5E630 /* UIButton+Extensions.swift in Sources */,
+				A3E8F22A2AFBD10500F5E630 /* KeychainManager.swift in Sources */,
+				A3E8F2482AFBD10500F5E630 /* UnlockViewController.swift in Sources */,
+				A3E8F2822AFBD10500F5E630 /* BrowseDatabaseTableHeaderView.swift in Sources */,
+				A3E8F2282AFBD10500F5E630 /* ServiceLocator.swift in Sources */,
+				A3E8F2802AFBD10500F5E630 /* SwitchCell.swift in Sources */,
+				A3E8F23E2AFBD10500F5E630 /* GroupsViewController.swift in Sources */,
+				A3E8F22C2AFBD10500F5E630 /* RecentPasswordsManager.swift in Sources */,
 				A3B5E33027AEA7340061CAC6 /* CredentialProviderViewController.swift in Sources */,
-				0A3836E82A1FB9B100FBB33F /* Optional+Extension.swift in Sources */,
-				0A1EF7F62937D56F00F9DEC3 /* SwitchCell.swift in Sources */,
-				0A1EF7FA2937D56F00F9DEC3 /* SubtitleTableViewCell.swift in Sources */,
-				0A1EF7FE2937D57400F9DEC3 /* UIViewController+Extensions.swift in Sources */,
-				A377A6F32A00EFE000213490 /* NotificationViewController.swift in Sources */,
-				A3F034462A028CF300277ED2 /* ProgressNavigationBar.swift in Sources */,
-				0A1EF7F92937D56F00F9DEC3 /* SelectKeyButtonCell.swift in Sources */,
-				0A717AD22A08A1D200072F6D /* GenericContentTableViewCell.swift in Sources */,
-				0A717AD52A08C77900072F6D /* UITableView+Extensions.swift in Sources */,
-				0A1EF8052937D57D00F9DEC3 /* RecentPasswordsManager.swift in Sources */,
-				0A1EF80D2937D57D00F9DEC3 /* SettingsManager.swift in Sources */,
-				0AD29C51293FCF38007A9061 /* BarButtonItem.swift in Sources */,
-				0A1EF8082937D57D00F9DEC3 /* DatabasesProvider.swift in Sources */,
-				0ACA1C512AE63DE10054AB5D /* FileManager+Extensions.swift in Sources */,
-				0A1EF7FD2937D57400F9DEC3 /* UIImage+Extensions.swift in Sources */,
-				0A8D3E392938F515005D4435 /* CredentialsSelectionManager.swift in Sources */,
-				0A1EF80C2937D57D00F9DEC3 /* ServiceLocator.swift in Sources */,
-				0A1EF8002937D57400F9DEC3 /* UIFont+Extensions.swift in Sources */,
-				0A1EF8042937D57700F9DEC3 /* GroupsViewController.swift in Sources */,
-				0A52EDC529FE6CD2003463EF /* BrowseDatabaseTableHeaderView.swift in Sources */,
-				0A1EF80A2937D57D00F9DEC3 /* KeychainManager.swift in Sources */,
-				0AD616D029EA4ED000BCE3AD /* QRCodeViewController.swift in Sources */,
-				0A1EF8072937D57D00F9DEC3 /* Constants.swift in Sources */,
-				0A1EF8012937D57700F9DEC3 /* PasswordsViewController.swift in Sources */,
-				0A850A0F2937F98E00754CC9 /* UnlockData.swift in Sources */,
-				0A1EF7F72937D56F00F9DEC3 /* TextFieldCell.swift in Sources */,
-				0A850A112937F9EF00754CC9 /* PassItem+KeePassKit.swift in Sources */,
-				0ACA1C542AE63DF30054AB5D /* URL+Extensions.swift in Sources */,
-				0A1EF8062937D57D00F9DEC3 /* PassDatabaseManager.swift in Sources */,
-				0A8262A62A1DD77A00632FA8 /* QuickUnlockProtection.swift in Sources */,
-				A3D767FC2A09139800BC8ABA /* PasscodeView.swift in Sources */,
-				0A1EF7F82937D56F00F9DEC3 /* ColoredTableViewHeaderFooterView.swift in Sources */,
-				0A850A102937F99E00754CC9 /* PassItem.swift in Sources */,
+				A3E8F2242AFBD10500F5E630 /* Constants.swift in Sources */,
+				A3E8F2782AFBD10500F5E630 /* TextFieldCell.swift in Sources */,
+				A3E8F22E2AFBD10500F5E630 /* ProtectionStorage.swift in Sources */,
+				A3E8F25A2AFBD10500F5E630 /* UIView+Extensions.swift in Sources */,
+				A3E8F23C2AFBD10500F5E630 /* PasswordDetailsViewController.swift in Sources */,
+				A3E8F27C2AFBD10500F5E630 /* GenericContentTableViewCell.swift in Sources */,
+				A3E8F25C2AFBD10500F5E630 /* Optional+Extension.swift in Sources */,
+				A3E8F2642AFBD10500F5E630 /* UIDocumentPickerController+Extensions.swift in Sources */,
+				A3E8F27E2AFBD10500F5E630 /* SubtitleTableViewCell.swift in Sources */,
+				A3E8F2762AFBD10500F5E630 /* ColoredTableViewHeaderFooterView.swift in Sources */,
+				A3E8F2662AFBD10500F5E630 /* FileManager+Extensions.swift in Sources */,
+				A3E8F2522AFBD10500F5E630 /* PassItem+SFSymbols.swift in Sources */,
+				A3E8F2322AFBD10500F5E630 /* CredentialsSelectionManager.swift in Sources */,
+				A3E8F2362AFBD10500F5E630 /* DatabasesProvider.swift in Sources */,
+				A3E8F2602AFBD10500F5E630 /* UIColor+Extensions.swift in Sources */,
+				A3E8F26A2AFBD10500F5E630 /* UserDefaults+Extensions.swift in Sources */,
+				A3E8F2402AFBD10500F5E630 /* PasswordsViewController.swift in Sources */,
+				A3E8F24E2AFBD10500F5E630 /* QuickUnlockProtection.swift in Sources */,
+				A3E8F23A2AFBD10500F5E630 /* SettingsManager.swift in Sources */,
+				A3E8F2722AFBD10500F5E630 /* SelectKeyButtonCell.swift in Sources */,
+				A3E8F2262AFBD10500F5E630 /* QRCodeManager.swift in Sources */,
+				A3E8F26E2AFBD10500F5E630 /* AppSwitcherOverlayViewController.swift in Sources */,
+				A3E8F2302AFBD10500F5E630 /* QuickUnlockManager.swift in Sources */,
+				A3E8F2462AFBD10500F5E630 /* DatabaseSettingsViewController.swift in Sources */,
+				A3E8F2442AFBD10500F5E630 /* QRCodeViewController.swift in Sources */,
+				A3E8F24C2AFBD10500F5E630 /* PassItem.swift in Sources */,
+				A3E8F2542AFBD10500F5E630 /* UnlockData.swift in Sources */,
+				A3E8F27A2AFBD10500F5E630 /* BarButtonItem.swift in Sources */,
+				A3E8F2562AFBD10500F5E630 /* UIViewController+Extensions.swift in Sources */,
+				A3E8F2702AFBD10500F5E630 /* NotificationViewController.swift in Sources */,
+				A3E8F2422AFBD10500F5E630 /* DatabaseListViewController.swift in Sources */,
+				A3E8F2682AFBD10500F5E630 /* UITableView+Extensions.swift in Sources */,
+				A3E8F2622AFBD10500F5E630 /* UIImage+Extensions.swift in Sources */,
+				A3E8F24A2AFBD10500F5E630 /* PasscodeView.swift in Sources */,
+				A3E8F2382AFBD10500F5E630 /* PassDatabaseManager.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
