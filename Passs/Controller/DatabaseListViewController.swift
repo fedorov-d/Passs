@@ -101,10 +101,10 @@ class DatabaseListViewController: UIViewController {
         tableView.dataSource = dataSource
         updateDataSource()
 
-        self.navigationItem.backButtonTitle = ""
+        navigationItem.backButtonTitle = ""
 
         if credentialsSelectionManager == nil {
-            self.navigationItem.rightBarButtonItem = UIBarButtonItem(
+            navigationItem.rightBarButtonItem = UIBarButtonItem(
                 barButtonSystemItem: .add,
                 target: self,
                 action: #selector(importTapped)
@@ -146,7 +146,7 @@ class DatabaseListViewController: UIViewController {
     }
 
     private func presentEnterPassword(forDatabaseAt url: URL) {
-        self.onAskForPassword(url)
+        onAskForPassword(url)
     }
 
     private func handlePasswordError(_ error: Error, forDatabaseAt url: URL) {
@@ -154,12 +154,12 @@ class DatabaseListViewController: UIViewController {
         case is LAError:
             let error = error as! LAError
             if error.code == .userFallback || error.code == .biometryLockout {
-                self.presentEnterPassword(forDatabaseAt: url)
+                presentEnterPassword(forDatabaseAt: url)
             }
         case is KeychainError:
             let error = error as! KeychainError
             if error == .itemNotFound {
-                self.presentEnterPassword(forDatabaseAt: url)
+                presentEnterPassword(forDatabaseAt: url)
             }
         default: break
         }
@@ -169,9 +169,34 @@ class DatabaseListViewController: UIViewController {
 extension DatabaseListViewController {
     @objc
     func importTapped() {
-        let documentPickerController = UIDocumentPickerViewController.keepassDatabasesPicker()
-        documentPickerController.delegate = self
-        self.present(documentPickerController, animated: true, completion: nil)
+        let importActionHandler: UIActionHandler = { [weak self] _ in
+            guard let self else { return }
+            let documentPickerController = UIDocumentPickerViewController
+                .keepassDatabasesPicker()
+            documentPickerController.delegate = self
+            present(documentPickerController, animated: true, completion: nil)
+        }
+        let createActionHandler: UIActionHandler = { [weak self] _ in
+            guard let self else { return }
+            let documentPickerController = UIDocumentPickerViewController
+                .keepassDatabasesPicker()
+            documentPickerController.delegate = self
+            present(documentPickerController, animated: true, completion: nil)
+        }
+        let menu = UIMenu(
+            children: [
+                UIAction(
+                    title: "Import database",
+                    image: UIImage(systemName: "arrow.down.app"),
+                    handler: importActionHandler
+                ),
+                UIAction(
+                    title: "Create new database",
+                    image: UIImage(systemName: "externaldrive.badge.plus"),
+                    handler: createActionHandler
+                )
+            ]
+        )
     }
 
     @objc
@@ -181,7 +206,8 @@ extension DatabaseListViewController {
 }
 
 extension DatabaseListViewController: UIDocumentPickerDelegate {
-    func documentPicker(_ controller: UIDocumentPickerViewController, didPickDocumentsAt urls: [URL]) {
+    func documentPicker(_ controller: UIDocumentPickerViewController,
+                        didPickDocumentsAt urls: [URL]) {
         guard let url = urls.first else { return }
         do {
             try databasesProvider.addDatabase(from: url)
@@ -194,8 +220,8 @@ extension DatabaseListViewController: UIDocumentPickerDelegate {
 extension DatabaseListViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
-        let sectionID = self.dataSource.snapshot().sectionIdentifiers[indexPath.section]
-        let databaseURL = self.dataSource.snapshot().itemIdentifiers(inSection: sectionID)[indexPath.row]
+        let sectionID = dataSource.snapshot().sectionIdentifiers[indexPath.section]
+        let databaseURL = dataSource.snapshot().itemIdentifiers(inSection: sectionID)[indexPath.row]
         unlockDatabase(at: databaseURL)
     }
 
@@ -203,9 +229,9 @@ extension DatabaseListViewController: UITableViewDelegate {
                    trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
         let action = UIContextualAction(style: .normal, title: "Delete") { [weak self] action, view, closure in
             guard let self else { return }
-            let sectionID = self.dataSource.snapshot().sectionIdentifiers[indexPath.section]
-            let databaseURL = self.dataSource.snapshot().itemIdentifiers(inSection: sectionID)[indexPath.row]
-            self.deleteDatabase(at: databaseURL)
+            let sectionID = dataSource.snapshot().sectionIdentifiers[indexPath.section]
+            let databaseURL = dataSource.snapshot().itemIdentifiers(inSection: sectionID)[indexPath.row]
+            deleteDatabase(at: databaseURL)
             closure(true)
         }
         action.backgroundColor = .systemRed
@@ -358,7 +384,7 @@ extension DatabaseListViewController: DefaultDatabaseUnlock {
             return
         }
 
-        self.quickUnlockManager.unlockData(
+        quickUnlockManager.unlockData(
             for: url.lastPathComponent,
             passcodeCheckPassed: presentPasscodeCheckView(passcode:completion:),
             completion: { [weak self] result in
@@ -374,14 +400,14 @@ extension DatabaseListViewController: DefaultDatabaseUnlock {
 
     func performUnlock(for databaseURL: URL, with unlockData: UnlockData) {
         do {
-            try self.passDatabaseManager.unlockDatabase(
+            try passDatabaseManager.unlockDatabase(
                 with: databaseURL,
                 password: unlockData.password,
                 keyFileData: unlockData.keyFileData
             )
-            self.onDatabaseOpened()
+            onDatabaseOpened()
         } catch (let error) {
-            self.handlePasswordError(error, forDatabaseAt: databaseURL)
+            handlePasswordError(error, forDatabaseAt: databaseURL)
         }
     }
 }
@@ -402,7 +428,7 @@ fileprivate extension DatabaseListViewController {
             })
         let passcodeView = PasscodeView(scenario: passcodeCheckScenario)
         let hostingController = UIHostingController(rootView: passcodeView)
-        self.navigationController?.present(hostingController, animated: true)
+        navigationController?.present(hostingController, animated: true)
     }
 }
 
